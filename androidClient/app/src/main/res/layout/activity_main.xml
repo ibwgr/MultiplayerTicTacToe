@@ -11,7 +11,7 @@
     >
 
     <TextView
-        android:id="@+id/label_ueberschrift"
+        android:id="@+id/label_displayzeile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Bitte Spielernamen eingeben (fixtext)"
@@ -22,10 +22,11 @@
         />
 
     <EditText
-        android:id="@+id/label_student"
+        android:id="@+id/edit_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="text"
+        android:text="Emma"
         android:layout_below="@+id/label_ueberschrift"
         android:layout_marginTop="30dp"
         android:layout_marginLeft="10dp"
@@ -34,7 +35,7 @@
         />
 
     <Button
-        android:id="@+id/button_compute"
+        android:id="@+id/button_ok"
         android:text="Ok"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="30dp"
@@ -43,71 +44,6 @@
         android:layout_below="@+id/label_studienrichtung"
         />
 
-    <!--
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
-
-            <ImageButton
-                android:id="@+id/gameButton1"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                app:srcCompat="?android:attr/floatingToolbarOpenDrawable"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-
-                />
-
-            <ImageButton
-                android:id="@+id/gameButton2"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/gameButton1"
-                android:layout_toRightOf="@+id/gameButton1"
-                app:srcCompat="@drawable/game_fig_o"
-                />
-
-            <ImageButton
-                android:id="@+id/gameButton3"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                app:srcCompat="@drawable/game_fig_x"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
-
-
-            <ImageButton
-                android:id="@+id/gameButton4"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                app:srcCompat="?android:attr/floatingToolbarOpenDrawable"
-                />
-
-            <ImageButton
-                android:id="@+id/gameButton5"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/gameButton4"
-                android:layout_toRightOf="@+id/gameButton4"
-                app:srcCompat="@drawable/game_fig_o"
-                />
-
-            <ImageButton
-                android:id="@+id/gameButton6"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                app:srcCompat="@drawable/game_fig_x"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
-
-        </RelativeLayout>
-    -->
     <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/GridLayout1"
