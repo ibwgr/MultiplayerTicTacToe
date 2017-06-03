@@ -1,4 +1,4 @@
-package semesterarbeit2017.nds.ibw.ch.multiplayertictactoe;
+package ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe;
 
 import org.junit.Test;
 

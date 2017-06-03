@@ -1,4 +1,4 @@
-package semesterarbeit2017.nds.ibw.ch.multiplayertictactoe;
+package ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("semesterarbeit2017.nds.ibw.ch.multiplayertictactoe", appContext.getPackageName());
+        assertEquals("ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe", appContext.getPackageName());
     }
 }
