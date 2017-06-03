@@ -8,7 +8,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.ImageButton;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,15 +19,15 @@ public class MainActivity extends AppCompatActivity {
     private EditText editUserName;
     private TextView displayZeile;
 
-    private ImageButton gameButton1;
-    private ImageButton gameButton2;
-    private ImageButton gameButton3;
-    private ImageButton gameButton4;
-    private ImageButton gameButton5;
-    private ImageButton gameButton6;
-    private ImageButton gameButton7;
-    private ImageButton gameButton8;
-    private ImageButton gameButton9;
+    private GameButton gameButton1;
+    private GameButton gameButton2;
+    private GameButton gameButton3;
+    private GameButton gameButton4;
+    private GameButton gameButton5;
+    private GameButton gameButton6;
+    private GameButton gameButton7;
+    private GameButton gameButton8;
+    private GameButton gameButton9;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,22 +40,86 @@ public class MainActivity extends AppCompatActivity {
 
         //
         gameButton1 = (GameButton) findViewById(R.id.gameButton1);
+        gameButton1.setNr(1);
         gameButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // welcher button bin ich
-                ImageButton imageButton = (ImageButton) v;
-                Log.w(PROG, "Button clicked: " + imageButton.toString());
-                Log.w(PROG, "Button tag: " + imageButton.getTag());
-                if (imageButton.getTag() == null) {
-                    // ist noch frei
-                    imageButton.setImageResource(R.drawable.game_fig_x);
-                    imageButton.setTag(1);
-                    imageButton.setClickable(false);
-                    Log.w(PROG, "Button tag: " + imageButton.getTag());
-                }
+                ((GameButton) v).clicked();
             }
         });
+        //
+        gameButton2 = (GameButton) findViewById(R.id.gameButton2);
+        gameButton2.setNr(2);
+        gameButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((GameButton) v).clicked();
+            }
+        });
+        //
+        gameButton3 = (GameButton) findViewById(R.id.gameButton3);
+        gameButton3.setNr(3);
+        gameButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((GameButton) v).clicked();
+            }
+        });
+        //
+        gameButton4 = (GameButton) findViewById(R.id.gameButton4);
+        gameButton4.setNr(4);
+        gameButton4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((GameButton) v).clicked();
+            }
+        });
+        //
+        gameButton5 = (GameButton) findViewById(R.id.gameButton5);
+        gameButton5.setNr(5);
+        gameButton5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((GameButton) v).clicked();
+            }
+        });
+        //
+        gameButton6 = (GameButton) findViewById(R.id.gameButton6);
+        gameButton6.setNr(6);
+        gameButton6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((GameButton) v).clicked();
+            }
+        });
+        //
+        gameButton7 = (GameButton) findViewById(R.id.gameButton7);
+        gameButton7.setNr(7);
+        gameButton7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((GameButton) v).clicked();
+            }
+        });
+        //
+        gameButton8 = (GameButton) findViewById(R.id.gameButton8);
+        gameButton8.setNr(8);
+        gameButton8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((GameButton) v).clicked();
+            }
+        });
+        //
+        gameButton9 = (GameButton) findViewById(R.id.gameButton9);
+        gameButton9.setNr(9);
+        gameButton9.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((GameButton) v).clicked();
+            }
+        });
+
 
         // get the OK button
         final Button buttonOk = (Button) findViewById(R.id.button_ok);
