@@ -1,5 +1,6 @@
 package ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.GridView;
 
 import android.widget.TextView;
@@ -29,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private GameButton gameButton8;
     private GameButton gameButton9;
 
+    private String amZug = Const.AMZUGICH;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked();
+                ((GameButton) v).clicked(amZug);
             }
         });
         //
@@ -53,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked();
+                ((GameButton) v).clicked(amZug);
             }
         });
         //
@@ -62,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked();
+                ((GameButton) v).clicked(amZug);
             }
         });
         //
@@ -71,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked();
+                ((GameButton) v).clicked(amZug);
             }
         });
         //
@@ -80,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked();
+                ((GameButton) v).clicked(amZug);
             }
         });
         //
@@ -89,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked();
+                ((GameButton) v).clicked(amZug);
             }
         });
         //
@@ -98,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked();
+                ((GameButton) v).clicked(amZug);
             }
         });
         //
@@ -107,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked();
+                ((GameButton) v).clicked(amZug);
             }
         });
         //
@@ -116,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked();
+                ((GameButton) v).clicked(amZug);
             }
         });
 
@@ -134,6 +138,20 @@ public class MainActivity extends AppCompatActivity {
                     // TODO Eingabefeld und Button disalbe
                     buttonOk.setVisibility(View.INVISIBLE);
                     editUserName.setVisibility(View.INVISIBLE);
+
+                    // Test only
+                    GridLayout gameGridLayout = (GridLayout) findViewById(R.id.Game_GridLayout);
+                    gameGridLayout.setBackgroundColor(Color.LTGRAY);
+                    gameGridLayout.setClickable(false);
+                    gameGridLayout.setEnabled(false);
+                    //gameGridLayout.setVisibility(View.GONE);
+                    /*
+                    for (int i = 0; i < layout.getChildCount(); i++) {
+                        View child = gameGridLayout.getChildAt(i);
+                        child.setEnabled(false);
+                    }
+                    */
+
                 } else {
                     Toast.makeText(getApplicationContext(), "Bitte zuerst einen Usernamen eingeben", Toast.LENGTH_LONG).show();
                 }

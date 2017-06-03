@@ -73,15 +73,15 @@ public class GameButton extends ImageButton {
     }
 
     ///////////////////////////////
-    public void clicked() {
+    public void clicked(String amZug) {
         Log.w(PROG, "Button clicked: " + this.toString());
         this.setClicked();
-
-        //Log.w(PROG, "Button tag: " + gb.getTag());
-        //if (gb.getTag() == null) {
-
-        this.setImageResource(R.drawable.game_fig_x);
-        this.setTag(1);
+        if (amZug == Const.AMZUGICH) {
+            this.setBackgroundResource(R.drawable.game_fig_x);
+        } else {
+            this.setBackgroundResource(R.drawable.game_fig_o);
+        }
+        //this.setTag(1);
         this.setClickable(false);
         Log.w(PROG, "nun gesperrt");
     }
