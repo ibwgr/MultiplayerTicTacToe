@@ -3,7 +3,10 @@ package ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -53,12 +56,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+    // Menu icons are inflated just as they were with actionbar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        // https://guides.codepath.com/android/Using-the-App-Toolbar#using-toolbar-as-actionbar
+        ///home/rk/Android/Sdk/platforms/android-25/data/res/drawable-mdpi
+        // Find the toolbar view inside the activity layout
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        // Sets the Toolbar to act as the ActionBar for this Activity window.
+        // Make sure the toolbar exists in the activity and is not null
+        setSupportActionBar(toolbar);
+        toolbar.setTitle("Multi");
+        toolbar.setSubtitle("Tic");
+
 
         // get the values from fields
         editUserName = (EditText) findViewById(R.id.edit_username);
