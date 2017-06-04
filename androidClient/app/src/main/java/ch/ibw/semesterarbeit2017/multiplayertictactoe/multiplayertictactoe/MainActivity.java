@@ -14,6 +14,16 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.net.URISyntaxException;
+
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String PROG = "____MAIN";
@@ -32,6 +42,18 @@ public class MainActivity extends AppCompatActivity {
     private GameButton gameButton9;
 
     private String amZug = Const.AMZUGICH;
+
+
+    private Socket mSocket;
+    {
+        try {
+            Log.i(PROG, "socking...");
+            mSocket = IO.socket("http://192.168.1.39:3100");
+        } catch (URISyntaxException e) {}
+    }
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,6 +160,22 @@ public class MainActivity extends AppCompatActivity {
                     // TODO Eingabefeld und Button disalbe
                     buttonOk.setVisibility(View.INVISIBLE);
                     editUserName.setVisibility(View.INVISIBLE);
+
+                    mSocket.connect();
+                    Log.i(PROG, mSocket.toString());
+
+                    // username senden
+                    JSONObject obj = new JSONObject();
+                    try {
+                        obj.put("username", userName);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    mSocket.emit("add_user", obj);
+
+                    Log.i(PROG, "username " +userName +" gesendet");
+
+
 
                     // Test only
                     GridLayout gameGridLayout = (GridLayout) findViewById(R.id.Game_GridLayout);
