@@ -195,6 +195,45 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+        // socket listening
+        mSocket.on("start_game", onStartGame);
+
     }
+
+
+
+
+
+
+
+    //With this we listen on the new message event to receive messages from other users.
+    private Emitter.Listener onStartGame = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.i(PROG, "****************** game started");
+//                    JSONObject data = (JSONObject) args[0];
+//                    Log.i(PROG, "******************" +data.toString());
+//                    String username;
+//                    String message;
+//                    try {
+//                        username = data.getString("username");
+//                        message = data.getString("message");
+//                    } catch (JSONException e) {
+//                        return;
+//                    }
+
+                    // add the message to view
+                    //addMessage(username, message);
+                    //Log.i(PROG, "******************" +message);
+                }
+            });
+        }
+    };
+
 
 }
