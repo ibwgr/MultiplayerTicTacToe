@@ -198,11 +198,18 @@ public class MainActivity extends AppCompatActivity {
 
 
         // socket listening
+        Log.i(PROG, "listening for socket messages from server");
+
         mSocket.on("start_game", onStartGame);
 
-    }
+        //bei start_game kommen keine weiteren daten
 
+        // aber hier:
+        //["other_turn",{"player":"x","username":"Emma"}]
+        mSocket.on("your_turn", onYourTurn);
+        mSocket.on("other_turn", onOtherTurn);//todo eigene meth.
 
+    } // end on-create lifecycle
 
 
 
@@ -216,24 +223,75 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     Log.i(PROG, "****************** game started");
-//                    JSONObject data = (JSONObject) args[0];
-//                    Log.i(PROG, "******************" +data.toString());
-//                    String username;
-//                    String message;
-//                    try {
-//                        username = data.getString("username");
-//                        message = data.getString("message");
-//                    } catch (JSONException e) {
-//                        return;
-//                    }
-
-                    // add the message to view
-                    //addMessage(username, message);
-                    //Log.i(PROG, "******************" +message);
+                    displayZeile.setText("Game started");
                 }
             });
         }
     };
 
+
+
+
+    //With this we listen on the new message event to receive messages from other users.
+    //["other_turn",{"player":"x","username":"Emma"}]
+    private Emitter.Listener onYourTurn = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.i(PROG, "****************** your turn");
+
+                    JSONObject data = (JSONObject) args[0];
+                    Log.i(PROG, "******************" +data.toString());
+                    String username;
+                    String player;
+                    try {
+                        username = data.getString("username");
+                        player = data.getString("player");
+                    } catch (JSONException e) {
+                        return;
+                    }
+                    Log.i(PROG, "****************** username: "+username);
+                    Log.i(PROG, "****************** player: "+player);
+
+                    displayZeile.setText(username +", your turn (" +player +")");
+                }
+            });
+        }
+    };
+
+
+
+
+
+    //With this we listen on the new message event to receive messages from other users.
+    //["other_turn",{"player":"x","username":"Emma"}]
+    private Emitter.Listener onOtherTurn = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.i(PROG, "****************** other turn");
+
+                    JSONObject data = (JSONObject) args[0];
+                    Log.i(PROG, "******************" +data.toString());
+                    String username;
+                    String player;
+                    try {
+                        username = data.getString("username");
+                        player = data.getString("player");
+                    } catch (JSONException e) {
+                        return;
+                    }
+                    Log.i(PROG, "****************** username: "+username);
+                    Log.i(PROG, "****************** player: "+player);
+
+                    displayZeile.setText("Others turn ("+username +" as " +player +")");
+                }
+            });
+        }
+    };
 
 }
