@@ -214,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
                     mSocket.emit("add_user", obj);
 
                     Log.i(PROG, "username " +userName +" gesendet");
+                    toolbar.setTitle("Tic-Tac-Toe, User:"+userName);
 
 
 

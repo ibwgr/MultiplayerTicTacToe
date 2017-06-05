@@ -5,6 +5,7 @@ package ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe;
  */
 
 public class Const {
+    // TODO wird nicht benoetigt
     public static final String AMZUGICH = "Ich";
     public static final String AMZUGGEGNER = "Gegner";
 }
