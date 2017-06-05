@@ -59,6 +59,14 @@ io.on('connection', function (socket) {
         connectUsers();
     })
 
+    // disconnect: remove user from queue
+    // -> send info to other player, that game is aborted and other player wins!
+    socket.on('disconnect', function() {
+      console.log('Got disconnect!');
+      let i = userQueue.indexOf(socket);
+      userQueue.splice(i, 1);
+    });
+
     // player moves
     socket.on('player_action', (data)=>{
         console.log(`player '${data.player}' set field '${data.field}'`)

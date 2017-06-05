@@ -33,7 +33,8 @@ h1 {
 }
 
 #infoContainer {
-    font-size: 1.2em;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1em;
     padding: 10px;
     margin: 20px;
     background: dimgrey;
