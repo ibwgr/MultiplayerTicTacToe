@@ -70,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+        // TODO  Besser http://www.vogella.com/tutorials/AndroidActionBar/article.html
+
+
         // https://guides.codepath.com/android/Using-the-App-Toolbar#using-toolbar-as-actionbar
         ///home/rk/Android/Sdk/platforms/android-25/data/res/drawable-mdpi
         // Find the toolbar view inside the activity layout
