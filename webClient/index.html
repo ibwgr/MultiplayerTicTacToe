@@ -12,10 +12,15 @@
     </header>
     <main>
         <div id="name">
-            <input id="name_input" autofocus placeholder="Your name..."/>
+            <input id="nameInput" autofocus placeholder="Your name..."/>
         </div>
-        <div id="info" class="hidden">
-            Please wait for other player...
+        <div id="infoContainer" class="hidden">
+            <div id="playerInfo">
+                <div id="player1Icon"></div><div id="player1"></div>
+                <div id="player2Icon"></div><div id="player2"></div>
+            </div>
+            <div id="info">
+            </div>
         </div>
         <div id="newGame" class="hidden"><a href="#">start new game</a></div>
         <div id="board" class="hidden">

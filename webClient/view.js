@@ -10,9 +10,12 @@ export default class{
     constructor($doc){
         this.$doc = $doc
 
-        this.$nameInput = this.$doc.querySelector('#name_input')
+        this.$nameInput = this.$doc.querySelector('#nameInput')
         this.$board = this.$doc.querySelector('#board')
         this.$info = this.$doc.querySelector("#info")
+        this.$playerInfo = this.$doc.querySelector("#playerInfo")
+        this.$player1 = this.$doc.querySelector("#player1")
+        this.$player2 = this.$doc.querySelector("#player2")
         this.$statsDiv = this.$doc.querySelector("#stats")
         this.$newGame = this.$doc.querySelector("#newGame")
         this.$fields = $doc.querySelectorAll("div.field")
@@ -58,8 +61,28 @@ export default class{
         this.$doc.querySelector('#'+field).classList.add(playerToken === 'x' ? 'setX' : 'setO')
     }
 
+    removeHiddenFromInfo(){
+        if (this.$doc.querySelector('#infoContainer').classList.contains('hidden')){
+            this.$doc.querySelector('#infoContainer').classList.remove('hidden')
+        }
+    }
+
     setInfoText(text){
+        this.removeHiddenFromInfo()
         this.$info.innerText = text
+    }
+
+    setPlayer1(text){
+        this.$player1.innerText = text
+    }
+
+    setPlayer2(text){
+        this.$player2.innerText = text
+    }
+
+    setPlayerInfoText(text){
+        this.removeHiddenFromInfo()
+        this.$playerInfo.innerText = text
     }
 
     showNameInput(show){
@@ -67,14 +90,6 @@ export default class{
             this.$nameInput.classList.remove('hidden')
         } else {
             this.$nameInput.classList.add('hidden')
-        }
-    }
-
-    showInfo(show){
-        if (show){
-            this.$info.classList.remove('hidden')
-        } else {
-            this.$info.classList.add('hidden')
         }
     }
 

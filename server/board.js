@@ -26,11 +26,11 @@ export default class {
         let checkString = this.fields[fields[0]] + this.fields[fields[1]] + this.fields[fields[2]]
         if (checkString.match("xxx")) {
             this.fieldsWon = fields
-            this.winner = 'x'
+            this.winner = this.player2
         }
         if (checkString.match("ooo")) {
             this.fieldsWon = fields
-            this.winner = 'o'
+            this.winner = this.player1
         }
         return this.winner
     }

@@ -44,7 +44,7 @@ io.on('connection', function (socket) {
             addToBoardList(socket.board)
 
             socket.emit('start_game', {'player1':socket.board.socketPlayer1.username, 'player2':socket.board.socketPlayer2.username})
-            socket.to(socket.board.socketPlayer1.id).emit('start_game')
+            socket.to(socket.board.socketPlayer1.id).emit('start_game', {'player1':socket.board.socketPlayer1.username, 'player2':socket.board.socketPlayer2.username})
             socket.emit('your_turn', {'player':'x', 'username':socket.username})
             socket.to(socket.board.socketPlayer1.id).emit('other_turn', {'player': 'x', 'username': socket.board.socketPlayer2.username})
             console.log(`player1 '${socket.board.socketPlayer1.username}' plays versus player2 '${socket.board.socketPlayer2.username}'`)            
@@ -62,30 +62,32 @@ io.on('connection', function (socket) {
     // player moves
     socket.on('player_action', (data)=>{
         console.log(`player '${data.player}' set field '${data.field}'`)
-        socket.board.setField(data)
-        let gameResult = socket.board.checkBoard()
-        if (socket.id === socket.board.socketPlayer2.id) {
-            if (gameResult) {
-                socket.to(socket.board.socketPlayer1.id).emit('new_move', {'player': 'x', 'field': data.field})
-                socket.to(socket.board.socketPlayer1.id).emit('game_finished', {'winner': gameResult, 'fields': socket.board.fieldsWon})
-                socket.emit('game_finished', {'winner': gameResult, 'fields': socket.board.fieldsWon})
+        if (socket.board) {
+            socket.board.setField(data)
+            let gameResult = socket.board.checkBoard()
+            if (socket.id === socket.board.socketPlayer2.id) {
+                if (gameResult) {
+                    socket.to(socket.board.socketPlayer1.id).emit('new_move', {'player': 'x', 'field': data.field})
+                    socket.to(socket.board.socketPlayer1.id).emit('game_finished', {'winner': gameResult, 'fields': socket.board.fieldsWon})
+                    socket.emit('game_finished', {'winner': gameResult, 'fields': socket.board.fieldsWon})
+                } else {
+                    socket.to(socket.board.socketPlayer1.id).emit('new_move', {'player': 'x', 'field': data.field})
+                    socket.to(socket.board.socketPlayer1.id).emit('your_turn', {'player': 'o', 'username': socket.board.socketPlayer1.username})
+                    socket.emit('other_turn', {'player': 'o', 'username': socket.board.socketPlayer1.username})
+                }
             } else {
-                socket.to(socket.board.socketPlayer1.id).emit('new_move', {'player': 'x', 'field': data.field})
-                socket.to(socket.board.socketPlayer1.id).emit('your_turn', {'player': 'o', 'username': socket.board.socketPlayer1.username})
-                socket.emit('other_turn', {'player': 'o', 'username': socket.board.socketPlayer1.username})
+                if (gameResult) {
+                    socket.to(socket.board.socketPlayer2.id).emit('new_move', {'player': 'o', 'field': data.field})
+                    socket.to(socket.board.socketPlayer2.id).emit('game_finished', {'winner': gameResult})
+                    socket.emit('game_finished', {'winner': gameResult})
+                } else {
+                    socket.to(socket.board.socketPlayer2.id).emit('new_move', {'player': 'o', 'field': data.field})
+                    socket.to(socket.board.socketPlayer2.id).emit('your_turn', {'player': 'x', 'username': socket.board.socketPlayer2.username})
+                    socket.emit('other_turn', {'player': 'x', 'username': socket.board.socketPlayer2.username})
+                }
             }
-        } else {
-            if (gameResult) {
-                socket.to(socket.board.socketPlayer2.id).emit('new_move', {'player': 'o', 'field': data.field})
-                socket.to(socket.board.socketPlayer2.id).emit('game_finished', {'winner': gameResult})
-                socket.emit('game_finished', {'winner': gameResult})
-            } else {
-                socket.to(socket.board.socketPlayer2.id).emit('new_move', {'player': 'o', 'field': data.field})
-                socket.to(socket.board.socketPlayer2.id).emit('your_turn', {'player': 'x', 'username': socket.board.socketPlayer2.username})
-                socket.emit('other_turn', {'player': 'x', 'username': socket.board.socketPlayer2.username})
-            }
+            send_stats()
         }
-        send_stats()
     })
 
     socket.on('new_game', (data)=>{
