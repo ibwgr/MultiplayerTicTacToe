@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText editUserName;
     private TextView displayZeile;
+    private Toolbar toolbar;
+    private Menu menu;
 
     private GameButton gameButton1;
     private GameButton gameButton2;
@@ -61,27 +64,40 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        this.menu = menu;
+       // menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_commit));
+       // menu.getItem(1).setTitle("Online");
         return true;
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+// Handle item selection
+        switch (item.getItemId()) {
+            case R.id.miSymbol:
+                Toast.makeText(MainActivity.this, "clicking on symbol", Toast.LENGTH_SHORT).show();
+                return true;
+//            case R.id.miCompose:
+//                Toast.makeText(MainActivity.this, "clicking on email", Toast.LENGTH_SHORT).show();
+//                return true;
+//            case R.id.miProfile:
+//                Toast.makeText(MainActivity.this, "clicking on profile", Toast.LENGTH_SHORT).show();
+//                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-        // TODO  Besser http://www.vogella.com/tutorials/AndroidActionBar/article.html
-
-
-        // https://guides.codepath.com/android/Using-the-App-Toolbar#using-toolbar-as-actionbar
-        ///home/rk/Android/Sdk/platforms/android-25/data/res/drawable-mdpi
-        // Find the toolbar view inside the activity layout
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        // Sets the Toolbar to act as the ActionBar for this Activity window.
-        // Make sure the toolbar exists in the activity and is not null
-        setSupportActionBar(toolbar);
-        toolbar.setTitle("Multi");
-        toolbar.setSubtitle("Tic");
+        initToolBar();
 
 
         // get the values from fields
@@ -238,6 +254,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    // todo bei onstartgame sollte bereis zurueckkommen ob x oder o
 
     //With this we listen on the new message event to receive messages from other users.
     private Emitter.Listener onStartGame = new Emitter.Listener() {
@@ -280,6 +297,15 @@ public class MainActivity extends AppCompatActivity {
                     Log.i(PROG, "****************** player: "+player);
 
                     displayZeile.setText(username +", your turn (" +player +")");
+
+                    if (player.equals("x")) {
+                        menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.game_fig_x));
+                        // menu.getItem(1).setTitle("Online");
+                    } else {
+                        menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.game_fig_o));
+                        // menu.getItem(1).setTitle("Online");
+                    }
+
                 }
             });
         }
@@ -313,9 +339,40 @@ public class MainActivity extends AppCompatActivity {
                     Log.i(PROG, "****************** player: "+player);
 
                     displayZeile.setText("Others turn ("+username +" as " +player +")");
+
+                    if (player.equals("x")) {
+                        menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.game_fig_x));
+                        // menu.getItem(1).setTitle("Online");
+                    } else {
+                        menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.game_fig_o));
+                        // menu.getItem(1).setTitle("Online");
+                    }
                 }
             });
         }
     };
+
+
+
+
+
+    public void initToolBar() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //toolbar.setTitle(R.string.toolbarTitle);
+        toolbar.setTitle("Tic-Tac-Toe");   // TODO strings in ressource
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.abc_ratingbar_small_material);
+        toolbar.setBackgroundColor(Color.LTGRAY);  // TODO hier blau oder rot, je nach X oder O
+        toolbar.setNavigationOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(MainActivity.this, "clicking the Back!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
+    }
+
+
 
 }

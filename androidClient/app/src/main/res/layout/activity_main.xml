@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.MainActivity"
-    >
+    android:weightSum="1">
 
 
     <android.support.v7.widget.Toolbar
@@ -38,8 +38,8 @@
         android:layout_height="wrap_content"
         android:inputType="text"
         android:text="Emma"
-        android:layout_below="@+id/label_ueberschrift"
-        android:layout_marginTop="30dp"
+        android:layout_toLeftOf="@+id/button_ok"
+        android:layout_marginTop="0dp"
         android:layout_marginLeft="10dp"
         android:textSize="16sp"
         android:textStyle="normal"
@@ -48,12 +48,12 @@
     <Button
         android:id="@+id/button_ok"
         android:text="Ok"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="30dp"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/label_studienrichtung"
+        android:layout_width="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@id/edit_username"
         />
+
 
     <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
