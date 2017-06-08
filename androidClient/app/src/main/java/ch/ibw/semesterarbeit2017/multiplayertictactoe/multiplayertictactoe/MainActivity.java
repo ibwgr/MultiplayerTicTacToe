@@ -54,39 +54,40 @@ public class MainActivity extends AppCompatActivity {
     {
         try {
             Log.i(PROG, "socking...");
-            mSocket = IO.socket("http://192.168.1.39:3100");
+            mSocket = IO.socket("https://warm-shelf-33316.herokuapp.com/");          // Test Client http://lastminute.li/ttt/
+          //mSocket = IO.socket("http://192.168.1.39:3100");
         } catch (URISyntaxException e) {}
     }
 
 
-    // Menu icons are inflated just as they were with actionbar
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-
-        this.menu = menu;
-       // menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_commit));
-       // menu.getItem(1).setTitle("Online");
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-// Handle item selection
-        switch (item.getItemId()) {
-            case R.id.miSymbol:
-                Toast.makeText(MainActivity.this, "clicking on symbol", Toast.LENGTH_SHORT).show();
-                return true;
-//            case R.id.miCompose:
-//                Toast.makeText(MainActivity.this, "clicking on email", Toast.LENGTH_SHORT).show();
+//    // Menu icons are inflated just as they were with actionbar
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//
+//        this.menu = menu;
+//       // menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_commit));
+//       // menu.getItem(1).setTitle("Online");
+//        return true;
+//    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//    // Handle item selection
+//        switch (item.getItemId()) {
+//            case R.id.miSymbol:
+//                Toast.makeText(MainActivity.this, "clicking on symbol", Toast.LENGTH_SHORT).show();
 //                return true;
-//            case R.id.miProfile:
-//                Toast.makeText(MainActivity.this, "clicking on profile", Toast.LENGTH_SHORT).show();
-//                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+//                //            case R.id.miCompose:
+//                //                Toast.makeText(MainActivity.this, "clicking on email", Toast.LENGTH_SHORT).show();
+//                //                return true;
+//                //            case R.id.miProfile:
+//                //                Toast.makeText(MainActivity.this, "clicking on profile", Toast.LENGTH_SHORT).show();
+//                //                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 
 
 
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initToolBar();
+        //initToolBar();
 
 
         // get the values from fields
@@ -195,9 +196,9 @@ public class MainActivity extends AppCompatActivity {
                 String userName = (editUserName.getText().toString());
                 Log.w(PROG, "Username (aus Feld): " + userName);
                 if (userName.length()>0) {
-                    // TODO Username anzeigen
+                    //
                     displayZeile.setText("Hallo " +userName );
-                    // TODO Eingabefeld und Button disalbe
+                    // Eingabefeld und Button disalbe
                     buttonOk.setVisibility(View.INVISIBLE);
                     editUserName.setVisibility(View.INVISIBLE);
 
@@ -213,16 +214,16 @@ public class MainActivity extends AppCompatActivity {
                     }
                     mSocket.emit("add_user", obj);
 
-                    Log.i(PROG, "username " +userName +" gesendet");
-                    toolbar.setTitle("Tic-Tac-Toe, User:"+userName);
+                    displayZeile.setText("Hello " +userName +"\n" + "Waiting for other user to play with...");
 
-
+//                    Log.i(PROG, "username " +userName +" gesendet");
+//                    toolbar.setTitle("Tic-Tac-Toe, User:"+userName);
 
                     // Test only
-                    GridLayout gameGridLayout = (GridLayout) findViewById(R.id.Game_GridLayout);
-                    gameGridLayout.setBackgroundColor(Color.LTGRAY);
-                    gameGridLayout.setClickable(false);
-                    gameGridLayout.setEnabled(false);
+                    //GridLayout gameGridLayout = (GridLayout) findViewById(R.id.Game_GridLayout);
+                    //gameGridLayout.setBackgroundColor(Color.LTGRAY);
+                    //gameGridLayout.setClickable(false);
+                    //gameGridLayout.setEnabled(false);
                     //gameGridLayout.setVisibility(View.GONE);
                     /*
                     for (int i = 0; i < layout.getChildCount(); i++) {
@@ -299,13 +300,13 @@ public class MainActivity extends AppCompatActivity {
 
                     displayZeile.setText(username +", your turn (" +player +")");
 
-                    if (player.equals("x")) {
-                        menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.game_fig_x));
-                        // menu.getItem(1).setTitle("Online");
-                    } else {
-                        menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.game_fig_o));
-                        // menu.getItem(1).setTitle("Online");
-                    }
+//                    if (player.equals("x")) {
+//                        menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.game_fig_x));
+//                        // menu.getItem(1).setTitle("Online");
+//                    } else {
+//                        menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.game_fig_o));
+//                        // menu.getItem(1).setTitle("Online");
+//                    }
 
                 }
             });
@@ -342,10 +343,10 @@ public class MainActivity extends AppCompatActivity {
                     displayZeile.setText("Others turn ("+username +" as " +player +")");
 
                     if (player.equals("x")) {
-                        menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.game_fig_x));
+                        menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.gf_x));
                         // menu.getItem(1).setTitle("Online");
                     } else {
-                        menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.game_fig_o));
+                        menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.gf_o));
                         // menu.getItem(1).setTitle("Online");
                     }
                 }
@@ -357,22 +358,22 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public void initToolBar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //toolbar.setTitle(R.string.toolbarTitle);
-        toolbar.setTitle("Tic-Tac-Toe");   // TODO strings in ressource
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.drawable.abc_ratingbar_small_material);
-        toolbar.setBackgroundColor(Color.LTGRAY);  // TODO hier blau oder rot, je nach X oder O
-        toolbar.setNavigationOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(MainActivity.this, "clicking the Back!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-        );
-    }
+//    public void initToolBar() {
+//        toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        //toolbar.setTitle(R.string.toolbarTitle);
+//        toolbar.setTitle("Tic-Tac-Toe");   // TODO strings in ressource
+//        setSupportActionBar(toolbar);
+//        toolbar.setNavigationIcon(R.drawable.abc_ratingbar_small_material);
+//        toolbar.setBackgroundColor(Color.LTGRAY);  // TODO hier blau oder rot, je nach X oder O
+//        toolbar.setNavigationOnClickListener(
+//                new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        Toast.makeText(MainActivity.this, "clicking the Back!", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//        );
+//    }
 
 
 
