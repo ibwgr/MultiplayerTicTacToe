@@ -1,19 +1,14 @@
 package ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe;
 
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridLayout;
-import android.widget.GridView;
 
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,13 +22,16 @@ import com.github.nkzawa.socketio.client.Socket;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static java.util.Arrays.asList;
+
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String PROG = "____MAIN";
 
     private EditText editUserName;
-    private TextView displayZeile;
+    private TextView displayZeileStatus;
+    private TextView displayZeilePlayers;
     private Toolbar toolbar;
     private Menu menu;
 
@@ -47,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private GameButton gameButton8;
     private GameButton gameButton9;
 
-    private String amZug = Const.AMZUGICH;
-
+    private String amZug = Game.AMZUGICH;
+    private Game game = new Game();
 
     private Socket mSocket;
     {
@@ -100,11 +98,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //initToolBar();
 
-
-        // get the values from fields
-        editUserName = (EditText) findViewById(R.id.edit_username);
-        displayZeile = (TextView) findViewById(R.id.label_displayzeile);
-
+        // als erstes die GameButton Instanzen ermitteln
         //
         gameButton1 = (GameButton) findViewById(R.id.gameButton1);
         gameButton1.setNr(1);
@@ -188,6 +182,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        // init game
+        GameButton.setAllGameButtons(asList(gameButton1,gameButton2,gameButton3,gameButton4,gameButton5
+                ,gameButton6,gameButton7,gameButton8,gameButton9));
+        GameButton.disableAllGameButtons();
+
+
+        // get the values from fields
+        editUserName = (EditText) findViewById(R.id.edit_username);
+        displayZeileStatus = (TextView) findViewById(R.id.label_displayzeile);
+        displayZeilePlayers = (TextView) findViewById(R.id.label_displayplayers);
+
         // get the OK button
         final Button buttonOk = (Button) findViewById(R.id.button_ok);
         buttonOk.setOnClickListener(new View.OnClickListener(){
@@ -197,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.w(PROG, "Username (aus Feld): " + userName);
                 if (userName.length()>0) {
                     //
-                    displayZeile.setText("Hallo " +userName );
+                    displayZeileStatus.setText("Hallo " +userName );
                     // Eingabefeld und Button disalbe
                     buttonOk.setVisibility(View.INVISIBLE);
                     editUserName.setVisibility(View.INVISIBLE);
@@ -214,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     mSocket.emit("add_user", obj);
 
-                    displayZeile.setText("Hello " +userName +"\n" + "Waiting for other user to play with...");
+                    displayZeileStatus.setText("Hello " +userName +"\n" + "Waiting for other user to play with...");
 
 //                    Log.i(PROG, "username " +userName +" gesendet");
 //                    toolbar.setTitle("Tic-Tac-Toe, User:"+userName);
@@ -239,12 +244,22 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        // get the OK button
+        final Button buttonTempEnable = (Button) findViewById(R.id.button_temp_enable_all);
+        buttonTempEnable.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                GameButton.enableAllGameButtons();
+            }
+        });
+
+
+        //////////////////////////////////////////////////////////////////////////////////////
         // socket listening
         Log.i(PROG, "listening for socket messages from server");
 
         mSocket.on("start_game", onStartGame);
 
-        //bei start_game kommen keine weiteren daten
 
         // aber hier:
         //["other_turn",{"player":"x","username":"Emma"}]
@@ -256,8 +271,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    // todo bei onstartgame sollte bereis zurueckkommen ob x oder o
-
     //With this we listen on the new message event to receive messages from other users.
     private Emitter.Listener onStartGame = new Emitter.Listener() {
         @Override
@@ -266,7 +279,23 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     Log.i(PROG, "****************** game started");
-                    displayZeile.setText("Game started");
+                    displayZeileStatus.setText("Game started");
+
+                    JSONObject data = (JSONObject) args[0];
+                    Log.i(PROG, "******************" +data.toString());
+                    String player1;
+                    String player2;
+                    try {
+                        player1 = data.getString("player1");
+                        player2 = data.getString("player2");
+                    } catch (JSONException e) {
+                        return;
+                    }
+                    Log.i(PROG, "****************** player1: "+player1);
+                    Log.i(PROG, "****************** player2: "+player2);
+
+                    displayZeilePlayers.setText("Player O: " +player1 +"  |  Player X: " +player2);
+
                 }
             });
         }
@@ -298,7 +327,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.i(PROG, "****************** username: "+username);
                     Log.i(PROG, "****************** player: "+player);
 
-                    displayZeile.setText(username +", your turn (" +player +")");
+                    displayZeileStatus.setText(username +", your turn (" +player +")");
 
 //                    if (player.equals("x")) {
 //                        menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.game_fig_x));
@@ -340,13 +369,15 @@ public class MainActivity extends AppCompatActivity {
                     Log.i(PROG, "****************** username: "+username);
                     Log.i(PROG, "****************** player: "+player);
 
-                    displayZeile.setText("Others turn ("+username +" as " +player +")");
+                    displayZeileStatus.setText("Others turn ("+username +" as " +player +")");
 
                     if (player.equals("x")) {
-                        menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.gf_x));
+                        //Symbol anzeigen (das eigene und das des anderen spielers)
+                        //menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.gf_x));
                         // menu.getItem(1).setTitle("Online");
                     } else {
-                        menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.gf_o));
+                        //Symbol anzeigen (das eigene und das des anderen spielers)
+                        //menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.gf_o));
                         // menu.getItem(1).setTitle("Online");
                     }
                 }

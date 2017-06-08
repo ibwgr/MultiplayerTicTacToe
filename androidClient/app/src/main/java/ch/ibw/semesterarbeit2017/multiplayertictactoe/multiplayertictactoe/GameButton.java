@@ -7,6 +7,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by rk on 03.06.17.
  */
@@ -69,21 +73,51 @@ public class GameButton extends ImageButton {
 
     @Override
     public String toString() {
-        return "GameButton" + this.nr;
+        return "GameButton" + this.nr +" clicked:"+isClicked;
     }
 
     ///////////////////////////////
     public void clicked(String amZug) {
         Log.w(PROG, "Button clicked: " + this.toString());
         this.setClicked();
-        if (amZug == Const.AMZUGICH) {
-            this.setBackgroundResource(R.drawable.game_fig_x);
+        if (amZug == Game.AMZUGICH) {
+            this.setBackgroundResource(R.drawable.gf_x);
         } else {
-            this.setBackgroundResource(R.drawable.game_fig_o);
+            this.setBackgroundResource(R.drawable.gf_o);
         }
         //this.setTag(1);
         this.setClickable(false);
         Log.w(PROG, "nun gesperrt");
     }
 
+
+    //////////////////////////////////////////////////
+    private static List<GameButton> allGameButtons;
+
+    public static List<GameButton> getAllGameButtons() {
+        return allGameButtons;
+    }
+
+    public static void setAllGameButtons(List<GameButton> allGameButtons) {
+        GameButton.allGameButtons = allGameButtons;
+        System.out.println("........ liste: " +allGameButtons.size());
+    }
+
+    public static void enableAllGameButtons(){
+        for (GameButton gamebutton : allGameButtons){
+            // only enable if button is unclicked
+            System.out.println("..... gamebutton " +gamebutton);
+            if (!gamebutton.isClicked()) {
+                gamebutton.setEnabled(true);
+            }
+        }
+    }
+
+    public static void disableAllGameButtons() {
+        for (GameButton gamebutton : allGameButtons){
+            if (gamebutton.isEnabled()) {
+                gamebutton.setEnabled(false);
+            }
+        }
+    }
 }

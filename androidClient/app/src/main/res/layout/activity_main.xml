@@ -35,6 +35,9 @@
         android:lines="2"
         android:textStyle="normal" />
 
+
+
+
     <EditText
         android:id="@+id/edit_username"
         android:layout_width="wrap_content"
@@ -55,6 +58,17 @@
         android:layout_toRightOf="@id/edit_username"
         android:text="Ok" />
 
+    <TextView
+        android:id="@+id/label_displayplayers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/label_displayzeile"
+        android:textSize="20sp"
+        android:lines="2"
+        android:textStyle="normal"
+        android:layout_weight="0.08" />
 
     <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -70,14 +84,14 @@
             android:id="@+id/gameButton1"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@drawable/my_button_bg"
+            android:background="@drawable/gf_init"
             />
 
         <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
             android:id="@+id/gameButton2"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@drawable/gf_x"
+            android:background="@drawable/gf_init"
 
             />
 
@@ -85,50 +99,56 @@
             android:id="@+id/gameButton3"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@drawable/gf_o"
+            android:background="@drawable/gf_init"
             />
 
         <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
             android:id="@+id/gameButton4"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@drawable/gf_x"
+            android:background="@drawable/gf_init"
             />
 
         <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
             android:id="@+id/gameButton5"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@drawable/game_fig_o"
+            android:background="@drawable/gf_init"
             />
 
         <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
             android:id="@+id/gameButton6"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@drawable/game_fig_o"
+            android:background="@drawable/gf_init"
             />
 
         <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
             android:id="@+id/gameButton7"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@drawable/game_fig_o"
+            android:background="@drawable/gf_init"
             />
 
         <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
             android:id="@+id/gameButton8"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@drawable/game_fig_o"
+            android:background="@drawable/gf_init"
             />
 
         <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
             android:id="@+id/gameButton9"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@drawable/game_fig_o"
+            android:background="@drawable/gf_init"
             />
     </GridLayout>
 
+    <Button
+        android:id="@+id/button_temp_enable_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="55px"
+        android:text="Enable all" />
 </LinearLayout>
