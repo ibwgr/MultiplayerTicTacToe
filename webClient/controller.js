@@ -24,6 +24,18 @@ export default class{
             console.log(socket.id)
         })
 
+        socket.on('disconnect', function() {
+            console.log('disconnected')
+            this.running = false
+            this.gameEnabled = false
+            //
+            console.log(this)
+            console.log(this.view)
+            this.view.showNameInput(true)
+            this.view.showBoard(false)
+            this.view.showNewGame(false)
+        })
+
         // messages from server...
         socket.on('start_game', (data)=>{
             console.log('game started...' + data.player1 + '/' + data.player2)
