@@ -81,9 +81,9 @@ public class GameButton extends ImageButton {
         Log.w(PROG, "Button clicked: " + this.toString());
         this.setClicked();
         if (amZug == Game.AMZUGICH) {
-            this.setBackgroundResource(R.drawable.gf_x);
-        } else {
             this.setBackgroundResource(R.drawable.gf_o);
+        } else {
+            this.setBackgroundResource(R.drawable.gf_x);
         }
         //this.setTag(1);
         this.setClickable(false);

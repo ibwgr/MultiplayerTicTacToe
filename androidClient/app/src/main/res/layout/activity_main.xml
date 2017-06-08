@@ -9,7 +9,7 @@
     android:orientation="vertical"
     tools:context="ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.MainActivity"
     android:weightSum="1"
-    android:background="@drawable/bg_scrapbook"
+    android:background="@drawable/bg_neu2"
     >
 
 <!--
@@ -73,6 +73,7 @@
     <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/Game_GridLayout"
+        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:columnCount="3"
