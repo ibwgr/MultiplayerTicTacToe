@@ -48,6 +48,17 @@ public class MainActivity extends AppCompatActivity {
     private String amZug = Game.AMZUGICH;
     private Game game = new Game();
 
+
+
+    /*
+    --------------------------------------------------------------------
+    TODO background je nach groesse mit hdpi usw.
+    TODO fixtexte translation ressource
+    TODO layout hoch/quer/groessen
+    TODO layout grid vielleicht durch table ersetzen, wegen grid-lines
+    --------------------------------------------------------------------
+    */
+
     private Socket mSocket;
     {
         try {
@@ -256,13 +267,9 @@ public class MainActivity extends AppCompatActivity {
 
         //////////////////////////////////////////////////////////////////////////////////////
         // socket listening
+        // here we listen on message events from the server
         Log.i(PROG, "listening for socket messages from server");
-
         mSocket.on("start_game", onStartGame);
-
-
-        // aber hier:
-        //["other_turn",{"player":"x","username":"Emma"}]
         mSocket.on("your_turn", onYourTurn);
         mSocket.on("other_turn", onOtherTurn);//todo eigene meth.
 
@@ -271,7 +278,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    //With this we listen on the new message event to receive messages from other users.
+    // ich zuerst: ich bin player1, o
+    // anderer zuerst: ich bin player2, x
+    // muessen wir aber nicht speichern, der server weiss es
     private Emitter.Listener onStartGame = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -295,7 +304,6 @@ public class MainActivity extends AppCompatActivity {
                     Log.i(PROG, "****************** player2: "+player2);
 
                     displayZeilePlayers.setText("Player O: " +player1 +"  |  Player X: " +player2);
-
                 }
             });
         }
@@ -304,7 +312,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    //With this we listen on the new message event to receive messages from other users.
+    //
     //["other_turn",{"player":"x","username":"Emma"}]
     private Emitter.Listener onYourTurn = new Emitter.Listener() {
         @Override
