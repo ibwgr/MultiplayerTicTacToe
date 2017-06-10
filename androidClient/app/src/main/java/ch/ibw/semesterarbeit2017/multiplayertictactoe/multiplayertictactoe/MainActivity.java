@@ -188,9 +188,10 @@ public class MainActivity extends AppCompatActivity {
         // here we listen on message events from the server
         Log.i(PROG, "listening for socket messages from server");
         mSocket.on("start_game", onStartGame);
+        mSocket.on("user_added", onUserAdded);
         mSocket.on("your_turn", onYourTurn);
         mSocket.on("other_turn", onOtherTurn);
-        mSocket.on("user_added", onUserAdded);
+        mSocket.on("new_move", onNewMove);  // Spielzug des Gegners
 
     } // end on-create lifecycle
 
@@ -352,8 +353,6 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
-
-
     //
     //["other_turn",{"player":"x","username":"Emma"}]
     private Emitter.Listener onYourTurn = new Emitter.Listener() {
@@ -417,26 +416,42 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
+    private Emitter.Listener onNewMove = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.i(PROG, "****************** new move (gegner)");
+                    //displayZeileStatus.setText("Game started");
 
+                    JSONObject data = (JSONObject) args[0];
+                    Log.i(PROG, "******************" +data.toString());
+                    String player;
+                    String field;
+                    try {
+                        player = data.getString("player");
+                        field = data.getString("field");
+                    } catch (JSONException e) {
+                        return;
+                    }
+                    Log.i(PROG, "****************** player: "+player);
+                    Log.i(PROG, "****************** field: "+field);
+                    if (player.equals(Const.PLAYER_TOKEN_O)) {
+                        GameButton g = GameButton.findGameButtonByFieldId(field);
+                        if (g != null) {
+                            g.setGraphicO();
+                        }
+                    } else {
+                        GameButton g = GameButton.findGameButtonByFieldId(field);
+                        if (g != null) {
+                            g.setGraphicX();
+                        }
+                    }
 
-
-//    public void initToolBar() {
-//        toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        //toolbar.setTitle(R.string.toolbarTitle);
-//        toolbar.setTitle("Tic-Tac-Toe");
-//        setSupportActionBar(toolbar);
-//        toolbar.setNavigationIcon(R.drawable.abc_ratingbar_small_material);
-//        toolbar.setBackgroundColor(Color.LTGRAY);  
-//        toolbar.setNavigationOnClickListener(
-//                new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        Toast.makeText(MainActivity.this, "clicking the Back!", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//        );
-//    }
-
-
+                }
+            });
+        }
+    };
 
 }

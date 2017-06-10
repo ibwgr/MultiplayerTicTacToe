@@ -74,6 +74,17 @@ public class GameButton extends ImageButton {
     }
 
     ///////////////////////////////
+    public void setGraphicO(){
+        this.setBackgroundResource(R.drawable.gf_o);
+    }
+    public void setGraphicX(){
+        this.setBackgroundResource(R.drawable.gf_o);
+    }
+    public void setGraphicInit(){
+        this.setBackgroundResource(R.drawable.gf_init);
+    }
+
+    ///////////////////////////////
 
     @Override
     public String toString() {
@@ -85,9 +96,9 @@ public class GameButton extends ImageButton {
         Log.w(PROG, "Button clicked: " + this.toString());
         this.setClicked();
         if (currentPlayerToken == Const.PLAYER_TOKEN_O) {
-            this.setBackgroundResource(R.drawable.gf_o);
+            setGraphicO();
         } else {
-            this.setBackgroundResource(R.drawable.gf_x);
+            setGraphicX();
         }
         // dieser darf waehrend des spiels nie mehr geklicked werden
         this.setClickable(false);
@@ -103,7 +114,7 @@ public class GameButton extends ImageButton {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        mSocket.emit("player_action", obj);
+        mSocket.emit("player_action", obj);  // mein Spielzug
         Log.w(PROG, "spielzug beendet, feld:"+this.getNrFieldId() +", playerToken:"+currentPlayerToken);
     }
 
@@ -146,5 +157,15 @@ public class GameButton extends ImageButton {
                 gamebutton.setEnabled(false);
             }
         }
+    }
+
+    public static GameButton findGameButtonByFieldId(String fieldId) {
+        Log.w(PROG, "......findGameButtonByFieldId: " +fieldId);
+        for (GameButton gameButton : allGameButtons) {
+            if (gameButton.getNrFieldId().equals(fieldId)) {
+                return gameButton;
+            }
+        }
+        return null;
     }
 }
