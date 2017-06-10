@@ -206,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
         //
         gameButton0 = (GameButton) findViewById(R.id.gameButton0);
         gameButton0.setNr(0);
+        //gameButton0.setAlpha(0.5f);  // todo neue init methode (auch fuer nochmals-spielen)
         gameButton0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -437,18 +438,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                     Log.i(PROG, "****************** player: "+player);
                     Log.i(PROG, "****************** field: "+field);
-                    if (player.equals(Const.PLAYER_TOKEN_O)) {
-                        GameButton g = GameButton.findGameButtonByFieldId(field);
-                        if (g != null) {
-                            g.setGraphicO();
-                        }
-                    } else {
-                        GameButton g = GameButton.findGameButtonByFieldId(field);
-                        if (g != null) {
-                            g.setGraphicX();
-                        }
-                    }
 
+                    GameButton g = GameButton.findGameButtonByFieldId(field);
+                    if (g != null) {
+                        g.clicked(player);
+                    }
                 }
             });
         }

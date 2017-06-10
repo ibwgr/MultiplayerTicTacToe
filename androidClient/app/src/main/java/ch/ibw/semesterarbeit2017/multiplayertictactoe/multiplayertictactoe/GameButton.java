@@ -78,7 +78,7 @@ public class GameButton extends ImageButton {
         this.setBackgroundResource(R.drawable.gf_o);
     }
     public void setGraphicX(){
-        this.setBackgroundResource(R.drawable.gf_o);
+        this.setBackgroundResource(R.drawable.gf_x);
     }
     public void setGraphicInit(){
         this.setBackgroundResource(R.drawable.gf_init);
@@ -93,13 +93,13 @@ public class GameButton extends ImageButton {
 
     ///////////////////////////////
     public void clicked(String currentPlayerToken) {
-        Log.w(PROG, "Button clicked: " + this.toString());
-        this.setClicked();
-        if (currentPlayerToken == Const.PLAYER_TOKEN_O) {
+        Log.w(PROG, "Button clicked: " + this.toString() +" , playerToken:"+currentPlayerToken);
+        if (currentPlayerToken.equals(Const.PLAYER_TOKEN_O)) {
             setGraphicO();
         } else {
             setGraphicX();
         }
+        this.setClicked();
         // dieser darf waehrend des spiels nie mehr geklicked werden
         this.setClickable(false);
         // spielzug beendet
