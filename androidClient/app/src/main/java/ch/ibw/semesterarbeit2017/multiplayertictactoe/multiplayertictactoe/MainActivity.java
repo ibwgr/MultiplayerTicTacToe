@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
     {
         try {
             Log.i(PROG, "socking...");
-            mSocket = IO.socket("https://warm-shelf-33316.herokuapp.com/");          // Test Client http://lastminute.li/ttt/
-          //mSocket = IO.socket("http://192.168.1.39:3100");
+          //mSocket = IO.socket("https://warm-shelf-33316.herokuapp.com/");          // Test Client http://lastminute.li/ttt/
+          mSocket = IO.socket("http://192.168.1.39:3100");
         } catch (URISyntaxException e) {}
     }
 

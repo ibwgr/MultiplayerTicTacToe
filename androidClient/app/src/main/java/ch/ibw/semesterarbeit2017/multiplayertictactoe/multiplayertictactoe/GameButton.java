@@ -99,8 +99,8 @@ public class GameButton extends ImageButton {
         // username senden
         JSONObject obj = new JSONObject();
         try {
-            obj.put("player", currentPlayerToken);     // TODO player oder PlayerToken ??
-            obj.put("field", this.nr);
+            obj.put("player", currentPlayerToken);     //
+            obj.put("field", "field"+(this.nr-1));     // TODO faengt mit 0 an!  "field0" saubere methode
         } catch (JSONException e) {
             e.printStackTrace();
         }
