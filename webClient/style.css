@@ -1,19 +1,11 @@
-@import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
+@import url('https://fonts.googleapis.com/css?family=Expletus+Sans:700|Gloria+Hallelujah|Press+Start+2P|Play:400,700|Quicksand|Raleway+Dots|Yantramanav');
 
 body {
     margin: 0;
     display: flex;
     flex-flow: column;
     align-items: center;
-}
-
-main {
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    justify-content: center;
-    width: 80%;
-    height: 80%;
+    width: 100%;
 }
 
 h1 {
@@ -23,23 +15,28 @@ h1 {
 }
 
 #nameInput {
-    font-family: 'Press Start 2P', cursive;
+    font-family: 'Yantramanav', sans-serif;
     font-size: 1.4em;
     color: dimgray;
     font-weight: bold;
-    padding: 20px;
+    padding: 10px;
     border: 10px solid dodgerblue;
     box-shadow: 5px 5px 2px lightgrey;
+    width: 97%;
+    box-sizing: border-box;
 }
 
 #infoContainer {
-    font-family: 'Press Start 2P', cursive;
+    font-family: 'Yantramanav', sans-serif;
     font-size: 1em;
     padding: 10px;
     margin: 20px;
     background: dimgrey;
     color: white;
     box-shadow: 5px 5px 2px lightgrey;
+    width: 97%;
+    box-sizing: border-box;
+    text-align: center;
 }
 
 #playerInfo {
@@ -52,19 +49,39 @@ h1 {
 #player1Icon {
     width: 15px;
     height: 15px;
-    border: 5px solid dodgerblue;
-    border-radius: 20px;
+    background: white;
+    content: " ";
+    border-radius: 100%;
     margin-right: 10px;
+    box-shadow: inset 0 0 1vw dodgerblue;
 }
 
 #player2Icon {
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 20px solid dodgerblue;
+    content: " ";
+    background: white;
+    width: 25px;
+    height: 5px;
     margin-left: 20px;
     margin-right: 10px;
+    box-shadow: inset 0 0 1vw dodgerblue;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+}
+
+#player2Icon::after {
+  background: white;
+  content: " ";
+  width: 5px;
+  height: 25px;
+  box-shadow: inset 0 0 1vw dodgerblue;
+  transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
 }
 
 #info {
@@ -74,23 +91,8 @@ h1 {
 .hidden {
     display: none;
     visibility: hidden;
-}
-
-#board {
-    display: flex;
-    width: 400px;
-    max-height: 400px;
-    max-width: 90%;
-    flex-direction: column;
-    justify-content: center;
-}
-
-div.row {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
+    width: 0 !important;
+    height: 0 !important;
 }
 
 #result {
@@ -112,27 +114,11 @@ a {
     text-decoration: none
 }
 
-div.field {
-    width: 100px;
-    height: 100px;
-    max-width: 90%;
-    max-height: 90%;
-    display: flex;
-    align-items: center;
-    justify-content: center;    
-    margin: 1px;
-    font-size: 30px;
-    font-family: 'Press Start 2P', cursive;
-    background: dodgerblue;
-    color: white;
-    transition: all 2s linear 0.2s;
-}
-
 div.fieldWon {
     background: mediumseagreen;
 }
 
-.setO {
+/*.setO {
     display: flex;
     width: 70px !important;
     height: 70px !important;
@@ -149,12 +135,13 @@ div.fieldWon {
     border-left: 50px solid white;
     border-right: 50px solid white;
     border-bottom: 100px solid dodgerblue;
-
+}
+*/
 /*  position: relative;
   top: 40px;
   height: 20px !important;
   width: 100px !important;
-*/}
+*/
 /*.setXbefore {
   transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
@@ -170,12 +157,110 @@ div.fieldWon {
   -o-transform: rotate(-45deg);
 }
 */
-@media screen and (max-width: 480px){
-    main {
-        width: 100%;
-        height: 100%;
+
+/* For mobile phones: */
+main {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+#board {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 97%;
+}
+
+.setO.hidden .setX.hidden {
+    display: none;
+    visibility: hidden;
+    width: 0 !important;
+    height: 0 !important;
+
+    background: black !important;
+
+    transform: rotate(180deg) !important;
+    -webkit-transform: rotate(180deg) !important;
+    -moz-transform: rotate(180deg) !important;
+    -ms-transform: rotate(180deg) !important;
+    -o-transform: rotate(180deg) !important;
+}
+
+div.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+}
+
+div.field {
+    width: 50vw;
+    height: 33vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+    margin: 1px;
+    font-size: 30px;
+    font-family: 'Press Start 2P', cursive;
+    background: dodgerblue;
+    color: white;
+    transition: all 1s ease-out 0.1s;
+}
+
+.setO {
+    display: flex;
+    background: white;
+    width: 80%;
+    height: 80%;
+    content: " ";
+    border-radius: 100%;
+    box-shadow: inset 0 0 10vw dodgerblue;
+    transition: all 2s ease-out 0.1s;
+}
+
+.setX {
+  display: flex;
+  content: " ";
+  background: white;
+  width: 80%;
+  height: 20%;
+  box-shadow: inset 0 0 3vw dodgerblue;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transition: all 2s ease-out 0.1s;
+}
+
+.setX::after {
+  background: white;
+  content: "";
+  width: 100%;
+  height: 100%;
+  box-shadow: inset 0 0 3vw dodgerblue;
+  transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+}
+
+@media only screen and (min-width: 768px) {
+    /* For desktop: */
+    #nameInput {
+        max-width: 600px;
     }
-    /*#result, #stats {
-        font-size: 20px;
-    }*/
+
+    #infoContainer {
+        max-width: 600px;
+    }
+
+    div.field {
+        max-width: 140px;
+        max-height: 140px;
+    }
 }

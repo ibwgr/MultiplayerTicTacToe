@@ -21,19 +21,28 @@ export default class{
 
         // connection
         socket.on('connect', function() {
-            console.log(socket.id)
+            console.log('connected: ' + socket.id)
         })
 
         socket.on('disconnect', function() {
             console.log('disconnected')
             this.running = false
             this.gameEnabled = false
-            //
+
+            // this context is wrong !!!
             console.log(this)
             console.log(this.view)
             this.view.showNameInput(true)
             this.view.showBoard(false)
             this.view.showNewGame(false)
+            
+        })
+
+        // 
+        socket.on('user_added', (data)=>{
+            console.log('user_added')
+
+            this.view.setInfoText(`Hi ${data.username}, please wait for other user...`)
         })
 
         // messages from server...
@@ -46,6 +55,7 @@ export default class{
 
             this.running = true
             this.view.showBoard(true)
+            this.view.setInfoText('New game started...')
         })
 
         socket.on('your_turn', (data)=>{
@@ -84,6 +94,8 @@ export default class{
         })
     }
 
+
+
     fieldEventListener(field){
         if (this.view.isFieldFull(field) && this.running && this.gameEnabled){
             this.view.setField(field, this.playerToken)
@@ -96,7 +108,7 @@ export default class{
         // message to server
         socket.emit('add_user', {'username': username})
         this.view.showNameInput(false)
-        this.view.setInfoText('Waiting for other user...')
+        this.view.setInfoText('..........')
 /*        this.view.showInfo(true)
 */    }
 

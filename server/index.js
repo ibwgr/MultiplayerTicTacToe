@@ -72,15 +72,23 @@ io.on('connection', function (socket) {
         console.log(`username '${data.username}'`)
         socket.username = data.username
         userQueue.push(socket)
+        socket.emit('user_added', {'username': data.username})
         connectUsers();
     })
 
     // disconnect: remove user from queue
     // -> send info to other player, that game is aborted and other player wins!
     socket.on('disconnect', function() {
-      console.log('Got disconnect!');
+      console.log('disconnect, socket: ' + socket.id);
+      // remove user from waiting queue
       let i = userQueue.indexOf(socket);
-      userQueue.splice(i, 1);
+      if (i >= 0){
+          userQueue.splice(i, 1);
+          console.log('userQueue: ' + userQueue.map((item)=>item.username))
+      }
+      // finish a running game
+
+
     });
 
     // player moves
