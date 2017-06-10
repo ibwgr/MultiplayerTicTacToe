@@ -58,7 +58,7 @@ export default class{
     }
 
     setField(field, playerToken){
-        this.$doc.querySelector('#'+field).classList.add(playerToken === 'x' ? 'setX' : 'setO')
+        this.$doc.querySelector('#'+field).querySelector((playerToken === 'x' ? '.setX' : '.setO')).classList.remove('hidden')
     }
 
     removeHiddenFromInfo(){
@@ -111,17 +111,21 @@ export default class{
 
     initBoard(){
         this.$fields.forEach(function(element){
-            element.classList.remove("fieldWon")
-            element.classList.remove("setX")
-            element.classList.remove("setO")
+            element.classList.remove('fieldWon')
+            if (!element.querySelector('.setX').classList.contains('hidden')){
+                element.querySelector('.setX').classList.add('hidden')
+            }
+            if (!element.querySelector('.setO').classList.contains('hidden')){
+                element.querySelector('.setO').classList.add('hidden')
+            }
         })
     }
 
     isFieldFull(field){
         console.log(field)
         let element = this.$doc.querySelector('#'+field)
-        return !(element.classList.contains('setX') ||
-                element.classList.contains('setO'))
+        return (element.querySelector('.setX').classList.contains('hidden') &&
+                element.querySelector('.setO').classList.contains('hidden'))
     }
 
     //
