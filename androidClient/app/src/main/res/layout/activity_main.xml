@@ -87,10 +87,18 @@
         tools:context=".GridXMLActivity" >
 
         <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
+            android:id="@+id/gameButton0"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/gf_init"
+            />
+
+        <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
             android:id="@+id/gameButton1"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:background="@drawable/gf_init"
+
             />
 
         <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
@@ -98,7 +106,6 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:background="@drawable/gf_init"
-
             />
 
         <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
@@ -138,13 +145,6 @@
 
         <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
             android:id="@+id/gameButton8"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:background="@drawable/gf_init"
-            />
-
-        <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
-            android:id="@+id/gameButton9"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:background="@drawable/gf_init"

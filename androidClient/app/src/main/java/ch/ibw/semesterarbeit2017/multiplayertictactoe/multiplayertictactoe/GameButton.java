@@ -1,10 +1,8 @@
 package ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageButton;
 
 import com.github.nkzawa.socketio.client.Socket;
@@ -12,8 +10,6 @@ import com.github.nkzawa.socketio.client.Socket;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,6 +40,9 @@ public class GameButton extends ImageButton {
 
     public int getNr() {
         return nr;
+    }
+    public String getNrFieldId() {
+        return Const.FIELD_PREFIX+getNr();   //field0, field1, ...
     }
 
     public void setNr(int nr) {
@@ -85,7 +84,7 @@ public class GameButton extends ImageButton {
     public void clicked(String currentPlayerToken) {
         Log.w(PROG, "Button clicked: " + this.toString());
         this.setClicked();
-        if (currentPlayerToken == "o") {
+        if (currentPlayerToken == Const.PLAYER_TOKEN_O) {
             this.setBackgroundResource(R.drawable.gf_o);
         } else {
             this.setBackgroundResource(R.drawable.gf_x);
@@ -99,13 +98,13 @@ public class GameButton extends ImageButton {
         // username senden
         JSONObject obj = new JSONObject();
         try {
-            obj.put("player", currentPlayerToken);     //
-            obj.put("field", "field"+(this.nr-1));     // TODO faengt mit 0 an!  "field0" saubere methode
+            obj.put("player", currentPlayerToken);
+            obj.put("field", getNrFieldId());
         } catch (JSONException e) {
             e.printStackTrace();
         }
         mSocket.emit("player_action", obj);
-        Log.w(PROG, "spielzug beendet, feld:"+this.nr +", playerToken:"+currentPlayerToken);
+        Log.w(PROG, "spielzug beendet, feld:"+this.getNrFieldId() +", playerToken:"+currentPlayerToken);
     }
 
     //////////////////////////////////////////////////

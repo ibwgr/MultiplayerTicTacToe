@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private Menu menu;
 
+    private GameButton gameButton0;
     private GameButton gameButton1;
     private GameButton gameButton2;
     private GameButton gameButton3;
@@ -43,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     private GameButton gameButton6;
     private GameButton gameButton7;
     private GameButton gameButton8;
-    private GameButton gameButton9;
 
     private String currentPlayer = "";
 
@@ -122,7 +122,9 @@ public class MainActivity extends AppCompatActivity {
                 Log.w(PROG, "Username (aus Feld): " + userName);
                 if (userName.length()>0) {
                     //
-                    displayZeileStatus.setText("Hallo " +userName );
+                    displayZeileStatus.setText("bitte warten..." );
+                    //displayZeileStatus.setText("Hallo " +userName );
+
                     // Eingabefeld und Button disalbe
                     buttonOk.setVisibility(View.INVISIBLE);
                     editUserName.setVisibility(View.INVISIBLE);
@@ -187,7 +189,8 @@ public class MainActivity extends AppCompatActivity {
         Log.i(PROG, "listening for socket messages from server");
         mSocket.on("start_game", onStartGame);
         mSocket.on("your_turn", onYourTurn);
-        mSocket.on("other_turn", onOtherTurn);//todo eigene meth.
+        mSocket.on("other_turn", onOtherTurn);
+        mSocket.on("user_added", onUserAdded);
 
     } // end on-create lifecycle
 
@@ -199,6 +202,15 @@ public class MainActivity extends AppCompatActivity {
         currentPlayer = "";
 
         // als erstes die GameButton Instanzen ermitteln
+        //
+        gameButton0 = (GameButton) findViewById(R.id.gameButton0);
+        gameButton0.setNr(0);
+        gameButton0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((GameButton) v).clicked(currentPlayer);
+            }
+        });
         //
         gameButton1 = (GameButton) findViewById(R.id.gameButton1);
         gameButton1.setNr(1);
@@ -272,21 +284,39 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //
-        gameButton9 = (GameButton) findViewById(R.id.gameButton9);
-        gameButton9.setNr(9);
-        gameButton9.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((GameButton) v).clicked(currentPlayer);
-            }
-        });
 
         // init game
         GameButton.setSocket(this.mSocket);
-        GameButton.setAllGameButtons(asList(gameButton1,gameButton2,gameButton3,gameButton4,gameButton5
-                ,gameButton6,gameButton7,gameButton8,gameButton9));
+        GameButton.setAllGameButtons(asList(gameButton0,gameButton1,gameButton2,gameButton3,
+                gameButton4,gameButton5,gameButton6,gameButton7,gameButton8));
         GameButton.disableAllGameButtons();
     }
+
+
+
+
+
+
+    private Emitter.Listener onUserAdded = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.i(PROG, "****************** onUserAdded");
+                    JSONObject data = (JSONObject) args[0];
+                    Log.i(PROG, "******************" +data.toString());
+                    String userName;
+                    try {
+                        userName = data.getString("username");
+                    } catch (JSONException e) {
+                        return;
+                    }
+                    displayZeilePlayers.setText("Hallo " +userName);
+                }
+            });
+        }
+    };
 
 
     // ich zuerst: ich bin player1, o
@@ -351,23 +381,10 @@ public class MainActivity extends AppCompatActivity {
                     displayZeileStatus.setText(username +", your turn (" +player +")");
 
                     GameButton.enableAllGameButtons();
-
-//                    if (player.equals("x")) {
-//                        menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.game_fig_x));
-//                        // menu.getItem(1).setTitle("Online");
-//                    } else {
-//                        menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.game_fig_o));
-//                        // menu.getItem(1).setTitle("Online");
-//                    }
-
                 }
             });
         }
     };
-
-
-
-
 
     //With this we listen on the new message event to receive messages from other users.
     //["other_turn",{"player":"x","username":"Emma"}]
@@ -386,23 +403,14 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         username = data.getString("username");
                         player = data.getString("player");
+                        currentPlayer = player;
                     } catch (JSONException e) {
                         return;
                     }
                     Log.i(PROG, "****************** username: "+username);
                     Log.i(PROG, "****************** player: "+player);
 
-                    displayZeileStatus.setText("Others turn ("+username +" as " +player +")");
-
-                    if (player.equals("x")) {
-                        //Symbol anzeigen (das eigene und das des anderen spielers)
-                        //menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.gf_x));
-                        // menu.getItem(1).setTitle("Online");
-                    } else {
-                        //Symbol anzeigen (das eigene und das des anderen spielers)
-                        //menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.gf_o));
-                        // menu.getItem(1).setTitle("Online");
-                    }
+                    displayZeileStatus.setText("Others turn ("+username +" as " +player +") \nplease wait...");
                 }
             });
         }
