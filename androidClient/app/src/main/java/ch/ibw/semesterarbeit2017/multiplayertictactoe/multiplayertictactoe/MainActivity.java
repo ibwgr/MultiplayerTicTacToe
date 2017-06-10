@@ -45,9 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private GameButton gameButton8;
     private GameButton gameButton9;
 
-    private String amZug = Game.AMZUGICH;
-    private Game game = new Game();
-
+    private String currentPlayer = "";
 
 
     /*
@@ -108,96 +106,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //initToolBar();
-
-        // als erstes die GameButton Instanzen ermitteln
-        //
-        gameButton1 = (GameButton) findViewById(R.id.gameButton1);
-        gameButton1.setNr(1);
-        gameButton1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((GameButton) v).clicked(amZug);
-            }
-        });
-        //
-        gameButton2 = (GameButton) findViewById(R.id.gameButton2);
-        gameButton2.setNr(2);
-        gameButton2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((GameButton) v).clicked(amZug);
-            }
-        });
-        //
-        gameButton3 = (GameButton) findViewById(R.id.gameButton3);
-        gameButton3.setNr(3);
-        gameButton3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((GameButton) v).clicked(amZug);
-            }
-        });
-        //
-        gameButton4 = (GameButton) findViewById(R.id.gameButton4);
-        gameButton4.setNr(4);
-        gameButton4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((GameButton) v).clicked(amZug);
-            }
-        });
-        //
-        gameButton5 = (GameButton) findViewById(R.id.gameButton5);
-        gameButton5.setNr(5);
-        gameButton5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((GameButton) v).clicked(amZug);
-            }
-        });
-        //
-        gameButton6 = (GameButton) findViewById(R.id.gameButton6);
-        gameButton6.setNr(6);
-        gameButton6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((GameButton) v).clicked(amZug);
-            }
-        });
-        //
-        gameButton7 = (GameButton) findViewById(R.id.gameButton7);
-        gameButton7.setNr(7);
-        gameButton7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((GameButton) v).clicked(amZug);
-            }
-        });
-        //
-        gameButton8 = (GameButton) findViewById(R.id.gameButton8);
-        gameButton8.setNr(8);
-        gameButton8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((GameButton) v).clicked(amZug);
-            }
-        });
-        //
-        gameButton9 = (GameButton) findViewById(R.id.gameButton9);
-        gameButton9.setNr(9);
-        gameButton9.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((GameButton) v).clicked(amZug);
-            }
-        });
-
-
-        // init game
-        GameButton.setAllGameButtons(asList(gameButton1,gameButton2,gameButton3,gameButton4,gameButton5
-                ,gameButton6,gameButton7,gameButton8,gameButton9));
-        GameButton.disableAllGameButtons();
-
+        setUpGame();
 
         // get the values from fields
         editUserName = (EditText) findViewById(R.id.edit_username);
@@ -255,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        // get the OK button
+        // Temporaere Buttons, nur fuer Entwicklulng
         final Button buttonTempEnable = (Button) findViewById(R.id.button_temp_enable_all);
         buttonTempEnable.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -263,7 +172,14 @@ public class MainActivity extends AppCompatActivity {
                 GameButton.enableAllGameButtons();
             }
         });
-
+        final Button buttonTempRestart = (Button) findViewById(R.id.button_temp_restart);
+        buttonTempRestart.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                // todo ein exit zum server senden  @Dieter, eigentlich dasselbe wie nach timeout
+                setUpGame();
+            }
+        });
 
         //////////////////////////////////////////////////////////////////////////////////////
         // socket listening
@@ -278,9 +194,105 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    private void setUpGame() {
+        // initializing
+        currentPlayer = "";
+
+        // als erstes die GameButton Instanzen ermitteln
+        //
+        gameButton1 = (GameButton) findViewById(R.id.gameButton1);
+        gameButton1.setNr(1);
+        gameButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((GameButton) v).clicked(currentPlayer);
+            }
+        });
+        //
+        gameButton2 = (GameButton) findViewById(R.id.gameButton2);
+        gameButton2.setNr(2);
+        gameButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((GameButton) v).clicked(currentPlayer);
+            }
+        });
+        //
+        gameButton3 = (GameButton) findViewById(R.id.gameButton3);
+        gameButton3.setNr(3);
+        gameButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((GameButton) v).clicked(currentPlayer);
+            }
+        });
+        //
+        gameButton4 = (GameButton) findViewById(R.id.gameButton4);
+        gameButton4.setNr(4);
+        gameButton4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((GameButton) v).clicked(currentPlayer);
+            }
+        });
+        //
+        gameButton5 = (GameButton) findViewById(R.id.gameButton5);
+        gameButton5.setNr(5);
+        gameButton5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((GameButton) v).clicked(currentPlayer);
+            }
+        });
+        //
+        gameButton6 = (GameButton) findViewById(R.id.gameButton6);
+        gameButton6.setNr(6);
+        gameButton6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((GameButton) v).clicked(currentPlayer);
+            }
+        });
+        //
+        gameButton7 = (GameButton) findViewById(R.id.gameButton7);
+        gameButton7.setNr(7);
+        gameButton7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((GameButton) v).clicked(currentPlayer);
+            }
+        });
+        //
+        gameButton8 = (GameButton) findViewById(R.id.gameButton8);
+        gameButton8.setNr(8);
+        gameButton8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((GameButton) v).clicked(currentPlayer);
+            }
+        });
+        //
+        gameButton9 = (GameButton) findViewById(R.id.gameButton9);
+        gameButton9.setNr(9);
+        gameButton9.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((GameButton) v).clicked(currentPlayer);
+            }
+        });
+
+        // init game
+        GameButton.setSocket(this.mSocket);
+        GameButton.setAllGameButtons(asList(gameButton1,gameButton2,gameButton3,gameButton4,gameButton5
+                ,gameButton6,gameButton7,gameButton8,gameButton9));
+        GameButton.disableAllGameButtons();
+    }
+
+
     // ich zuerst: ich bin player1, o
     // anderer zuerst: ich bin player2, x
     // muessen wir aber nicht speichern, der server weiss es
+    // der letzte beginnt   // Todo muesste man nicht eher zufaellig starten @Dieter
     private Emitter.Listener onStartGame = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -329,13 +341,16 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         username = data.getString("username");
                         player = data.getString("player");
+                        currentPlayer = player;
                     } catch (JSONException e) {
                         return;
                     }
                     Log.i(PROG, "****************** username: "+username);
-                    Log.i(PROG, "****************** player: "+player);
+                    Log.i(PROG, "****************** player: "+player);  // x oder o
 
                     displayZeileStatus.setText(username +", your turn (" +player +")");
+
+                    GameButton.enableAllGameButtons();
 
 //                    if (player.equals("x")) {
 //                        menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.game_fig_x));
@@ -400,10 +415,10 @@ public class MainActivity extends AppCompatActivity {
 //    public void initToolBar() {
 //        toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        //toolbar.setTitle(R.string.toolbarTitle);
-//        toolbar.setTitle("Tic-Tac-Toe");   // TODO strings in ressource
+//        toolbar.setTitle("Tic-Tac-Toe");
 //        setSupportActionBar(toolbar);
 //        toolbar.setNavigationIcon(R.drawable.abc_ratingbar_small_material);
-//        toolbar.setBackgroundColor(Color.LTGRAY);  // TODO hier blau oder rot, je nach X oder O
+//        toolbar.setBackgroundColor(Color.LTGRAY);  
 //        toolbar.setNavigationOnClickListener(
 //                new View.OnClickListener() {
 //                    @Override

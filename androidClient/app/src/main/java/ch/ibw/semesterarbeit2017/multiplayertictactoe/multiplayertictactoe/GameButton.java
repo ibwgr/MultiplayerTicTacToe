@@ -7,6 +7,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.github.nkzawa.socketio.client.Socket;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,19 +82,42 @@ public class GameButton extends ImageButton {
     }
 
     ///////////////////////////////
-    public void clicked(String amZug) {
+    public void clicked(String currentPlayerToken) {
         Log.w(PROG, "Button clicked: " + this.toString());
         this.setClicked();
-        if (amZug == Game.AMZUGICH) {
+        if (currentPlayerToken == "o") {
             this.setBackgroundResource(R.drawable.gf_o);
         } else {
             this.setBackgroundResource(R.drawable.gf_x);
         }
-        //this.setTag(1);
+        // dieser darf waehrend des spiels nie mehr geklicked werden
         this.setClickable(false);
-        Log.w(PROG, "nun gesperrt");
+        // spielzug beendet
+        disableAllGameButtons();
+        //
+        // dem server den spielzug mitteilen
+        // username senden
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("player", currentPlayerToken);     // TODO player oder PlayerToken ??
+            obj.put("field", this.nr);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        mSocket.emit("player_action", obj);
+        Log.w(PROG, "spielzug beendet, feld:"+this.nr +", playerToken:"+currentPlayerToken);
     }
 
+    //////////////////////////////////////////////////
+    private static Socket mSocket;
+
+    public static Socket getSocket() {
+        return mSocket;
+    }
+
+    public static void setSocket(Socket socket) {
+        GameButton.mSocket = socket;
+    }
 
     //////////////////////////////////////////////////
     private static List<GameButton> allGameButtons;
