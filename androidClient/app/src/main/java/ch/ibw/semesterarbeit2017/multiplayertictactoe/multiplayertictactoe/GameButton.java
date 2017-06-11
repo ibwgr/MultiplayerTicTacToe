@@ -75,10 +75,10 @@ public class GameButton extends ImageButton {
 
     ///////////////////////////////
     public void setGraphicO(){
-        this.setBackgroundResource(R.drawable.gf_o);
+        this.setBackgroundResource(R.drawable.game_fig_o);
     }
     public void setGraphicX(){
-        this.setBackgroundResource(R.drawable.gf_x);
+        this.setBackgroundResource(R.drawable.game_fig_x);
     }
     public void setGraphicInit(){
         this.setBackgroundResource(R.drawable.gf_init);
@@ -114,19 +114,32 @@ public class GameButton extends ImageButton {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        mSocket.emit("player_action", obj);  // mein Spielzug
+        socketController.send("player_action", obj);  // mein Spielzug
         Log.w(PROG, "spielzug beendet, feld:"+this.getNrFieldId() +", playerToken:"+currentPlayerToken);
     }
-
-    //////////////////////////////////////////////////
-    private static Socket mSocket;
-
-    public static Socket getSocket() {
-        return mSocket;
+    ///////////////////////////////
+    public void clickedByOther(String currentPlayerToken) {
+        Log.w(PROG, "Button clicked by other: " + this.toString() +" , playerToken:"+currentPlayerToken);
+        if (currentPlayerToken.equals(Const.PLAYER_TOKEN_O)) {
+            setGraphicO();
+        } else {
+            setGraphicX();
+        }
+        this.setClicked();
+        // dieser darf waehrend des spiels nie mehr geklicked werden
+        this.setClickable(false);
     }
 
-    public static void setSocket(Socket socket) {
-        GameButton.mSocket = socket;
+
+    //////////////////////////////////////////////////
+    private static SocketController socketController;
+
+    public static SocketController getSocketController() {
+        return socketController;
+    }
+
+    public static void setSocketController(SocketController socketController) {
+        GameButton.socketController = socketController;
     }
 
     //////////////////////////////////////////////////
@@ -144,7 +157,7 @@ public class GameButton extends ImageButton {
     public static void enableAllGameButtons(){
         for (GameButton gamebutton : allGameButtons){
             // only enable if button is unclicked
-            System.out.println("..... gamebutton " +gamebutton);
+            //System.out.println("..... gamebutton " +gamebutton);
             if (!gamebutton.isClicked()) {
                 gamebutton.setEnabled(true);
             }

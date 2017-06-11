@@ -13,11 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.net.URISyntaxException;
-
 import com.github.nkzawa.emitter.Emitter;
-import com.github.nkzawa.socketio.client.IO;
-import com.github.nkzawa.socketio.client.Socket;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,22 +45,18 @@ public class MainActivity extends AppCompatActivity {
 
 
     /*
+    // Test Client http://lastminute.li/ttt/
     --------------------------------------------------------------------
     TODO background je nach groesse mit hdpi usw.
     TODO fixtexte translation ressource
     TODO layout hoch/quer/groessen
     TODO layout grid vielleicht durch table ersetzen, wegen grid-lines
+    TODO testing socket mock https://stackoverflow.com/questions/5577274/testing-java-sockets
     --------------------------------------------------------------------
     */
 
-    private Socket mSocket;
-    {
-        try {
-            Log.i(PROG, "socking...");
-          //mSocket = IO.socket("https://warm-shelf-33316.herokuapp.com/");          // Test Client http://lastminute.li/ttt/
-          mSocket = IO.socket("http://192.168.1.39:3100");
-        } catch (URISyntaxException e) {}
-    }
+    private SocketController socketController = new SocketController();
+    //private Socket scSocket = socketController.getSocketController();
 
 
 //    // Menu icons are inflated just as they were with actionbar
@@ -105,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //initToolBar();
+
         setUpGame();
 
         // get the values from fields
@@ -125,13 +117,11 @@ public class MainActivity extends AppCompatActivity {
                     displayZeileStatus.setText("bitte warten..." );
                     //displayZeileStatus.setText("Hallo " +userName );
 
-                    // Eingabefeld und Button disalbe
+                    // Eingabefeld und Button disable
                     buttonOk.setVisibility(View.INVISIBLE);
                     editUserName.setVisibility(View.INVISIBLE);
 
-                    mSocket.connect();
-                    Log.i(PROG, mSocket.toString());
-
+                    socketController.connect();
                     // username senden
                     JSONObject obj = new JSONObject();
                     try {
@@ -139,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    mSocket.emit("add_user", obj);
+                    socketController.send("add_user", obj);
 
                     displayZeileStatus.setText("Hello " +userName +"\n" + "Waiting for other user to play with...");
 
@@ -186,12 +176,13 @@ public class MainActivity extends AppCompatActivity {
         //////////////////////////////////////////////////////////////////////////////////////
         // socket listening
         // here we listen on message events from the server
+        // todo gehoert in socketcontroller
         Log.i(PROG, "listening for socket messages from server");
-        mSocket.on("start_game", onStartGame);
-        mSocket.on("user_added", onUserAdded);
-        mSocket.on("your_turn", onYourTurn);
-        mSocket.on("other_turn", onOtherTurn);
-        mSocket.on("new_move", onNewMove);  // Spielzug des Gegners
+        socketController.getSocket().on("start_game", onStartGame);
+        socketController.getSocket().on("user_added", onUserAdded);
+        socketController.getSocket().on("your_turn", onYourTurn);
+        socketController.getSocket().on("other_turn", onOtherTurn);
+        socketController.getSocket().on("new_move", onNewMove);  // Spielzug des Gegners
 
     } // end on-create lifecycle
 
@@ -288,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
         //
 
         // init game
-        GameButton.setSocket(this.mSocket);
+        GameButton.setSocketController(socketController);
         GameButton.setAllGameButtons(asList(gameButton0,gameButton1,gameButton2,gameButton3,
                 gameButton4,gameButton5,gameButton6,gameButton7,gameButton8));
         GameButton.disableAllGameButtons();
@@ -298,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+    // todo gehoert in socketcontroller
     private Emitter.Listener onUserAdded = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -417,6 +408,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
+    // Gegner hat gezogen
     private Emitter.Listener onNewMove = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -441,7 +433,7 @@ public class MainActivity extends AppCompatActivity {
 
                     GameButton g = GameButton.findGameButtonByFieldId(field);
                     if (g != null) {
-                        g.clicked(player);
+                        g.clickedByOther(player);
                     }
                 }
             });
