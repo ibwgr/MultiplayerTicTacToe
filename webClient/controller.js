@@ -61,7 +61,7 @@ export default class{
         socket.on('your_turn', (data)=>{
             console.log('your turn...' + data.player)
             this.playerToken = data.player
-            this.view.setInfoText('it is your turn...')
+            this.view.setInfoText(`Hi ${data.username}, please make a move ...`)
             this.gameEnabled = true
         })
 

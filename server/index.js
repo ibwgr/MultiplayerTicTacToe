@@ -171,7 +171,7 @@ io.on('connection', function (socket) {
                     "timestamp": item.timestamp,
                     "player1": item.player1,
                     "player2": item.player2,
-                    "status": item.winner || 'playing'
+                    "status": item.winner || "playing"
             }}),
                 "userQueue": userQueue.map((item)=>item.username)
             }
