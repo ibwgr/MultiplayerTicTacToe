@@ -75,10 +75,10 @@ public class GameButton extends ImageButton {
 
     ///////////////////////////////
     public void setGraphicO(){
-        this.setBackgroundResource(R.drawable.gf_o);
+        this.setBackgroundResource(R.drawable.game_fig_o);
     }
     public void setGraphicX(){
-        this.setBackgroundResource(R.drawable.gf_x);
+        this.setBackgroundResource(R.drawable.game_fig_x);
     }
     public void setGraphicInit(){
         this.setBackgroundResource(R.drawable.gf_init);

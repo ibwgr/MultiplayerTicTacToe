@@ -44,9 +44,9 @@ public class SocketController {
     }
 
     //
-    public void send(String socketMethod, JSONObject json) {
+    public void send(String event, JSONObject json) {
         Log.i(PROG, "send/emit data to sever: " +json);
-        socket.emit(socketMethod, json);
+        socket.emit(event, json);
     }
 
     // getters/setters
