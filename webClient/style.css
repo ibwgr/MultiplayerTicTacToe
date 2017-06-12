@@ -14,15 +14,22 @@ h1 {
     text-shadow: 5px 5px 2px lightgrey;
 }
 
+#name {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    width: 90%;
+}
+
 #nameInput {
     font-family: 'Yantramanav', sans-serif;
     font-size: 1.4em;
     color: dimgray;
     font-weight: bold;
     padding: 10px;
+    width: 100%;
     border: 10px solid dodgerblue;
     box-shadow: 5px 5px 2px lightgrey;
-    width: 97%;
     box-sizing: border-box;
 }
 
@@ -34,7 +41,7 @@ h1 {
     background: dimgrey;
     color: white;
     box-shadow: 5px 5px 2px lightgrey;
-    width: 97%;
+    width: 95%;
     box-sizing: border-box;
     text-align: center;
 }
@@ -165,14 +172,14 @@ main {
     flex-flow: column;
     align-items: center;
     justify-content: center;
-    width: 100%;
+    width: 90%;
 }
 
 #board {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 97%;
+    width: 95%;
 }
 
 .setO.hidden .setX.hidden {
@@ -209,6 +216,7 @@ div.field {
     background: dodgerblue;
     color: white;
     transition: all 1s ease-out 0.1s;
+    box-sizing: border-box;
 }
 
 .setO {
@@ -250,18 +258,18 @@ div.field {
   -o-transform: rotate(-90deg);
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 580px) {
     /* For desktop: */
-    #nameInput {
-        max-width: 600px;
+    #name {
+        max-width: 480px;
     }
 
     #infoContainer {
-        max-width: 600px;
+        max-width: 480px;
     }
 
     div.field {
-        max-width: 140px;
-        max-height: 140px;
+        max-width: 160px;
+        max-height: 160px;
     }
 }

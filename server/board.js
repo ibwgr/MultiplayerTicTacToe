@@ -2,8 +2,8 @@
 
 export default class {
     constructor(socketPlayer1, socketPlayer2) {
-        this.socketPlayer1 = socketPlayer1
-        this.socketPlayer2 = socketPlayer2
+        this.socketPlayer1 = socketPlayer1 // o
+        this.socketPlayer2 = socketPlayer2 // x
         socketPlayer1.board = this
         socketPlayer2.board = this
         this.player1 = socketPlayer1.username
@@ -54,5 +54,10 @@ export default class {
             this.done = true
             return this.winner
         }
+    }
+
+    stopGame(winner){
+        this.winner = winner
+        this.done = true
     }
 }
