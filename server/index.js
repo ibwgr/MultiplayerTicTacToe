@@ -116,11 +116,15 @@ io.on('connection', function (socket) {
                     // send finish message
                     socket.to(socket.board.socketPlayer1.id).emit('game_finished', {
                         'winner': gameResult,
-                        'fields': socket.board.fieldsWon
+                        'fields': socket.board.fieldsWon,
+                        'username': socket.board.player1,
+                        'youWon': gameResult === socket.board.player1 ? 'yes' : 'no'
                     })
                     socket.emit('game_finished', {
                         'winner': gameResult,
-                        'fields': socket.board.fieldsWon
+                        'fields': socket.board.fieldsWon,
+                        'username': socket.board.player2,
+                        'youWon': gameResult === socket.board.player2 ? 'yes' : 'no'
                     })
                 } else {
                     // start next move
@@ -143,11 +147,15 @@ io.on('connection', function (socket) {
                     // send finish message
                     socket.to(socket.board.socketPlayer2.id).emit('game_finished', {
                         'winner': gameResult,
-                        'fields': socket.board.fieldsWon
+                        'fields': socket.board.fieldsWon,
+                        'username': socket.board.player2,
+                        'youWon': gameResult === socket.board.player2 ? 'yes' : 'no'
                     })
                     socket.emit('game_finished', {
                         'winner': gameResult,
-                        'fields': socket.board.fieldsWon
+                        'fields': socket.board.fieldsWon,
+                        'username': socket.board.player1,
+                        'youWon': gameResult === socket.board.player1 ? 'yes' : 'no'
                     })
                 } else {
                     // start next move

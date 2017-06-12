@@ -19,6 +19,7 @@ export default class{
         this.$statsDiv = this.$doc.querySelector("#stats")
         this.$newGame = this.$doc.querySelector("#newGame")
         this.$fields = $doc.querySelectorAll("div.field")
+        this.$infoContainer = this.$doc.querySelector('#infoContainer')
         
         this.$nameInput.addEventListener("change", this[nameEventListener].bind(this))
         this.$newGame.addEventListener("click", this[newGameEventListener].bind(this))
@@ -62,14 +63,19 @@ export default class{
     }
 
     removeHiddenFromInfo(){
-        if (this.$doc.querySelector('#infoContainer').classList.contains('hidden')){
-            this.$doc.querySelector('#infoContainer').classList.remove('hidden')
+        if (this.$infoContainer.classList.contains('hidden')){
+            this.$infoContainer.classList.remove('hidden')
         }
     }
 
     setInfoText(text){
         this.removeHiddenFromInfo()
         this.$info.innerText = text
+    }
+
+    setInfoColor(text){
+        this.$infoContainer.classList.add(text)
+        window.setTimeout(_=>this.$infoContainer.classList.remove(text), 1500)
     }
 
     setPlayer1(text){
