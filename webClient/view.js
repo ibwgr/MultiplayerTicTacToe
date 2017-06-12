@@ -115,6 +115,14 @@ export default class{
         }
     }
 
+    enableBoard(show){
+        if (show){
+            this.$board.classList.remove('inactivate')
+        } else {
+            this.$board.classList.add('inactivate')
+        }
+    }
+
     initBoard(){
         this.$fields.forEach(function(element){
             element.classList.remove('fieldWon')

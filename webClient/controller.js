@@ -64,12 +64,14 @@ export default class{
             this.view.setInfoText(`Hi ${data.username}, please make a move ...`)
             this.gameEnabled = true
             this.view.setInfoColor('yellow')
+            this.view.enableBoard(true)
         })
 
         socket.on('other_turn', (data)=>{
             console.log('other turn...')
-            this.view.setInfoText(`Waiting for user '${data.username}' ...`)
+            this.view.setInfoText(`Waiting for ${data.username} ...`)
             this.gameEnabled = false
+            this.view.enableBoard(false)
         })
 
         socket.on('new_move', (data)=>{

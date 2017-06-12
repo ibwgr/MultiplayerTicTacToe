@@ -139,6 +139,10 @@ div.fieldWon {
     background: mediumseagreen;
 }
 
+.inactivate {
+    opacity: 0.7;
+}
+
 /*.setO {
     display: flex;
     width: 70px !important;
