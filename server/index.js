@@ -47,23 +47,24 @@ io.on('connection', function (socket) {
             addToBoardList(socket.board)
 
             socket.emit('start_game', {
-                'player1':socket.board.socketPlayer1.username,
-                'player2':socket.board.socketPlayer2.username
+                'player1':socket.board.player1,
+                'player2':socket.board.player2
             })
             socket.to(socket.board.socketPlayer1.id).emit('start_game', {
-                'player1':socket.board.socketPlayer1.username,
-                'player2':socket.board.socketPlayer2.username
+                'player1':socket.board.player1,
+                'player2':socket.board.player2
             })
             
             socket.emit('your_turn', {
                 'player':'x',
-                'username':socket.username
+                'username':socket.username,
+                'time': 30
             })
             socket.to(socket.board.socketPlayer1.id).emit('other_turn', {
                 'player': 'x',
-                'username': socket.board.socketPlayer2.username
+                'username': socket.board.player2
             })
-            console.log(`player1 '${socket.board.socketPlayer1.username}' plays versus player2 '${socket.board.socketPlayer2.username}'`)            
+            console.log(`player1 '${socket.board.player1}' plays versus player2 '${socket.board.player2}'`)            
         }
     }
 
@@ -87,7 +88,15 @@ io.on('connection', function (socket) {
           console.log('userQueue: ' + userQueue.map((item)=>item.username))
       }
       // finish a running game
-
+      console.log(socket.board)
+      if (socket.board){
+        socket.board.stopGame()
+        if (socket.id === socket.board.socketPlayer2.id) {
+            socket.to(socket.board.socketPlayer1).emit('game_finished', {'winner': socket.board.player1})
+        } else {
+            socket.to(socket.board.socketPlayer2).emit('game_finished', {'winner': socket.board.player2})
+        }
+      }
 
     });
 
@@ -107,21 +116,25 @@ io.on('connection', function (socket) {
                     // send finish message
                     socket.to(socket.board.socketPlayer1.id).emit('game_finished', {
                         'winner': gameResult,
-                        'fields': socket.board.fieldsWon
+                        'fields': socket.board.fieldsWon,
+                        'username': socket.board.player1,
+                        'youWon': gameResult === socket.board.player1 ? 'yes' : 'no'
                     })
                     socket.emit('game_finished', {
                         'winner': gameResult,
-                        'fields': socket.board.fieldsWon
+                        'fields': socket.board.fieldsWon,
+                        'username': socket.board.player2,
+                        'youWon': gameResult === socket.board.player2 ? 'yes' : 'no'
                     })
                 } else {
                     // start next move
                     socket.to(socket.board.socketPlayer1.id).emit('your_turn', {
                         'player': 'o',
-                        'username': socket.board.socketPlayer1.username
+                        'username': socket.board.player1
                     })
                     socket.emit('other_turn', {
                         'player': 'o',
-                        'username': socket.board.socketPlayer1.username
+                        'username': socket.board.player1
                     })
                 }
             } else {
@@ -134,11 +147,15 @@ io.on('connection', function (socket) {
                     // send finish message
                     socket.to(socket.board.socketPlayer2.id).emit('game_finished', {
                         'winner': gameResult,
-                        'fields': socket.board.fieldsWon
+                        'fields': socket.board.fieldsWon,
+                        'username': socket.board.player2,
+                        'youWon': gameResult === socket.board.player2 ? 'yes' : 'no'
                     })
                     socket.emit('game_finished', {
                         'winner': gameResult,
-                        'fields': socket.board.fieldsWon
+                        'fields': socket.board.fieldsWon,
+                        'username': socket.board.player1,
+                        'youWon': gameResult === socket.board.player1 ? 'yes' : 'no'
                     })
                 } else {
                     // start next move
