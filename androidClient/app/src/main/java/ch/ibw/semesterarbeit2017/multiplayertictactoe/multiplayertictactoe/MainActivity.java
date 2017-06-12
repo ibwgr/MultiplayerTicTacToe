@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,13 +24,14 @@ import static java.util.Arrays.asList;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String PROG = "____MAIN";
+    public static final String PROG = "____MAINACTIVITY";
 
     private EditText editUserName;
     private TextView displayZeileStatus;
     private TextView displayZeilePlayers;
     private Toolbar toolbar;
-    private Menu menu;
+    //private Menu menu;
+    private ImageView waitingImage;
 
     private GameButton gameButton0;
     private GameButton gameButton1;
@@ -52,45 +54,14 @@ public class MainActivity extends AppCompatActivity {
     TODO layout hoch/quer/groessen
     TODO layout grid vielleicht durch table ersetzen, wegen grid-lines
     TODO testing socket mock https://stackoverflow.com/questions/5577274/testing-java-sockets
+    TODO disconnect
+    TODO socket.off
     --------------------------------------------------------------------
     */
 
+    // todo diese beiden parameter wieder entf
+    //private SocketController socketController = new SocketController(getApplicationContext(), this);
     private SocketController socketController = new SocketController();
-    //private Socket scSocket = socketController.getSocketController();
-
-
-//    // Menu icons are inflated just as they were with actionbar
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//
-//        this.menu = menu;
-//       // menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_commit));
-//       // menu.getItem(1).setTitle("Online");
-//        return true;
-//    }
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//    // Handle item selection
-//        switch (item.getItemId()) {
-//            case R.id.miSymbol:
-//                Toast.makeText(MainActivity.this, "clicking on symbol", Toast.LENGTH_SHORT).show();
-//                return true;
-//                //            case R.id.miCompose:
-//                //                Toast.makeText(MainActivity.this, "clicking on email", Toast.LENGTH_SHORT).show();
-//                //                return true;
-//                //            case R.id.miProfile:
-//                //                Toast.makeText(MainActivity.this, "clicking on profile", Toast.LENGTH_SHORT).show();
-//                //                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
-
-
-
-
 
 
     @Override
@@ -156,22 +127,22 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        // Temporaere Buttons, nur fuer Entwicklulng
-        final Button buttonTempEnable = (Button) findViewById(R.id.button_temp_enable_all);
-        buttonTempEnable.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                GameButton.enableAllGameButtons();
-            }
-        });
-        final Button buttonTempRestart = (Button) findViewById(R.id.button_temp_restart);
-        buttonTempRestart.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                // todo ein exit zum server senden  @Dieter, eigentlich dasselbe wie nach timeout
-                setUpGame();
-            }
-        });
+//        // Temporaere Buttons, nur fuer Entwicklulng
+//        final Button buttonTempEnable = (Button) findViewById(R.id.button_temp_enable_all);
+//        buttonTempEnable.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v){
+//                GameButton.enableAllGameButtons();
+//            }
+//        });
+//        final Button buttonTempRestart = (Button) findViewById(R.id.button_temp_restart);
+//        buttonTempRestart.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v){
+//                // todo ein exit zum server senden  @Dieter, eigentlich dasselbe wie nach timeout
+//                setUpGame();
+//            }
+//        });
 
         //////////////////////////////////////////////////////////////////////////////////////
         // socket listening
@@ -278,6 +249,9 @@ public class MainActivity extends AppCompatActivity {
         });
         //
 
+        //
+        waitingImage = (ImageView) findViewById(R.id.waiting_img);
+
         // init game
         GameButton.setSocketController(socketController);
         GameButton.setAllGameButtons(asList(gameButton0,gameButton1,gameButton2,gameButton3,
@@ -312,6 +286,24 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
+    // TODO das hier bringt auch gar nichts...
+    private void handleOnStartGame(Object args[]) {
+        Log.i(PROG, "****************** game started");
+        displayZeileStatus.setText("Game started");
+        JSONObject data = (JSONObject) args[0];
+        Log.i(PROG, "******************" +data.toString());
+        String player1;
+        String player2;
+        try {
+            player1 = data.getString("player1");
+            player2 = data.getString("player2");
+        } catch (JSONException e) {
+            return;
+        }
+        Log.i(PROG, "****************** player1: "+player1);
+        Log.i(PROG, "****************** player2: "+player2);
+        displayZeilePlayers.setText("Player O: " +player1 +"  |  Player X: " +player2);
+    }
     // ich zuerst: ich bin player1, o
     // anderer zuerst: ich bin player2, x
     // muessen wir aber nicht speichern, der server weiss es
@@ -322,23 +314,24 @@ public class MainActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Log.i(PROG, "****************** game started");
-                    displayZeileStatus.setText("Game started");
-
-                    JSONObject data = (JSONObject) args[0];
-                    Log.i(PROG, "******************" +data.toString());
-                    String player1;
-                    String player2;
-                    try {
-                        player1 = data.getString("player1");
-                        player2 = data.getString("player2");
-                    } catch (JSONException e) {
-                        return;
-                    }
-                    Log.i(PROG, "****************** player1: "+player1);
-                    Log.i(PROG, "****************** player2: "+player2);
-
-                    displayZeilePlayers.setText("Player O: " +player1 +"  |  Player X: " +player2);
+                    handleOnStartGame(args);
+//                    Log.i(PROG, "****************** game started");
+//                    displayZeileStatus.setText("Game started");
+//
+//                    JSONObject data = (JSONObject) args[0];
+//                    Log.i(PROG, "******************" +data.toString());
+//                    String player1;
+//                    String player2;
+//                    try {
+//                        player1 = data.getString("player1");
+//                        player2 = data.getString("player2");
+//                    } catch (JSONException e) {
+//                        return;
+//                    }
+//                    Log.i(PROG, "****************** player1: "+player1);
+//                    Log.i(PROG, "****************** player2: "+player2);
+//
+//                    displayZeilePlayers.setText("Player O: " +player1 +"  |  Player X: " +player2);
                 }
             });
         }
@@ -370,7 +363,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.i(PROG, "****************** player: "+player);  // x oder o
 
                     displayZeileStatus.setText(username +", your turn (" +player +")");
-
+                    waitingImage.setVisibility(View.INVISIBLE);
                     GameButton.enableAllGameButtons();
                 }
             });
@@ -402,6 +395,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.i(PROG, "****************** player: "+player);
 
                     displayZeileStatus.setText("Others turn ("+username +" as " +player +") \nplease wait...");
+                    waitingImage.setVisibility(View.VISIBLE);
                 }
             });
         }
@@ -439,5 +433,11 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     };
+
+
+    // DISPLAY Methoden
+    public void displayStatus(String text) {
+        displayZeileStatus.setText(text);
+    }
 
 }

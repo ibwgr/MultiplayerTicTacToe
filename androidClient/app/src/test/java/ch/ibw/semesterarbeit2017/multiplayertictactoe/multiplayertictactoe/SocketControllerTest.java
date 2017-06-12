@@ -18,9 +18,7 @@ public class SocketControllerTest {
     private String player;
 
     @Test
-    public void createSocket() throws Exception {
-
-
+    public void testVersuch() throws Exception {
 
         Emitter.Listener onAnyEmitter = null;
 
@@ -30,6 +28,8 @@ public class SocketControllerTest {
                 player = "Hans";
             }
         };
+
+        Emitter x = new Emitter();
 
         // Fake Server Response Object
         JSONObject fakeServerResponseObject = new JSONObject();
@@ -41,9 +41,13 @@ public class SocketControllerTest {
 
         // Using Mockito
         final Socket socket = mock(Socket.class);
-        when(socket.emit("add_user",anyString())).thenReturn(null);   // todo das bringt ja voellig gar nichts!!
+        //when(socket.emit("add_user",anyString())).thenReturn(null);   // todo das bringt ja voellig gar nichts!!
 
-//      when(socket.on("start_game", onAnyEmitter)).thenReturn(fakeServerResponseObject);   // todo, das ist sinnvoll, geht so aber nicht
+        final SocketController socketController = mock(SocketController.class);
+
+        //when(socketController.getSocket().on("start_game", em)).thenReturn(fakeServerResponseObject);   // todo, das ist sinnvoll, geht so aber nicht
+        //socketController.getSocket().on("start_game", em);
+
         when(socket.on("start_game", em));// todo, das ist sinnvoll, geht so aber nicht
         System.out.println("player : " +player);
         //Assert.assertTrue("Message sent successfully", text.sendTo("localhost", "1234"));
@@ -52,10 +56,6 @@ public class SocketControllerTest {
         //when(userValidator.doesUsernameExist(anyString())).thenReturn(false);
 
         //socketController.send("add_user", obj);
-
-
-
-
     }
 
 }
