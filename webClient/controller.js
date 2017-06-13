@@ -20,22 +20,21 @@ export default class{
         view.registerNewGameEventListener(this.newGameEventListener.bind(this))
 
         // connection
-        socket.on('connect', function() {
+        socket.on('connect', _=> {
             console.log('connected: ' + socket.id)
         })
 
-        socket.on('disconnect', function() {
+        socket.on('disconnect', _=> {
             console.log('disconnected')
             this.running = false
             this.gameEnabled = false
 
-            // this context is wrong !!!
-            console.log(this)
-            console.log(this.view)
+            // this context is wrong !!! because of a normal FUNCTION not a ARROW FUNCTION !!!
             this.view.showNameInput(true)
+            this.view.initBoard()
             this.view.showBoard(false)
             this.view.showNewGame(false)
-            
+            this.view.showInfo(false)
         })
 
         // 
@@ -105,12 +104,16 @@ export default class{
         socket.on('connect_failed', (data)=>{
             console.log('connection failed')
         })
+
+        socket.on('error', (data)=>{
+            console.log('error')
+        })
     }
 
 
 
     fieldEventListener(field){
-        if (this.view.isFieldFull(field) && this.running && this.gameEnabled){
+        if (this.view.isFieldEmpty(field) && this.running && this.gameEnabled){
             this.view.setField(field, this.playerToken)
             // message to server
             socket.emit('player_action', {'player': this.playerToken, 'field': field})
