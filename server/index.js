@@ -7,7 +7,7 @@ import Board from './board'
 import SocketUtil from './socketUtil'
 
 let app = express()
-let server = app.listen(3100)
+let server = app.listen(process.env.PORT || 3100)
 let io = socketio.listen(server)
 
 app.use(cors())

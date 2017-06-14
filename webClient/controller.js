@@ -5,6 +5,10 @@ import io from 'socket.io-client'
 let socket = io.connect('http://localhost:3100', {reconnect: true})
 //let socket = io.connect('http://warm-shelf-33316.herokuapp.com:80', {reconnect: true})
 
+String.prototype.isEmpty = function() {
+    return (this.length === 0 || !this.trim());
+}
+
 export default class{
 
     constructor(view){
@@ -122,11 +126,12 @@ export default class{
 
     nameEventListener(username){
         // message to server
-        socket.emit('add_user', {'username': username})
-        this.view.showNameInput(false)
-        this.view.setInfoText('..........')
-/*        this.view.showInfo(true)
-*/    }
+        if (!username.isEmpty()) {
+            socket.emit('add_user', {'username': username})
+            this.view.showNameInput(false)
+            this.view.setInfoText('..........')
+        }
+    }
 
     newGameEventListener(){
         // message to server

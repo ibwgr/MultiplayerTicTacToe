@@ -2,7 +2,6 @@
 
 import View from './view'
 import Controller from './controller'
-import 'babel-polyfill'
 //import Store from './store'
 
 /* MVC refactoring...
