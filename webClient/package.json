@@ -16,6 +16,7 @@
     "watchify": "^3.9.0"
   },
   "dependencies": {
+    "babel-polyfill": "^6.23.0",
     "socket.io": "^2.0.1",
     "todomvc-app-css": "^2.0.6"
   }
