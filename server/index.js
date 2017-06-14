@@ -4,9 +4,10 @@ import express from 'express'
 import socketio from 'socket.io'
 import cors from'cors'
 import Board from './board'
+import SocketUtil from './socketUtil'
 
 let app = express()
-let server = app.listen(3100)
+let server = app.listen(process.env.PORT || 3100)
 let io = socketio.listen(server)
 
 app.use(cors())
@@ -14,9 +15,11 @@ app.use(cors())
 let userQueue = []
 let boardList = []
 
-io.on('connection', function (socket) {
+io.on('connection', (socket) => {
     let username
     let board
+
+    let socketUtil = new SocketUtil(socket)
 
     // connection tests
     console.log('connection: ' + socket.id)
@@ -35,35 +38,20 @@ io.on('connection', function (socket) {
                 }
             })
         }
-        send_stats()
+        sendStats()
     }
 
     function connectUsers() {
         console.log('userQueue: ' + userQueue.map((item)=>item.username))
         if (userQueue.length > 1) {
+            // first player is player2 !
             socket.board = new Board(userQueue.shift(), userQueue.shift())
             socket.board.socketPlayer2.board = socket.board
 
             addToBoardList(socket.board)
+            socketUtil.startNewGame(socket.board.socketPlayer1, socket.board.socketPlayer2)
+            socketUtil.changePlayer(socket.board.socketPlayer1, socket.board.socketPlayer2)
 
-            socket.emit('start_game', {
-                'player1':socket.board.player1,
-                'player2':socket.board.player2
-            })
-            socket.to(socket.board.socketPlayer1.id).emit('start_game', {
-                'player1':socket.board.player1,
-                'player2':socket.board.player2
-            })
-            
-            socket.emit('your_turn', {
-                'player':'x',
-                'username':socket.username,
-                'time': 30
-            })
-            socket.to(socket.board.socketPlayer1.id).emit('other_turn', {
-                'player': 'x',
-                'username': socket.board.player2
-            })
             console.log(`player1 '${socket.board.player1}' plays versus player2 '${socket.board.player2}'`)            
         }
     }
@@ -73,32 +61,35 @@ io.on('connection', function (socket) {
         console.log(`username '${data.username}'`)
         socket.username = data.username
         userQueue.push(socket)
-        socket.emit('user_added', {'username': data.username})
-        connectUsers();
+        socketUtil.userAdded(data.username)
+        connectUsers()
+        sendStats()
     })
 
     // disconnect: remove user from queue
     // -> send info to other player, that game is aborted and other player wins!
-    socket.on('disconnect', function() {
-      console.log('disconnect, socket: ' + socket.id);
+    socket.on('disconnect', _=> {
+      console.log('disconnect, socket: ' + socket.id)
       // remove user from waiting queue
-      let i = userQueue.indexOf(socket);
+      let i = userQueue.indexOf(socket)
       if (i >= 0){
-          userQueue.splice(i, 1);
+          userQueue.splice(i, 1)
           console.log('userQueue: ' + userQueue.map((item)=>item.username))
       }
       // finish a running game
-      console.log(socket.board)
       if (socket.board){
-        socket.board.stopGame()
+        console.log('stop game')
         if (socket.id === socket.board.socketPlayer2.id) {
-            socket.to(socket.board.socketPlayer1).emit('game_finished', {'winner': socket.board.player1})
+            socket.board.stopGame(socket.board.player1)
+            socketUtil.gameFinished(socket.board.player1, socket.board.fieldsWon, socket.board.socketPlayer1, socket.board.socketPlayer2)
         } else {
-            socket.to(socket.board.socketPlayer2).emit('game_finished', {'winner': socket.board.player2})
+            socket.board.stopGame(socket.board.player2)
+            socketUtil.gameFinished(socket.board.player2, socket.board.fieldsWon, socket.board.socketPlayer1, socket.board.socketPlayer2)
         }
+        socket.board = null
       }
-
-    });
+      sendStats()
+    })
 
     // player moves
     socket.on('player_action', (data)=>{
@@ -106,82 +97,28 @@ io.on('connection', function (socket) {
         if (socket.board) {
             socket.board.setField(data)
             let gameResult = socket.board.checkBoard()
-            if (socket.id === socket.board.socketPlayer2.id) {
-                // send player action to the other user
-                socket.to(socket.board.socketPlayer1.id).emit('new_move', {
-                    'player': 'x',
-                    'field': data.field
-                })
-                if (gameResult) {
-                    // send finish message
-                    socket.to(socket.board.socketPlayer1.id).emit('game_finished', {
-                        'winner': gameResult,
-                        'fields': socket.board.fieldsWon,
-                        'username': socket.board.player1,
-                        'youWon': gameResult === socket.board.player1 ? 'yes' : 'no'
-                    })
-                    socket.emit('game_finished', {
-                        'winner': gameResult,
-                        'fields': socket.board.fieldsWon,
-                        'username': socket.board.player2,
-                        'youWon': gameResult === socket.board.player2 ? 'yes' : 'no'
-                    })
-                } else {
-                    // start next move
-                    socket.to(socket.board.socketPlayer1.id).emit('your_turn', {
-                        'player': 'o',
-                        'username': socket.board.player1
-                    })
-                    socket.emit('other_turn', {
-                        'player': 'o',
-                        'username': socket.board.player1
-                    })
-                }
+            // send player action to the other user
+            socketUtil.newMove(data.field, socket.board.socketPlayer1, socket.board.socketPlayer2)
+            if (gameResult) {
+                // send finish message
+                socketUtil.gameFinished(gameResult, socket.board.fieldsWon, socket.board.socketPlayer1, socket.board.socketPlayer2)
             } else {
-                // send player action to the other user
-                socket.to(socket.board.socketPlayer2.id).emit('new_move', {
-                    'player': 'o',
-                    'field': data.field
-                })
-                if (gameResult) {
-                    // send finish message
-                    socket.to(socket.board.socketPlayer2.id).emit('game_finished', {
-                        'winner': gameResult,
-                        'fields': socket.board.fieldsWon,
-                        'username': socket.board.player2,
-                        'youWon': gameResult === socket.board.player2 ? 'yes' : 'no'
-                    })
-                    socket.emit('game_finished', {
-                        'winner': gameResult,
-                        'fields': socket.board.fieldsWon,
-                        'username': socket.board.player1,
-                        'youWon': gameResult === socket.board.player1 ? 'yes' : 'no'
-                    })
-                } else {
-                    // start next move
-                    socket.to(socket.board.socketPlayer2.id).emit('your_turn', {
-                        'player': 'x',
-                        'username': socket.board.socketPlayer2.username
-                    })
-                    socket.emit('other_turn', {
-                        'player': 'x',
-                        'username': socket.board.socketPlayer2.username
-                    })
-                }
+                // start next move
+                socketUtil.changePlayer(socket.board.socketPlayer1, socket.board.socketPlayer2)
             }
-            send_stats()
+            sendStats()
         }
     })
 
     socket.on('new_game', (data)=>{
 //        boardList = boardList.filter((item)=>item != socket.board)
-//        socket.board = null
+        socket.board = null
         userQueue.push(socket)
-        connectUsers();
+        connectUsers()
     })
 
     // send statistic
-    function send_stats() {
+    function sendStats() {
         io.sockets.emit("stats_update", 
             {
                 "boardList": boardList.map((item)=>{return {

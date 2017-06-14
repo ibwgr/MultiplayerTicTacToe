@@ -1,5 +1,7 @@
 'use strict'
 
+import 'es6-symbol'
+
 const fieldEventListener = Symbol()
 const nameEventListener = Symbol()
 const newGameEventListener = Symbol()
@@ -23,9 +25,9 @@ export default class{
         
         this.$nameInput.addEventListener("change", this[nameEventListener].bind(this))
         this.$newGame.addEventListener("click", this[newGameEventListener].bind(this))
-        this.$fields.forEach(function(element) {
-            element.addEventListener("click", this[fieldEventListener].bind(this))
-        }, this);
+        for (let field of this.$fields) {
+            field.addEventListener("click", this[fieldEventListener].bind(this))
+        }
     }
 
     [fieldEventListener]({target}){
@@ -59,17 +61,23 @@ export default class{
     }
 
     setField(field, playerToken){
-        this.$doc.querySelector('#'+field).querySelector((playerToken === 'x' ? '.setX' : '.setO')).classList.remove('hidden')
+        if (field){
+            this.$doc.querySelector('#'+field).querySelector((playerToken === 'x' ? '.setX' : '.setO')).classList.remove('hidden')
+        }
     }
 
-    removeHiddenFromInfo(){
-        if (this.$infoContainer.classList.contains('hidden')){
-            this.$infoContainer.classList.remove('hidden')
+    showInfo(show){
+        if (show){
+            if (this.$infoContainer.classList.contains('hidden')){
+                this.$infoContainer.classList.remove('hidden')
+            }
+        } else {
+            this.$infoContainer.classList.add('hidden')
         }
     }
 
     setInfoText(text){
-        this.removeHiddenFromInfo()
+        this.showInfo(true)
         this.$info.innerText = text
     }
 
@@ -87,7 +95,7 @@ export default class{
     }
 
     setPlayerInfoText(text){
-        this.removeHiddenFromInfo()
+        this.showInfo(true)
         this.$playerInfo.innerText = text
     }
 
@@ -124,22 +132,24 @@ export default class{
     }
 
     initBoard(){
-        this.$fields.forEach(function(element){
-            element.classList.remove('fieldWon')
-            if (!element.querySelector('.setX').classList.contains('hidden')){
-                element.querySelector('.setX').classList.add('hidden')
+        for (let field of this.$fields) {
+            field.classList.remove('fieldWon')
+            if (!field.querySelector('.setX').classList.contains('hidden')){
+                field.querySelector('.setX').classList.add('hidden')
             }
-            if (!element.querySelector('.setO').classList.contains('hidden')){
-                element.querySelector('.setO').classList.add('hidden')
+            if (!field.querySelector('.setO').classList.contains('hidden')){
+                field.querySelector('.setO').classList.add('hidden')
             }
-        })
+        }
     }
 
-    isFieldFull(field){
-        console.log(field)
-        let element = this.$doc.querySelector('#'+field)
-        return (element.querySelector('.setX').classList.contains('hidden') &&
-                element.querySelector('.setO').classList.contains('hidden'))
+    isFieldEmpty(field){
+        if (field){
+            let element = this.$doc.querySelector('#'+field)
+            return (element.querySelector('.setX').classList.contains('hidden') &&
+                    element.querySelector('.setO').classList.contains('hidden'))
+        }
+        return false
     }
 
     //
