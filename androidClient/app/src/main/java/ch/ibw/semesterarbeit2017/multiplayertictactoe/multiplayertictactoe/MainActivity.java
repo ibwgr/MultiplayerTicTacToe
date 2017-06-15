@@ -1,15 +1,12 @@
 package ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,9 +56,9 @@ public class MainActivity extends AppCompatActivity {
     --------------------------------------------------------------------
     */
 
-    // todo diese beiden parameter wieder entf
-    //private SocketController socketController = new SocketController(getApplicationContext(), this);
-    private SocketController socketController = new SocketController();
+    //
+    private SocketController socketController = null; //new SocketController(getApplicationContext(), this);
+    //private SocketController socketController = new SocketController();
 
 
     @Override
@@ -69,9 +66,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        socketController = new SocketController(getApplicationContext(), this);
         setUpGame();
 
-        // get the values from fields
+        // get the view elements
         editUserName = (EditText) findViewById(R.id.edit_username);
         displayZeileStatus = (TextView) findViewById(R.id.label_displayzeile);
         displayZeilePlayers = (TextView) findViewById(R.id.label_displayplayers);
@@ -93,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                     editUserName.setVisibility(View.INVISIBLE);
 
                     socketController.connect();
-                    // username senden
+                    // username senden  // todo daten mgmt in controller
                     JSONObject obj = new JSONObject();
                     try {
                         obj.put("username", userName);
@@ -103,22 +101,6 @@ public class MainActivity extends AppCompatActivity {
                     socketController.send("add_user", obj);
 
                     displayZeileStatus.setText("Hello " +userName +"\n" + "Waiting for other user to play with...");
-
-//                    Log.i(PROG, "username " +userName +" gesendet");
-//                    toolbar.setTitle("Tic-Tac-Toe, User:"+userName);
-
-                    // Test only
-                    //GridLayout gameGridLayout = (GridLayout) findViewById(R.id.Game_GridLayout);
-                    //gameGridLayout.setBackgroundColor(Color.LTGRAY);
-                    //gameGridLayout.setClickable(false);
-                    //gameGridLayout.setEnabled(false);
-                    //gameGridLayout.setVisibility(View.GONE);
-                    /*
-                    for (int i = 0; i < layout.getChildCount(); i++) {
-                        View child = gameGridLayout.getChildAt(i);
-                        child.setEnabled(false);
-                    }
-                    */
 
                 } else {
                     Toast.makeText(getApplicationContext(), "Bitte zuerst einen Usernamen eingeben", Toast.LENGTH_LONG).show();
@@ -150,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         // todo gehoert in socketcontroller
         Log.i(PROG, "listening for socket messages from server");
         socketController.getSocket().on("start_game", onStartGame);
-        socketController.getSocket().on("user_added", onUserAdded);
+        socketController.getSocket().on("user_added", socketController.onUserAdded);
         socketController.getSocket().on("your_turn", onYourTurn);
         socketController.getSocket().on("other_turn", onOtherTurn);
         socketController.getSocket().on("new_move", onNewMove);  // Spielzug des Gegners
@@ -262,31 +244,32 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+//
+//
+//    private Emitter.Listener onUserAdded = new Emitter.Listener() {
+//        @Override
+//        public void call(final Object... args) {
+//            runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Log.i(PROG, "****************** onUserAdded");
+//                    JSONObject data = (JSONObject) args[0];
+//                    Log.i(PROG, "******************" +data.toString());
+//                    String userName;
+//                    try {
+//                        userName = data.getString("username");
+//                    } catch (JSONException e) {
+//                        return;
+//                    }
+//                    displayZeilePlayers.setText("Hallo " +userName);
+//                }
+//            });
+//        }
+//    };
+
 
     // todo gehoert in socketcontroller
-    private Emitter.Listener onUserAdded = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Log.i(PROG, "****************** onUserAdded");
-                    JSONObject data = (JSONObject) args[0];
-                    Log.i(PROG, "******************" +data.toString());
-                    String userName;
-                    try {
-                        userName = data.getString("username");
-                    } catch (JSONException e) {
-                        return;
-                    }
-                    displayZeilePlayers.setText("Hallo " +userName);
-                }
-            });
-        }
-    };
-
-
-    // TODO das hier bringt auch gar nichts...
+    //
     private void handleOnStartGame(Object args[]) {
         Log.i(PROG, "****************** game started");
         displayZeileStatus.setText("Game started");
@@ -304,10 +287,12 @@ public class MainActivity extends AppCompatActivity {
         Log.i(PROG, "****************** player2: "+player2);
         displayZeilePlayers.setText("Player O: " +player1 +"  |  Player X: " +player2);
     }
+
+    // todo gehoert in socketcontroller
     // ich zuerst: ich bin player1, o
     // anderer zuerst: ich bin player2, x
     // muessen wir aber nicht speichern, der server weiss es
-    // der letzte beginnt   // Todo muesste man nicht eher zufaellig starten @Dieter
+    // der letzte beginnt, ist ja zufaellig wer der letzte ist
     private Emitter.Listener onStartGame = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -338,6 +323,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
+    // todo gehoert in socketcontroller
     //
     //["other_turn",{"player":"x","username":"Emma"}]
     private Emitter.Listener onYourTurn = new Emitter.Listener() {
@@ -370,6 +356,8 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+
+    // todo gehoert in socketcontroller
     //With this we listen on the new message event to receive messages from other users.
     //["other_turn",{"player":"x","username":"Emma"}]
     private Emitter.Listener onOtherTurn = new Emitter.Listener() {
@@ -402,6 +390,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
+    // todo gehoert in socketcontroller
     // Gegner hat gezogen
     private Emitter.Listener onNewMove = new Emitter.Listener() {
         @Override

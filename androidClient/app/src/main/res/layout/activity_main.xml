@@ -75,9 +75,9 @@
         android:id="@+id/waiting_img"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="110dp"
+        android:layout_marginTop="2dp"
         android:layout_marginLeft="20dp"
-        android:src="@drawable/waiting_small_300px"
+        android:src="@drawable/blocked3"
         android:visibility="invisible"
         />
 

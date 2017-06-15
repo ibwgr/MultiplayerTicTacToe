@@ -23,31 +23,33 @@ public class SocketController {
 
     public static final String PROG = "____SOCKETCONTROLLER";
 
-//    // da der SocketController selbst keine Activity ist
-//    Context ctx;
-//    MainActivity act;
+    // da der SocketController selbst keine Activity ist
+    Context ctx;
+    MainActivity act;
 
     private Socket socket;
 
     //constructor
-    public SocketController() {
-        socket = createSocket();
-    }
-
-//    //constructor
-//    public SocketController(Context ctx, MainActivity act) {
-//        this.ctx = ctx;
-//        this.act = act;
-//        //
+//    public SocketController() {
 //        socket = createSocket();
 //    }
-    private MainActivity activity;
-    public void testSetActivity(MainActivity activity){
-        this.activity = activity;
+
+    //constructor
+    // todo hier die Mainactivity bekommen,  oder wie es der Dozent vorschlaegt: die findViewById redundant nochmals suchen...
+    public SocketController(Context ctx, MainActivity act) {
+        this.ctx = ctx;
+        this.act = act;
+        //
+        socket = createSocket();
     }
-    public void testUseActivity(String text){
-        this.activity.displayStatus(text);
-    }
+//    // todo wieder loeschen
+//    private MainActivity activity;
+//    public void testSetActivity(MainActivity activity){
+//        this.activity = activity;
+//    }
+//    public void testUseActivity(String text){
+//        this.activity.displayStatus(text);
+//    }
 
 
     //
@@ -83,28 +85,34 @@ public class SocketController {
         this.socket = socket;
     }
 
-//
-//    public static Emitter.Listener onUserAdded = new Emitter.Listener() {
-//        @Override
-//        public void call(final Object... args) {
-//            act.runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    Log.i(PROG, "****************** onUserAdded");
-//                    JSONObject data = (JSONObject) args[0];
-//                    Log.i(PROG, "******************" +data.toString());
-//                    String userName;
-//                    try {
-//                        userName = data.getString("username");
-//                    } catch (JSONException e) {
-//                        return;
-//                    }
-//                    act.findViewById(R.id.label_displayzeile);  // TODO weshalb nochmals suchen !!?
+
+    public Emitter.Listener onUserAdded = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            act.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.i(PROG, "****************** onUserAdded");
+                    JSONObject data = (JSONObject) args[0];
+                    Log.i(PROG, "******************" +data.toString());
+                    String userName;
+                    try {
+                        userName = data.getString("username");
+                    } catch (JSONException e) {
+                        return;
+                    }
+//                    act.findViewById(R.id.label_displayzeile);  // TODO  nochmals suchen !!? oder via Mainactivity...
 //                    TextView displayZeileStatus = (TextView) act.findViewById(R.id.label_displayzeile);
 //                    displayZeileStatus.setText("Hallo " +userName);
-//                }
-//            });
-//        }
-//    };
+                    act.displayStatus("Hallo " +userName);
+                }
+            });
+        }
+    };
+
+
+
+
+
 
 }
