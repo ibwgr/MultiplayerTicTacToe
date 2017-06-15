@@ -25,7 +25,7 @@ public class SocketController {
 
 //    // da der SocketController selbst keine Activity ist
 //    Context ctx;
-//    static Activity act;
+//    MainActivity act;
 
     private Socket socket;
 
@@ -35,12 +35,20 @@ public class SocketController {
     }
 
 //    //constructor
-//    public SocketController(Context ctx, Activity act) {
+//    public SocketController(Context ctx, MainActivity act) {
 //        this.ctx = ctx;
 //        this.act = act;
 //        //
 //        socket = createSocket();
 //    }
+    private MainActivity activity;
+    public void testSetActivity(MainActivity activity){
+        this.activity = activity;
+    }
+    public void testUseActivity(String text){
+        this.activity.displayStatus(text);
+    }
+
 
     //
     public Socket createSocket() {
