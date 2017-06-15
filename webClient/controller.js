@@ -5,6 +5,10 @@ import io from 'socket.io-client'
 let socket = io.connect('http://localhost:3100', {reconnect: true})
 //let socket = io.connect('http://warm-shelf-33316.herokuapp.com:80', {reconnect: true})
 
+String.prototype.isEmpty = function() {
+    return (this.length === 0 || !this.trim());
+}
+
 export default class{
 
     constructor(view){
@@ -20,22 +24,21 @@ export default class{
         view.registerNewGameEventListener(this.newGameEventListener.bind(this))
 
         // connection
-        socket.on('connect', function() {
+        socket.on('connect', _=> {
             console.log('connected: ' + socket.id)
         })
 
-        socket.on('disconnect', function() {
+        socket.on('disconnect', _=> {
             console.log('disconnected')
             this.running = false
             this.gameEnabled = false
 
-            // this context is wrong !!!
-            console.log(this)
-            console.log(this.view)
+            // this context is wrong !!! because of a normal FUNCTION not a ARROW FUNCTION !!!
             this.view.showNameInput(true)
+            this.view.initBoard()
             this.view.showBoard(false)
             this.view.showNewGame(false)
-            
+            this.view.showInfo(false)
         })
 
         // 
@@ -63,12 +66,15 @@ export default class{
             this.playerToken = data.player
             this.view.setInfoText(`Hi ${data.username}, please make a move ...`)
             this.gameEnabled = true
+            this.view.setInfoColor('yellow')
+            this.view.enableBoard(true)
         })
 
         socket.on('other_turn', (data)=>{
             console.log('other turn...')
-            this.view.setInfoText(`Waiting for user '${data.username}' ...`)
+            this.view.setInfoText(`Waiting for ${data.username} ...`)
             this.gameEnabled = false
+            this.view.enableBoard(false)
         })
 
         socket.on('new_move', (data)=>{
@@ -78,8 +84,18 @@ export default class{
 
         socket.on('game_finished', (data)=>{
             console.log('game finished, winner: ' + data.winner)
-            this.view.setInfoText(`Game has been finished, winner: '${data.winner}'`)
             this.running = false
+/*
+            this.view.setInfoText(`Game has been finished, winner: '${data.winner}'`)
+            this.view.setInfoColor(data.youWon === 'yes' ? 'green' : 'red')
+*/
+            if (data.youWon === 'yes'){
+                this.view.setInfoText(`Congratulations ${data.username}, you WON`)
+                this.view.setInfoColor('green')
+            } else {
+                this.view.setInfoText(`I'm sorry ${data.username}, you LOST`)
+                this.view.setInfoColor('red')
+            }
             this.view.showNewGame(true)
         })
 
@@ -92,12 +108,16 @@ export default class{
         socket.on('connect_failed', (data)=>{
             console.log('connection failed')
         })
+
+        socket.on('error', (data)=>{
+            console.log('error')
+        })
     }
 
 
 
     fieldEventListener(field){
-        if (this.view.isFieldFull(field) && this.running && this.gameEnabled){
+        if (this.view.isFieldEmpty(field) && this.running && this.gameEnabled){
             this.view.setField(field, this.playerToken)
             // message to server
             socket.emit('player_action', {'player': this.playerToken, 'field': field})
@@ -106,11 +126,12 @@ export default class{
 
     nameEventListener(username){
         // message to server
-        socket.emit('add_user', {'username': username})
-        this.view.showNameInput(false)
-        this.view.setInfoText('..........')
-/*        this.view.showInfo(true)
-*/    }
+        if (!username.isEmpty()) {
+            socket.emit('add_user', {'username': username})
+            this.view.showNameInput(false)
+            this.view.setInfoText('..........')
+        }
+    }
 
     newGameEventListener(){
         // message to server

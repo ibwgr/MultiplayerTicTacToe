@@ -1,5 +1,7 @@
 'use strict'
 
+import 'es6-symbol'
+
 const fieldEventListener = Symbol()
 const nameEventListener = Symbol()
 const newGameEventListener = Symbol()
@@ -19,12 +21,13 @@ export default class{
         this.$statsDiv = this.$doc.querySelector("#stats")
         this.$newGame = this.$doc.querySelector("#newGame")
         this.$fields = $doc.querySelectorAll("div.field")
+        this.$infoContainer = this.$doc.querySelector('#infoContainer')
         
         this.$nameInput.addEventListener("change", this[nameEventListener].bind(this))
         this.$newGame.addEventListener("click", this[newGameEventListener].bind(this))
-        this.$fields.forEach(function(element) {
-            element.addEventListener("click", this[fieldEventListener].bind(this))
-        }, this);
+        for (let field of this.$fields) {
+            field.addEventListener("click", this[fieldEventListener].bind(this))
+        }
     }
 
     [fieldEventListener]({target}){
@@ -58,18 +61,29 @@ export default class{
     }
 
     setField(field, playerToken){
-        this.$doc.querySelector('#'+field).querySelector((playerToken === 'x' ? '.setX' : '.setO')).classList.remove('hidden')
+        if (field){
+            this.$doc.querySelector('#'+field).querySelector((playerToken === 'x' ? '.setX' : '.setO')).classList.remove('hidden')
+        }
     }
 
-    removeHiddenFromInfo(){
-        if (this.$doc.querySelector('#infoContainer').classList.contains('hidden')){
-            this.$doc.querySelector('#infoContainer').classList.remove('hidden')
+    showInfo(show){
+        if (show){
+            if (this.$infoContainer.classList.contains('hidden')){
+                this.$infoContainer.classList.remove('hidden')
+            }
+        } else {
+            this.$infoContainer.classList.add('hidden')
         }
     }
 
     setInfoText(text){
-        this.removeHiddenFromInfo()
+        this.showInfo(true)
         this.$info.innerText = text
+    }
+
+    setInfoColor(text){
+        this.$infoContainer.classList.add(text)
+        window.setTimeout(_=>this.$infoContainer.classList.remove(text), 1500)
     }
 
     setPlayer1(text){
@@ -81,7 +95,7 @@ export default class{
     }
 
     setPlayerInfoText(text){
-        this.removeHiddenFromInfo()
+        this.showInfo(true)
         this.$playerInfo.innerText = text
     }
 
@@ -109,23 +123,33 @@ export default class{
         }
     }
 
-    initBoard(){
-        this.$fields.forEach(function(element){
-            element.classList.remove('fieldWon')
-            if (!element.querySelector('.setX').classList.contains('hidden')){
-                element.querySelector('.setX').classList.add('hidden')
-            }
-            if (!element.querySelector('.setO').classList.contains('hidden')){
-                element.querySelector('.setO').classList.add('hidden')
-            }
-        })
+    enableBoard(show){
+        if (show){
+            this.$board.classList.remove('inactivate')
+        } else {
+            this.$board.classList.add('inactivate')
+        }
     }
 
-    isFieldFull(field){
-        console.log(field)
-        let element = this.$doc.querySelector('#'+field)
-        return (element.querySelector('.setX').classList.contains('hidden') &&
-                element.querySelector('.setO').classList.contains('hidden'))
+    initBoard(){
+        for (let field of this.$fields) {
+            field.classList.remove('fieldWon')
+            if (!field.querySelector('.setX').classList.contains('hidden')){
+                field.querySelector('.setX').classList.add('hidden')
+            }
+            if (!field.querySelector('.setO').classList.contains('hidden')){
+                field.querySelector('.setO').classList.add('hidden')
+            }
+        }
+    }
+
+    isFieldEmpty(field){
+        if (field){
+            let element = this.$doc.querySelector('#'+field)
+            return (element.querySelector('.setX').classList.contains('hidden') &&
+                    element.querySelector('.setO').classList.contains('hidden'))
+        }
+        return false
     }
 
     //
