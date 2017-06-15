@@ -424,6 +424,18 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        socketController.getSocket().disconnect();
+        socketController.getSocket().off("start_game", onStartGame);
+        socketController.getSocket().off("user_added", socketController.onUserAdded);
+        socketController.getSocket().off("your_turn", onYourTurn);
+        socketController.getSocket().off("other_turn", onOtherTurn);
+        socketController.getSocket().off("new_move", onNewMove);  // Spielzug des Gegners
+    }
+
     // DISPLAY Methoden
     public void displayStatus(String text) {
         displayZeileStatus.setText(text);
