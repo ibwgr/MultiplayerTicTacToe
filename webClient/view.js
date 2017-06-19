@@ -25,9 +25,22 @@ export default class{
         
         this.$nameInput.addEventListener("change", this[nameEventListener].bind(this))
         this.$newGame.addEventListener("click", this[newGameEventListener].bind(this))
+
+        // for .. of loop
         for (let field of this.$fields) {
             field.addEventListener("click", this[fieldEventListener].bind(this))
         }
+/*
+        // with SPREAD parameter
+        [...this.$fields].forEach(item=>{
+            item.addEventListener("click", this[fieldEventListener].bind(this))
+        })
+
+        // Array.from function
+        Array.from(this.$fields).forEach(item=>{
+            item.addEventListener("click", this[fieldEventListener].bind(this))
+        })
+*/
     }
 
     [fieldEventListener]({target}){
@@ -63,6 +76,14 @@ export default class{
     setField(field, playerToken){
         if (field){
             this.$doc.querySelector('#'+field).querySelector((playerToken === 'x' ? '.setX' : '.setO')).classList.remove('hidden')
+        }
+    }
+
+    setFieldsWon(fields){
+        if (fields){
+            fields.forEach(item=>{
+                this.$doc.querySelector('#field'+item).classList.add('fieldWon')
+            })
         }
     }
 
@@ -154,15 +175,27 @@ export default class{
 
     //
     renderStatistics(data){
-        this.$statsDiv.innerHTML = data.boardList.map(this[renderStatsItem]).join('')
+        this.$statsDiv.innerHTML = data.boardList.map(this[renderStatsItem].bind(this)).join('')
     }
 
     [renderStatsItem](item) {
-        return `<li ${item.hasChanged?'class="changed"':''}>
-        <div>${item.timestamp}</div>
-        <div>${item.player1}</div>
-        <div>${item.player2}</div>
-        <div>${item.status}</div>
+        // animation
+        if (item.change) {
+            window.setTimeout(_=>{
+                for (let element of this.$doc.querySelectorAll('.changeNew')){
+                    element.classList.remove('changeNew')
+                }
+                for (let element of this.$doc.querySelectorAll('.changeUpdate')){
+                    element.classList.remove('changeUpdate')
+                }
+            }, 800)
+        }
+
+        // return html
+        return `<li ${item.change === 'new' ? 'class="changeNew"' : item.change === 'update' ? 'class="changeUpdate"' : ''}>
+        <div class="col1">${item.timestamp}</div>
+        <div class="col2 ${item.status === item.player1 ? 'winner' : ''}">${item.player1}</div>
+        <div class="col3 ${item.status === item.player2 ? 'winner' : ''}">${item.player2}</div>
         </li>`
     }
 
