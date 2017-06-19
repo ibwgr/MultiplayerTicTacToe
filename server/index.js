@@ -6,6 +6,10 @@ import cors from'cors'
 import Board from './board'
 import SocketUtil from './socketUtil'
 
+String.prototype.isEmpty = function() {
+    return (this.length === 0 || !this.trim());
+}
+
 let app = express()
 let server = app.listen(process.env.PORT || 3100)
 let io = socketio.listen(server)
@@ -24,9 +28,6 @@ io.on('connection', (socket) => {
     // connection tests
     console.log('connection: ' + socket.id)
 
-    // info to client -> new connection, reset game
-    //socket.emit('new_connection')
-
     function addToBoardList(board) {
         boardList.unshift(board)
         console.log('boardList: ' + boardList.map((item)=>item.socketPlayer1.username + '/' + item.socketPlayer2.username))
@@ -38,7 +39,6 @@ io.on('connection', (socket) => {
                 }
             })
         }
-        sendStats()
     }
 
     function connectUsers() {
@@ -53,17 +53,22 @@ io.on('connection', (socket) => {
             socketUtil.changePlayer(socket.board.socketPlayer1, socket.board.socketPlayer2)
 
             console.log(`player1 '${socket.board.player1}' plays versus player2 '${socket.board.player2}'`)            
+            sendStats({'newBoard': socket.board})
         }
     }
 
     // receive new user
     socket.on('add_user', (data)=>{
         console.log(`username '${data.username}'`)
-        socket.username = data.username
-        userQueue.push(socket)
-        socketUtil.userAdded(data.username)
-        connectUsers()
-        sendStats()
+        if (!data.username.isEmpty()){
+            socket.username = data.username
+            userQueue.push(socket)
+            socketUtil.userAdded(data.username)
+            connectUsers()
+            sendStats()
+        } else {
+            socket.emit('username mandatory')
+        }
     })
 
     // disconnect: remove user from queue
@@ -75,9 +80,10 @@ io.on('connection', (socket) => {
       if (i >= 0){
           userQueue.splice(i, 1)
           console.log('userQueue: ' + userQueue.map((item)=>item.username))
+          sendStats()
       }
       // finish a running game
-      if (socket.board){
+      if (socket.board && socket.board.done === false){
         console.log('stop game')
         if (socket.id === socket.board.socketPlayer2.id) {
             socket.board.stopGame(socket.board.player1)
@@ -87,8 +93,8 @@ io.on('connection', (socket) => {
             socketUtil.gameFinished(socket.board.player2, socket.board.fieldsWon, socket.board.socketPlayer1, socket.board.socketPlayer2)
         }
         socket.board = null
+        sendStats({'updateBoard': socket.board})
       }
-      sendStats()
     })
 
     // player moves
@@ -106,7 +112,7 @@ io.on('connection', (socket) => {
                 // start next move
                 socketUtil.changePlayer(socket.board.socketPlayer1, socket.board.socketPlayer2)
             }
-            sendStats()
+            sendStats({'updateBoard': socket.board})
         }
     })
 
@@ -118,17 +124,20 @@ io.on('connection', (socket) => {
     })
 
     // send statistic
-    function sendStats() {
-        io.sockets.emit("stats_update", 
-            {
-                "boardList": boardList.map((item)=>{return {
-                    "timestamp": item.timestamp,
-                    "player1": item.player1,
-                    "player2": item.player2,
-                    "status": item.winner || "playing"
+    function sendStats({newBoard, updateBoard}={}) {
+        // stats JSON
+        console.log('newBoard:'+newBoard)
+        console.log('updateBoard:'+updateBoard)
+        let stats = {
+            'boardList': boardList.map((item)=>{return {
+                'timestamp': item.timestamp,
+                'player1': item.player1,
+                'player2': item.player2,
+                'status': item.winner || 'playing',
+                'change': newBoard === item ? 'new' : updateBoard === item ? 'update' : ''
             }}),
-                "userQueue": userQueue.map((item)=>item.username)
-            }
-        )
+            'userQueue': userQueue.map((item)=>item.username)
+        }
+        io.sockets.emit('stats_update', stats)
     }
 })
