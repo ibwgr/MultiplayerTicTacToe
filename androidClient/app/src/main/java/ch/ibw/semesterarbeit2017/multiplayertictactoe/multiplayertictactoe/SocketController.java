@@ -23,17 +23,7 @@ public class SocketController {
 
     public static final String PROG = "____SOCKETCONTROLLER";
 
-    // Variablen DTO
-    private String username;
-
-    public String getUsername() {
-        return username;
-    }
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    //------------------------------------------------------------------------------
+    // da der SocketController selbst keine Activity ist
     Context ctx;
     MainActivity act;
 
@@ -105,19 +95,21 @@ public class SocketController {
                     Log.i(PROG, "****************** onUserAdded");
                     JSONObject data = (JSONObject) args[0];
                     Log.i(PROG, "******************" +data.toString());
+                    String userName;
                     try {
-                        setUsername(data.getString("username"));
+                        userName = data.getString("username");
                     } catch (JSONException e) {
                         return;
                     }
 //                    act.findViewById(R.id.label_displayzeile);  // TODO  nochmals suchen !!? oder via Mainactivity...
 //                    TextView displayZeileStatus = (TextView) act.findViewById(R.id.label_displayzeile);
 //                    displayZeileStatus.setText("Hallo " +userName);
-                    act.displayStatus("Hallo " +getUsername());
+                    act.displayStatus("Hallo " +userName);
                 }
             });
         }
     };
+
 
 
 
