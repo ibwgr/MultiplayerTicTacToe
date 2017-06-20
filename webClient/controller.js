@@ -66,7 +66,7 @@ export default class{
             this.playerToken = data.player
             this.view.setInfoText(`Hi ${data.username}, please make a move ...`)
             this.gameEnabled = true
-            this.view.setInfoColor('yellow')
+            this.view.setInfoColor('blue')
             this.view.enableBoard(true)
         })
 
@@ -85,16 +85,19 @@ export default class{
         socket.on('game_finished', (data)=>{
             console.log('game finished, winner: ' + data.winner)
             this.running = false
-/*
-            this.view.setInfoText(`Game has been finished, winner: '${data.winner}'`)
-            this.view.setInfoColor(data.youWon === 'yes' ? 'green' : 'red')
-*/
+            this.view.setFieldsWon(data.fields)
             if (data.youWon === 'yes'){
                 this.view.setInfoText(`Congratulations ${data.username}, you WON`)
                 this.view.setInfoColor('green')
             } else {
-                this.view.setInfoText(`I'm sorry ${data.username}, you LOST`)
-                this.view.setInfoColor('red')
+                console.log('winner:'+data.winner)
+                if (data.winner === 'draw'){
+                    this.view.setInfoText(`This game ended in a draw.`)
+                    this.view.setInfoColor('orange')
+                } else {
+                    this.view.setInfoText(`I'm sorry ${data.username}, you LOST`)
+                    this.view.setInfoColor('red')
+                }
             }
             this.view.showNewGame(true)
         })
