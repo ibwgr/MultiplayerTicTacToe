@@ -33,7 +33,7 @@ export default class{
             this.running = false
             this.gameEnabled = false
 
-            // this context is wrong !!! because of a normal FUNCTION not a ARROW FUNCTION !!!
+            // this context was wrong !!! because of a normal FUNCTION not a ARROW FUNCTION !!!
             this.view.showNameInput(true)
             this.view.initBoard()
             this.view.showBoard(false)
@@ -41,7 +41,17 @@ export default class{
             this.view.showInfo(false)
         })
 
-        // 
+        // username already in queue
+        socket.on('username_validation', (data)=>{
+            console.log('username_validation: '+data.msg)
+            this.view.setInfoText(data.msg)
+            window.setTimeout(_=>{
+                this.view.showNameInput(true)
+                this.view.showInfo(false)
+            }, 2000)
+        })
+
+        // new user is added to queue
         socket.on('user_added', (data)=>{
             console.log('user_added')
 
