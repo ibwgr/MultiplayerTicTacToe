@@ -35,6 +35,8 @@ public class SocketController {
 //    }
 
     //constructor
+    public SocketController() {
+    }
     // todo hier die Mainactivity bekommen,  oder wie es der Dozent vorschlaegt: die findViewById redundant nochmals suchen...
     public SocketController(Context ctx, MainActivity act) {
         this.ctx = ctx;
@@ -86,6 +88,50 @@ public class SocketController {
     }
 
 
+
+
+    public Emitter.Listener onGameFinished = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            act.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.i(PROG, "****************** onGameFinished");
+                    onGameFinishedActionMethod((JSONObject) args[0]);
+                }
+            });
+        }
+    };
+    public void onGameFinishedActionMethod(JSONObject data) {
+        Log.i(PROG, "****************** onGameFinishedActionMethod");
+        Log.i(PROG, "******************" +data.toString());
+        //{"winner":"hans","fields":[2,4,6],"username":"Emma","youWon":"no"}
+        String winner;
+        String[] fields;
+        String userName;
+        String youWon;
+        try {
+            winner = data.getString("winner");
+            //fields[] = data.getJSONArray("fields");  // todo optisch anzeigen!
+            userName = data.getString("username");
+            youWon = data.getString("youWon");
+            System.out.println("youWon: " +youWon);
+        } catch (JSONException e) {
+            return;
+        }
+//                    act.findViewById(R.id.label_displayzeile);  // TODO  nochmals suchen !!? oder via Mainactivity...
+//                    TextView displayZeileStatus = (TextView) act.findViewById(R.id.label_displayzeile);
+//                    displayZeileStatus.setText("Hallo " +userName);
+        if (youWon.equals("yes")) {
+            act.getGameInfo().setiHaveWon(true);
+            act.displayStatus("You won!");
+        } else {
+            act.getGameInfo().setOtherHasWon(true);
+            act.displayStatus("Sorry, you lost");
+        }
+    }
+
+
     public Emitter.Listener onUserAdded = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -93,22 +139,26 @@ public class SocketController {
                 @Override
                 public void run() {
                     Log.i(PROG, "****************** onUserAdded");
-                    JSONObject data = (JSONObject) args[0];
-                    Log.i(PROG, "******************" +data.toString());
-                    String userName;
-                    try {
-                        userName = data.getString("username");
-                    } catch (JSONException e) {
-                        return;
-                    }
-//                    act.findViewById(R.id.label_displayzeile);  // TODO  nochmals suchen !!? oder via Mainactivity...
-//                    TextView displayZeileStatus = (TextView) act.findViewById(R.id.label_displayzeile);
-//                    displayZeileStatus.setText("Hallo " +userName);
-                    act.displayStatus("Hallo " +userName);
+                    onUserAddedActionMethod((JSONObject) args[0]);
                 }
             });
         }
     };
+    public void onUserAddedActionMethod(JSONObject data) {
+        Log.i(PROG, "****************** onUserAddedActionMethod");
+        Log.i(PROG, "******************" +data.toString());
+        String userName;
+        try {
+            userName = data.getString("username");
+        } catch (JSONException e) {
+            return;
+        }
+//                    act.findViewById(R.id.label_displayzeile);  // TODO  nochmals suchen !!? oder via Mainactivity...
+//                    TextView displayZeileStatus = (TextView) act.findViewById(R.id.label_displayzeile);
+//                    displayZeileStatus.setText("Hallo " +userName);
+        act.getGameInfo().setMyName(userName);
+        act.displayStatus("Hallo " +userName);
+    }
 
 
 

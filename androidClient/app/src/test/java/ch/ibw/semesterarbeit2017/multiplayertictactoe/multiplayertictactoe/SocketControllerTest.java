@@ -9,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 
+import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 /**
  * Created by rk on 11.06.17.
@@ -16,6 +17,48 @@ import static org.mockito.Mockito.*;
 public class SocketControllerTest {
 
     private String player;
+
+    @Test
+    public void einVielEinfachererTestX() throws Exception {
+        //
+        JSONObject jsonObject1 = new JSONObject();
+        JSONObject jsonObject2 = new JSONObject();
+        jsonObject1.put("test", "test");
+        jsonObject2.put("test", "test");
+        System.out.println("Test JSON: " + jsonObject1.get("test"));
+        assertEquals(jsonObject1.get("test"), jsonObject2.get("test"));
+
+
+        JSONObject main = new JSONObject();
+        main.put("Command", "CreateNewUser");
+        JSONObject user = new JSONObject();
+        user.put("FirstName", "John");
+        user.put("LastName", "Reese");
+        main.put("User", user);
+        System.out.println("main : " +main.toString());
+    }
+
+    @Test
+    public void einVielEinfachererTest() throws Exception {
+        MainActivity fakeMainActivity = new MainActivity();
+        SocketController socketController = new SocketController(null, fakeMainActivity);
+        //
+        //{"winner":"hans","fields":[2,4,6],"username":"Emma","youWon":"no"}
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("winner", "hans");
+            obj.put("fields", "[2,4,6]");
+            obj.put("username", "Emma");
+            obj.put("youWon", "yes");
+            System.out.println("Test JSON: " + obj.getString("youWon"));   // todo weshalb null ????
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Test JSON: " + obj.toString());   // todo weshalb null ????
+        socketController.onGameFinishedActionMethod(obj);
+    }
+
+
 
     @Test
     public void testVersuch() throws Exception {

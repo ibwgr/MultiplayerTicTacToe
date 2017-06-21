@@ -158,21 +158,29 @@
             android:background="@drawable/gf_init"
             />
     </GridLayout>
-<!--
     <Button
-        android:id="@+id/button_temp_enable_all"
+        android:id="@+id/button_sim_win"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/Game_GridLayout"
         android:layout_marginTop="55px"
-        android:text="Enable all" />
-    <Button
-        android:id="@+id/button_temp_restart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/Game_GridLayout"
-        android:layout_toRightOf="@id/button_temp_enable_all"
-        android:layout_marginTop="55px"
-        android:text="Restart" />
--->
+        android:text="sim-win" />
+
+    <!--
+        <Button
+            android:id="@+id/button_temp_enable_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/Game_GridLayout"
+            android:layout_marginTop="55px"
+            android:text="Enable all" />
+        <Button
+            android:id="@+id/button_temp_restart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/Game_GridLayout"
+            android:layout_toRightOf="@id/button_temp_enable_all"
+            android:layout_marginTop="55px"
+            android:text="Restart" />
+    -->
 </RelativeLayout>

@@ -40,8 +40,17 @@ public class MainActivity extends AppCompatActivity {
     private GameButton gameButton7;
     private GameButton gameButton8;
 
-    private String currentPlayer = "";
+    private GameInfo gameInfo;
+    private String currentPlayer = "";  // todo weg damit!
 
+
+
+    public GameInfo getGameInfo() {
+        return gameInfo;
+    }
+    public void setGameInfo(GameInfo gameInfo) {
+        this.gameInfo = gameInfo;
+    }
 
     /*
     // Test Client http://lastminute.li/ttt/
@@ -67,7 +76,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         socketController = new SocketController(getApplicationContext(), this);
+        gameInfo = new GameInfo();
         setUpGame();
+
 
         // get the view elements
         editUserName = (EditText) findViewById(R.id.edit_username);
@@ -109,6 +120,26 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
+        // Temporaere Buttons, nur fuer Entwicklulng  // todo alles auskommentieren
+        final Button buttonSimWin = (Button) findViewById(R.id.button_sim_win);
+        buttonSimWin.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                //{"winner":"hans","fields":[2,4,6],"username":"Emma","youWon":"no"}
+                JSONObject obj = new JSONObject();
+                try {
+                    obj.put("winner", "hans");
+                    obj.put("fields", "[2,4,6]");
+                    obj.put("username", "Emma");
+                    obj.put("youWon", "yes");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                socketController.onGameFinishedActionMethod(obj);
+            }
+        });
+
 //        // Temporaere Buttons, nur fuer Entwicklulng
 //        final Button buttonTempEnable = (Button) findViewById(R.id.button_temp_enable_all);
 //        buttonTempEnable.setOnClickListener(new View.OnClickListener(){
@@ -136,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
         socketController.getSocket().on("your_turn", onYourTurn);
         socketController.getSocket().on("other_turn", onOtherTurn);
         socketController.getSocket().on("new_move", onNewMove);  // Spielzug des Gegners
+        socketController.getSocket().on("game_finished", socketController.onGameFinished);
 
     } // end on-create lifecycle
 
@@ -144,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpGame() {
         // initializing
-        currentPlayer = "";
+        currentPlayer = "";                ;
 
         // als erstes die GameButton Instanzen ermitteln
         //
