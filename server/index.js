@@ -43,7 +43,7 @@ io.on('connection', (socket) => {
 
     function connectUsers() {
         console.log('userQueue: ' + userQueue.map((item)=>item.username))
-        if (userQueue.length > 1) {
+        if (userQueue.length > 1){
             // first player is player2 !
             socket.board = new Board(userQueue.shift(), userQueue.shift())
             socket.board.socketPlayer2.board = socket.board
@@ -57,18 +57,36 @@ io.on('connection', (socket) => {
         }
     }
 
+    function validateUser(name){
+        if (name.isEmpty()){
+            socket.emit('username_validation', {'msg': 'Name cannot be empty.'})
+            return false
+        } else {
+            if (userQueue && userQueue.filter(item=>item.username===name).length > 0){
+                socket.emit('username_validation', {'msg': 'Name is already used, please try another one.'})
+                return false
+            }
+            if (name.length > 12){
+                socket.emit('username_validation', {'msg': 'Name is too long. Please try another one.'})
+                return false
+            }
+        }
+        return true
+    }
+
+    function addUserToQueue(name){
+        if (validateUser(name)){
+            socket.username = name
+            userQueue.push(socket)
+            socketUtil.userAdded(name)
+            connectUsers()
+        }
+    }
+
     // receive new user
     socket.on('add_user', (data)=>{
         console.log(`username '${data.username}'`)
-        if (!data.username.isEmpty()){
-            socket.username = data.username
-            userQueue.push(socket)
-            socketUtil.userAdded(data.username)
-            connectUsers()
-            sendStats()
-        } else {
-            socket.emit('username mandatory')
-        }
+        addUserToQueue(data.username)
     })
 
     // disconnect: remove user from queue
@@ -119,8 +137,7 @@ io.on('connection', (socket) => {
     socket.on('new_game', (data)=>{
 //        boardList = boardList.filter((item)=>item != socket.board)
         socket.board = null
-        userQueue.push(socket)
-        connectUsers()
+        addUserToQueue(socket.username)
     })
 
     // send statistic
@@ -129,7 +146,7 @@ io.on('connection', (socket) => {
         console.log('newBoard:'+newBoard)
         console.log('updateBoard:'+updateBoard)
         let stats = {
-            'boardList': boardList.map((item)=>{return {
+            'boardList': boardList.map(item=>{return {
                 'timestamp': item.timestamp,
                 'player1': item.player1,
                 'player2': item.player2,

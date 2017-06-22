@@ -104,7 +104,7 @@ export default class{
 
     setInfoColor(text){
         this.$infoContainer.classList.add(text)
-        window.setTimeout(_=>this.$infoContainer.classList.remove(text), 1500)
+        window.setTimeout(_=>this.$infoContainer.classList.remove(text), 2000)
     }
 
     setPlayer1(text){
@@ -195,7 +195,7 @@ export default class{
         return `<li ${item.change === 'new' ? 'class="changeNew"' : item.change === 'update' ? 'class="changeUpdate"' : ''}>
         <div class="col1">${item.timestamp}</div>
         <div class="col2 ${item.status === item.player1 ? 'winner' : ''}">${item.player1}</div>
-        <div class="col3 ${item.status === item.player2 ? 'winner' : ''}">${item.player2}</div>
+        <div class="col3 ${item.status === item.player2 ? 'winner' : item.status === 'playing' ? 'playing' : ''}">${item.player2}</div>
         </li>`
     }
 
