@@ -18,17 +18,17 @@ app.use(cors())
 
 let userQueue = []
 let boardList = []
+const PLAY_TIMER = 30
 
+//
+// websocket connection
+//
 io.on('connection', (socket) => {
-    let username
-    let board
+    // socket variables
+    socket.socketUtil = new SocketUtil(socket)
 
-    let socketUtil = new SocketUtil(socket)
-
-    // connection tests
-    console.log('connection: ' + socket.id)
-
-    function addToBoardList(board) {
+    // socket functions
+    socket.addToBoardList = (board)=>{
         boardList.unshift(board)
         console.log('boardList: ' + boardList.map((item)=>item.socketPlayer1.username + '/' + item.socketPlayer2.username))
         // clean up board list
@@ -40,22 +40,53 @@ io.on('connection', (socket) => {
             })
         }
     }
-
-    function connectUsers() {
+    socket.stopCurrentGame = _=>{
+        if (socket.id === socket.board.socketPlayer2.id) {
+            socket.board.stopGame(socket.board.player1)
+            socket.socketUtil.gameFinished(socket.board.player1, socket.board.fieldsWon, socket.board.socketPlayer1, socket.board.socketPlayer2)
+        } else {
+            socket.board.stopGame(socket.board.player2)
+            socket.socketUtil.gameFinished(socket.board.player2, socket.board.fieldsWon, socket.board.socketPlayer1, socket.board.socketPlayer2)
+        }
+        socket.board = null
+        if (socket.timer){
+            clearTimeout(socket.timer)
+        }
+        sendStats({'updateBoard': socket.board})
+    }
+    socket.changePlayer = _=>{
+        let otherSocket = socket.socketUtil.changePlayer(socket.board.socketPlayer1, socket.board.socketPlayer2, PLAY_TIMER)
+        // start timer -> setTimeout(..., 30000)
+        if (socket.timer){
+            clearTimeout(socket.timer)
+        }
+        otherSocket.timer = setTimeout(_=>{
+          if (otherSocket.board && otherSocket.board.done === false){
+              otherSocket.stopCurrentGame()
+          }
+        }, PLAY_TIMER*1000)
+        //
+    }
+    socket.connectUsers = _=>{
         console.log('userQueue: ' + userQueue.map((item)=>item.username))
         if (userQueue.length > 1) {
             // first player is player2 !
             socket.board = new Board(userQueue.shift(), userQueue.shift())
             socket.board.socketPlayer2.board = socket.board
-
-            addToBoardList(socket.board)
-            socketUtil.startNewGame(socket.board.socketPlayer1, socket.board.socketPlayer2)
-            socketUtil.changePlayer(socket.board.socketPlayer1, socket.board.socketPlayer2)
-
+            socket.addToBoardList(socket.board)
+            socket.socketUtil.startNewGame(socket.board.socketPlayer1, socket.board.socketPlayer2)
+            socket.changePlayer()
             console.log(`player1 '${socket.board.player1}' plays versus player2 '${socket.board.player2}'`)            
             sendStats({'newBoard': socket.board})
         }
     }
+
+    // new connection
+    console.log('connection: ' + socket.id)
+
+    //
+    // Messages from the client
+    //
 
     // receive new user
     socket.on('add_user', (data)=>{
@@ -63,8 +94,8 @@ io.on('connection', (socket) => {
         if (!data.username.isEmpty()){
             socket.username = data.username
             userQueue.push(socket)
-            socketUtil.userAdded(data.username)
-            connectUsers()
+            socket.socketUtil.userAdded(data.username)
+            socket.connectUsers()
             sendStats()
         } else {
             socket.emit('username mandatory')
@@ -74,7 +105,7 @@ io.on('connection', (socket) => {
     // disconnect: remove user from queue
     // -> send info to other player, that game is aborted and other player wins!
     socket.on('disconnect', _=> {
-      console.log('disconnect, socket: ' + socket.id)
+      console.log('disconnect: ' + socket.id)
       // remove user from waiting queue
       let i = userQueue.indexOf(socket)
       if (i >= 0){
@@ -85,59 +116,60 @@ io.on('connection', (socket) => {
       // finish a running game
       if (socket.board && socket.board.done === false){
         console.log('stop game')
-        if (socket.id === socket.board.socketPlayer2.id) {
-            socket.board.stopGame(socket.board.player1)
-            socketUtil.gameFinished(socket.board.player1, socket.board.fieldsWon, socket.board.socketPlayer1, socket.board.socketPlayer2)
-        } else {
-            socket.board.stopGame(socket.board.player2)
-            socketUtil.gameFinished(socket.board.player2, socket.board.fieldsWon, socket.board.socketPlayer1, socket.board.socketPlayer2)
-        }
-        socket.board = null
-        sendStats({'updateBoard': socket.board})
+        socket.stopCurrentGame(socket)
       }
     })
 
     // player moves
     socket.on('player_action', (data)=>{
         console.log(`player '${data.player}' set field '${data.field}'`)
+        // clear all timeouts
+        if (socket.board.socketPlayer1.timer){
+            clearTimeout(socket.board.socketPlayer1.timer)
+        }
+        if (socket.board.socketPlayer2.timer){
+            clearTimeout(socket.board.socketPlayer2.timer)
+        }
         if (socket.board) {
             socket.board.setField(data)
             let gameResult = socket.board.checkBoard()
             // send player action to the other user
-            socketUtil.newMove(data.field, socket.board.socketPlayer1, socket.board.socketPlayer2)
+            socket.socketUtil.newMove(data.field, socket.board.socketPlayer1, socket.board.socketPlayer2)
             if (gameResult) {
                 // send finish message
-                socketUtil.gameFinished(gameResult, socket.board.fieldsWon, socket.board.socketPlayer1, socket.board.socketPlayer2)
+                socket.socketUtil.gameFinished(gameResult, socket.board.fieldsWon, socket.board.socketPlayer1, socket.board.socketPlayer2)
             } else {
                 // start next move
-                socketUtil.changePlayer(socket.board.socketPlayer1, socket.board.socketPlayer2)
+                socket.changePlayer()
             }
             sendStats({'updateBoard': socket.board})
         }
     })
 
     socket.on('new_game', (data)=>{
-//        boardList = boardList.filter((item)=>item != socket.board)
         socket.board = null
         userQueue.push(socket)
-        connectUsers()
+        socket.connectUsers()
     })
 
-    // send statistic
-    function sendStats({newBoard, updateBoard}={}) {
-        // stats JSON
-        console.log('newBoard:'+newBoard)
-        console.log('updateBoard:'+updateBoard)
-        let stats = {
-            'boardList': boardList.map((item)=>{return {
-                'timestamp': item.timestamp,
-                'player1': item.player1,
-                'player2': item.player2,
-                'status': item.winner || 'playing',
-                'change': newBoard === item ? 'new' : updateBoard === item ? 'update' : ''
-            }}),
-            'userQueue': userQueue.map((item)=>item.username)
-        }
-        io.sockets.emit('stats_update', stats)
-    }
 })
+
+//
+// general functions
+//
+
+// send statistic
+function sendStats({newBoard, updateBoard}={}) {
+    // stats JSON
+    let stats = {
+        'boardList': boardList.map((item)=>{return {
+            'timestamp': item.timestamp,
+            'player1': item.player1,
+            'player2': item.player2,
+            'status': item.winner || 'playing',
+            'change': newBoard === item ? 'new' : updateBoard === item ? 'update' : ''
+        }}),
+        'userQueue': userQueue.map((item)=>item.username)
+    }
+    io.sockets.emit('stats_update', stats)
+}

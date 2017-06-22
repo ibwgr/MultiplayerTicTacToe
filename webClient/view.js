@@ -22,6 +22,7 @@ export default class{
         this.$newGame = this.$doc.querySelector("#newGame")
         this.$fields = $doc.querySelectorAll("div.field")
         this.$infoContainer = this.$doc.querySelector('#infoContainer')
+        this.$timer = this.$doc.querySelector('#timer')
         
         this.$nameInput.addEventListener("change", this[nameEventListener].bind(this))
         this.$newGame.addEventListener("click", this[newGameEventListener].bind(this))
@@ -118,6 +119,19 @@ export default class{
     setPlayerInfoText(text){
         this.showInfo(true)
         this.$playerInfo.innerText = text
+    }
+
+    setTimer(time){
+        this.showTimer(true)
+        this.$timer.innerHTML = `you have <span class="timerSeconds">${time}</span> seconds left`
+    }
+
+    showTimer(show){
+        if (show){
+            this.$timer.classList.remove('hidden')
+        } else {
+            this.$timer.classList.add('hidden')
+        }
     }
 
     showNameInput(show){

@@ -24,22 +24,24 @@ export default class {
 
     /**
      * event: your_turn, other_turn
-     * 
+     * returns the socket of the new player
      */
-    changePlayer(player1, player2){
+    changePlayer(player1, player2, time){
         let data = {
-            'time': 30
+            'time': time
         }
         if (this.socket === player1) {
             data.player = 'x'
             data.username = player2.username
             this.socket.emit('other_turn', data)
             this.socket.to(player2.id).emit('your_turn', data)
+            return player2
         } else {
             data.player = 'o'
             data.username = player1.username
             this.socket.emit('other_turn', data)
             this.socket.to(player1.id).emit('your_turn', data)
+            return player1
         }
     }
 

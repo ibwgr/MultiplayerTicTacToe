@@ -148,6 +148,16 @@ h1 {
     margin-top: 10px;
 }
 
+#timer {
+    color: white;
+    transition: all 1s ease-out 0.1s;
+}
+
+.timerSeconds {
+    color: yellow;
+    font-weight: bold;
+    transition: all 1s ease-out 0.1s;
+}
 
 /*
 *  New Game Container
@@ -278,7 +288,7 @@ div.row {
 
 div.field {
     width: 50vw;
-    height: 33vw;
+    height: 32vw;
     display: flex;
     align-items: center;
     justify-content: center;    
