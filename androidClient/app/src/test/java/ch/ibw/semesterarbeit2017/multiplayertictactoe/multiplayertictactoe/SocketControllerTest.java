@@ -21,27 +21,42 @@ public class SocketControllerTest {
 
     @Test
     public void MOCKITO_onGameFinishedActionMethod_whenInformationIwon_shouldSet_IhaveWon() throws Exception {
-
         final MainActivity mockedMainActivity = mock(MainActivity.class);
         doNothing().when(mockedMainActivity).displayStatus(anyString());
-
         SocketController socketController = new SocketController(null, mockedMainActivity);
-        //
-        //{"winner":"hans","fields":[2,4,6],"username":"Emma","youWon":"no"}
-        JSONObject obj = new JSONObject();
+        JSONObject obj = new JSONObject();  //{"winner":"hans","fields":[2,4,6],"username":"Emma","youWon":"no"}
         try {
             obj.put("winner", "hans");
             obj.put("fields", "[2,4,6]");
             obj.put("username", "Emma");
             obj.put("youWon", "yes");
-            System.out.println("Test JSON: " + obj.get("youWon"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
         System.out.println("Test JSON: " + obj.toString());
         socketController.onGameFinishedActionMethod(obj);
-        System.out.println("RESULTAT " +socketController.getiHaveWon());
         assert(socketController.getiHaveWon());
+        assert(!socketController.getOtherHasWon());
+    }
+
+    @Test
+    public void MOCKITO_onGameFinishedActionMethod_whenInformationIlost_shouldSet_IhaveLost() throws Exception {
+        final MainActivity mockedMainActivity = mock(MainActivity.class);
+        doNothing().when(mockedMainActivity).displayStatus(anyString());
+        SocketController socketController = new SocketController(null, mockedMainActivity);
+        JSONObject obj = new JSONObject();  //{"winner":"hans","fields":[2,4,6],"username":"Emma","youWon":"no"}
+        try {
+            obj.put("winner", "hans");
+            obj.put("fields", "[2,4,6]");
+            obj.put("username", "Emma");
+            obj.put("youWon", "no");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Test JSON: " + obj.toString());
+        socketController.onGameFinishedActionMethod(obj);
+        assert(!socketController.getiHaveWon());
+        assert(socketController.getOtherHasWon());
     }
 
 

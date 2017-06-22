@@ -65,6 +65,18 @@ public class MainActivity extends AppCompatActivity {
 
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        socketController.disconnect();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        socketController.disconnect();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -104,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     socketController.send("add_user", obj);
 
-                    displayZeileStatus.setText("Hello " +userName +"\n" + "Waiting for other user to play with...");
+                    displayZeileStatus.setText("Hello " +userName +"\n" + "...waiting for server...");
 
                 } else {
                     Toast.makeText(getApplicationContext(), "Bitte zuerst einen Usernamen eingeben", Toast.LENGTH_LONG).show();

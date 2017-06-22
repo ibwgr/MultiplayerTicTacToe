@@ -54,8 +54,11 @@ public class SocketController {
 
     //-----------------------------------------------------
     //-----------------------------------------------------
+    //  vom server erhaltene daten
     //------------------------------------------------------
-    String myName;
+    //------------------------------------------------------
+    String myInitialName; // init
+    String myName;   // from server
     Boolean myTurn;
     Boolean othersTurn;
     int gameStatus; // 0 1  todo enum
@@ -97,6 +100,12 @@ public class SocketController {
     public void setOtherHasWon(Boolean otherHasWon) {
         this.otherHasWon = otherHasWon;
     }
+    public String getMyInitialName() {
+        return myInitialName;
+    }
+    public void setMyInitialName(String myInitialName) {
+        this.myInitialName = myInitialName;
+    }
     //-----------------------------------------------------
     //-----------------------------------------------------
     //-----------------------------------------------------
@@ -116,11 +125,19 @@ public class SocketController {
         return null;
     }
 
-
     //
     public void connect() {
+        Log.i(PROG, "****************** connect()");
         socket.connect();
-        Log.i(PROG, socket.toString());
+        //Log.i(PROG, socket.toString());
+    }
+
+    //
+    public void disconnect() {
+        Log.i(PROG, "****************** disconnect()");
+        if (socket.connected()) {
+            socket.disconnect();
+        }
     }
 
     //
@@ -169,9 +186,6 @@ public class SocketController {
         } catch (JSONException e) {
             return;
         }
-//                    act.findViewById(R.id.label_displayzeile);  // TODO  nochmals suchen !!? oder via Mainactivity...
-//                    TextView displayZeileStatus = (TextView) act.findViewById(R.id.label_displayzeile);
-//                    displayZeileStatus.setText("Hallo " +userName);
         if (youWon.equals("yes")) {
             this.setiHaveWon(true);
             act.displayStatus("You won!");
@@ -203,11 +217,8 @@ public class SocketController {
         } catch (JSONException e) {
             return;
         }
-//                    act.findViewById(R.id.label_displayzeile);  // TODO  nochmals suchen !!? oder via Mainactivity...
-//                    TextView displayZeileStatus = (TextView) act.findViewById(R.id.label_displayzeile);
-//                    displayZeileStatus.setText("Hallo " +userName);
         //act.getGameInfo().setMyName(userName);
-        act.displayStatus("Hallo " +userName);
+        act.displayStatus("Hello " +userName +"\n" + "Waiting for other user to play with...");
     }
 
 
