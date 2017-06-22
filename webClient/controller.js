@@ -40,7 +40,17 @@ export default class{
             this.view.showInfo(false)
         })
 
-        // 
+        // username already in queue
+        socket.on('username_validation', (data)=>{
+            console.log('username_validation: '+data.msg)
+            this.view.setInfoText(data.msg)
+            window.setTimeout(_=>{
+                this.view.showNameInput(true)
+                this.view.showInfo(false)
+            }, 2000)
+        })
+
+        // new user is added to queue
         socket.on('user_added', (data)=>{
             console.log('user_added')
             this.view.setInfoText(`Hi ${data.username}, please wait for other user...`)
@@ -134,6 +144,8 @@ export default class{
         if (!username.isEmpty()) {
             // message to server
             socket.emit('add_user', {'username': username})
+            this.view.setPlayer1('')
+            this.view.setPlayer2('')
             this.view.showNameInput(false)
             this.view.setInfoText('..........')
         }

@@ -13,7 +13,7 @@ main {
     flex-flow: column;
     align-items: center;
     justify-content: center;
-    width: 90%;
+    width: 95%;
 }
 
 /*
@@ -33,7 +33,7 @@ h1 {
     display: flex;
     flex-flow: column;
     align-items: center;
-    width: 95%;
+    width: 98%;
 }
 
 #nameInput {
@@ -91,7 +91,7 @@ h1 {
     background: dimgrey;
     color: white;
     box-shadow: 5px 5px 2px lightgrey;
-    width: 95%;
+    width: 98%;
     box-sizing: border-box;
     text-align: center;
     transition: all 1s ease-out 0.1s;
@@ -164,12 +164,12 @@ h1 {
 */
 #newGame {
     font-family: 'Press Start 2P', cursive;
-    font-size: 0.9em;
+    font-size: 0.8em;
     padding: 10px;
     margin: 5px;
     background: mediumseagreen;
     box-shadow: 5px 5px 2px lightgrey;
-    width: 95%;
+    width: 98%;
     box-sizing: border-box;
     text-align: center;
     transition: all 1s ease-out 0.1s;
@@ -195,7 +195,7 @@ h1 {
 #statsContainer {
     display: flex;
     flex-flow: column;
-    width: 95%;
+    width: 98%;
     background: dodgerblue;
     box-shadow: 5px 5px 2px lightgrey;
     margin: 5px;
@@ -238,6 +238,15 @@ h1 {
     min-width: 80px !important;
     margin: 2px;
     padding-left: 2px;
+    overflow-x: hidden;
+}
+
+.playing::after {
+    content: "\f017";
+    font-family: FontAwesome;
+    position: relative;
+    right: -10px;
+    top: 2px;
 }
 
 .winner {
@@ -245,8 +254,16 @@ h1 {
     border-radius: 5px;
 }
 
+.winner::after {
+    content: '\f00c';
+    font-family: FontAwesome;
+    position: relative;
+    right: -10px;
+    top: 2px;
+}
+
 .changeNew {
-    background: dodgerblue !important;
+    background: mediumseagreen !important;
 }
 
 .changeUpdate {
@@ -260,7 +277,7 @@ h1 {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 95%;
+    width: 98%;
     margin: 5px;
 }
 

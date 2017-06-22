@@ -69,7 +69,7 @@ io.on('connection', (socket) => {
     }
     socket.connectUsers = _=>{
         console.log('userQueue: ' + userQueue.map((item)=>item.username))
-        if (userQueue.length > 1) {
+        if (userQueue.length > 1){
             // first player is player2 !
             socket.board = new Board(userQueue.shift(), userQueue.shift())
             socket.board.socketPlayer2.board = socket.board
@@ -79,6 +79,30 @@ io.on('connection', (socket) => {
             console.log(`player1 '${socket.board.player1}' plays versus player2 '${socket.board.player2}'`)            
             sendStats({'newBoard': socket.board})
         }
+    }
+    socket.addUserToQueue = (name)=>{
+        if (socket.validateUser(name)){
+            socket.username = name
+            userQueue.push(socket)
+            socket.socketUtil.userAdded(name)
+            socket.connectUsers()
+        }
+    }
+    socket.validateUser = (name)=>{
+        if (name.isEmpty()){
+            socket.socketUtil.usernameValidation('Name cannot be empty.')
+            return false
+        } else {
+            if (userQueue && userQueue.filter(item=>item.username===name).length > 0){
+                socket.socketUtil.usernameValidation('Name is already used, please try another one.')
+                return false
+            }
+            if (name.length > 12){
+                socket.socketUtil.usernameValidation('Name is too long. Please try another one.')
+                return false
+            }
+        }
+        return true
     }
 
     // new connection
@@ -91,15 +115,7 @@ io.on('connection', (socket) => {
     // receive new user
     socket.on('add_user', (data)=>{
         console.log(`username '${data.username}'`)
-        if (!data.username.isEmpty()){
-            socket.username = data.username
-            userQueue.push(socket)
-            socket.socketUtil.userAdded(data.username)
-            socket.connectUsers()
-            sendStats()
-        } else {
-            socket.emit('username mandatory')
-        }
+        socket.addUserToQueue(data.username)
     })
 
     // disconnect: remove user from queue

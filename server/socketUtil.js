@@ -7,7 +7,7 @@ export default class {
 
     /**
      * event: start_game
-     * 
+     * json: {'player1': 'user1', 'player2': 'user2'}
      */
     startNewGame(player1, player2){
         let data = {
@@ -24,6 +24,7 @@ export default class {
 
     /**
      * event: your_turn, other_turn
+     * json: {'player': 'x', 'username': 'user2', 'time': '30'}
      * returns the socket of the new player
      */
     changePlayer(player1, player2, time){
@@ -47,6 +48,7 @@ export default class {
 
     /**
      * event: user_added
+     * json: {'username': 'user1'}
      * 
      */
     userAdded(username){
@@ -57,7 +59,20 @@ export default class {
     }
 
     /**
+     * event: username_validation
+     * json: {'msg': 'error message'}
+     * 
+     */
+    usernameValidation(msg){
+        let data = {
+            'msg': msg
+        }
+        socket.emit('username_validation', data)
+     }
+
+    /**
      * event: new_move
+     * json: {'field': '0', 'player': 'x'}
      * 
      */
     newMove(field, player1, player2){
@@ -75,6 +90,7 @@ export default class {
 
     /**
      * event: game_finished
+     * json: {'winner': 'user1', 'fields': '[0,1,2]', 'username': 'user1', 'youWon': 'yes'}
      * 
      */
     gameFinished(result, fields, player1, player2){
