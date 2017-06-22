@@ -59,16 +59,15 @@ public class MainActivity extends AppCompatActivity {
     --------------------------------------------------------------------
     */
 
-    //
     private SocketController socketController = null; //new SocketController(getApplicationContext(), this);
-    //private SocketController socketController = new SocketController();
 
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        socketController.disconnect();
-    }
+//    // Nein, hier nicht disconnecten, wenn die App nur in den Hintergrund geht, man kann sie ja wieder hervorholen
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        socketController.disconnect();
+//    }
 
     @Override
     protected void onDestroy() {
@@ -107,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                     editUserName.setVisibility(View.INVISIBLE);
 
                     socketController.connect();
-                    // username senden  // todo daten mgmt in controller
+                    // username senden
                     JSONObject obj = new JSONObject();
                     try {
                         obj.put("username", userName);
@@ -115,9 +114,7 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     socketController.send("add_user", obj);
-
                     displayZeileStatus.setText("Hello " +userName +"\n" + "...waiting for server...");
-
                 } else {
                     Toast.makeText(getApplicationContext(), "Bitte zuerst einen Usernamen eingeben", Toast.LENGTH_LONG).show();
                 }
@@ -157,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
 //        buttonTempRestart.setOnClickListener(new View.OnClickListener(){
 //            @Override
 //            public void onClick(View v){
-//                // todo ein exit zum server senden  @Dieter, eigentlich dasselbe wie nach timeout
+//                socketController.disconnect();
 //                setUpGame();
 //            }
 //        });
@@ -165,14 +162,15 @@ public class MainActivity extends AppCompatActivity {
         //////////////////////////////////////////////////////////////////////////////////////
         // socket listening
         // here we listen on message events from the server
-        // todo gehoert in socketcontroller
+        //////////////////////////////////////////////////////////////////////////////////////
         Log.i(PROG, "listening for socket messages from server");
-        socketController.getSocket().on("start_game", onStartGame);
+        socketController.getSocket().on("start_game", socketController.onStartGame);
         socketController.getSocket().on("user_added", socketController.onUserAdded);
-        socketController.getSocket().on("your_turn", onYourTurn);
-        socketController.getSocket().on("other_turn", onOtherTurn);
+        socketController.getSocket().on("your_turn", onYourTurn);  // todo auslagern
+        socketController.getSocket().on("other_turn", onOtherTurn);  // todo auslagern
         socketController.getSocket().on("new_move", onNewMove);  // Spielzug des Gegners
         socketController.getSocket().on("game_finished", socketController.onGameFinished);
+        socketController.getSocket().on("disonnect", socketController.onDisconnectFromServer);  // disconnect from server received!
 
     } // end on-create lifecycle
 
@@ -281,83 +279,14 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-//
-//
-//    private Emitter.Listener onUserAdded = new Emitter.Listener() {
-//        @Override
-//        public void call(final Object... args) {
-//            runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    Log.i(PROG, "****************** onUserAdded");
-//                    JSONObject data = (JSONObject) args[0];
-//                    Log.i(PROG, "******************" +data.toString());
-//                    String userName;
-//                    try {
-//                        userName = data.getString("username");
-//                    } catch (JSONException e) {
-//                        return;
-//                    }
-//                    displayZeilePlayers.setText("Hallo " +userName);
-//                }
-//            });
-//        }
-//    };
 
 
-    // todo gehoert in socketcontroller
-    //
-    private void handleOnStartGame(Object args[]) {
-        Log.i(PROG, "****************** game started");
-        displayZeileStatus.setText("Game started");
-        JSONObject data = (JSONObject) args[0];
-        Log.i(PROG, "******************" +data.toString());
-        String player1;
-        String player2;
-        try {
-            player1 = data.getString("player1");
-            player2 = data.getString("player2");
-        } catch (JSONException e) {
-            return;
-        }
-        Log.i(PROG, "****************** player1: "+player1);
-        Log.i(PROG, "****************** player2: "+player2);
-        displayZeilePlayers.setText("Player O: " +player1 +"  |  Player X: " +player2);
-    }
 
-    // todo gehoert in socketcontroller
-    // ich zuerst: ich bin player1, o
-    // anderer zuerst: ich bin player2, x
-    // muessen wir aber nicht speichern, der server weiss es
-    // der letzte beginnt, ist ja zufaellig wer der letzte ist
-    private Emitter.Listener onStartGame = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    handleOnStartGame(args);
-//                    Log.i(PROG, "****************** game started");
-//                    displayZeileStatus.setText("Game started");
-//
-//                    JSONObject data = (JSONObject) args[0];
-//                    Log.i(PROG, "******************" +data.toString());
-//                    String player1;
-//                    String player2;
-//                    try {
-//                        player1 = data.getString("player1");
-//                        player2 = data.getString("player2");
-//                    } catch (JSONException e) {
-//                        return;
-//                    }
-//                    Log.i(PROG, "****************** player1: "+player1);
-//                    Log.i(PROG, "****************** player2: "+player2);
-//
-//                    displayZeilePlayers.setText("Player O: " +player1 +"  |  Player X: " +player2);
-                }
-            });
-        }
-    };
+
+
+
+
+
 
 
     // todo gehoert in socketcontroller
@@ -464,6 +393,10 @@ public class MainActivity extends AppCompatActivity {
     // DISPLAY Methoden
     public void displayStatus(String text) {
         displayZeileStatus.setText(text);
+    }
+    // DISPLAY Methoden
+    public void displayPlayers(String text) {
+        displayZeilePlayers.setText(text);
     }
 
 }

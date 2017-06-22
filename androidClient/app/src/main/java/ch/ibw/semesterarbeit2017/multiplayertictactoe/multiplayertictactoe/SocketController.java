@@ -54,16 +54,17 @@ public class SocketController {
 
     //-----------------------------------------------------
     //-----------------------------------------------------
-    //  vom server erhaltene daten
+    //  vom server erhaltene daten  (gameinfo)
     //------------------------------------------------------
     //------------------------------------------------------
-    String myInitialName; // init
-    String myName;   // from server
-    Boolean myTurn;
-    Boolean othersTurn;
-    int gameStatus; // 0 1  todo enum
-    Boolean iHaveWon;
-    Boolean otherHasWon;
+    private String myName;   // from server
+    private String player1Name;
+    private String player2Name;
+    private Boolean myTurn;
+    private Boolean othersTurn;
+    private Status gameStatus = Status.STOPPED;
+    private Boolean iHaveWon;
+    private Boolean otherHasWon;
     public String getMyName() {
         return myName;
     }
@@ -82,12 +83,6 @@ public class SocketController {
     public void setOthersTurn(Boolean othersTurn) {
         this.othersTurn = othersTurn;
     }
-    public int getGameStatus() {
-        return gameStatus;
-    }
-    public void setGameStatus(int gameStatus) {
-        this.gameStatus = gameStatus;
-    }
     public Boolean getiHaveWon() {
         return iHaveWon;
     }
@@ -100,16 +95,27 @@ public class SocketController {
     public void setOtherHasWon(Boolean otherHasWon) {
         this.otherHasWon = otherHasWon;
     }
-    public String getMyInitialName() {
-        return myInitialName;
+    public String getPlayer1Name() {
+        return player1Name;
     }
-    public void setMyInitialName(String myInitialName) {
-        this.myInitialName = myInitialName;
+    public void setPlayer1Name(String player1Name) {
+        this.player1Name = player1Name;
+    }
+    public String getPlayer2Name() {
+        return player2Name;
+    }
+    public void setPlayer2Name(String player2Name) {
+        this.player2Name = player2Name;
+    }
+    public Status getGameStatus() {
+        return gameStatus;
+    }
+    public void setGameStatus(Status gameStatus) {
+        this.gameStatus = gameStatus;
     }
     //-----------------------------------------------------
     //-----------------------------------------------------
     //-----------------------------------------------------
-
 
 
     //
@@ -155,6 +161,24 @@ public class SocketController {
     }
 
 
+    public Emitter.Listener onDisconnectFromServer = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            act.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.i(PROG, "****************** onDisconnectFromServer");
+                    onDisconnectFromServerActionMethod();
+                }
+            });
+        }
+    };
+    private void onDisconnectFromServerActionMethod() {
+        //  todo "sorry, technisches problem"
+        //  todo spiel beenden
+        //  todo screen aufraeumen
+    }
+
 
 
     public Emitter.Listener onGameFinished = new Emitter.Listener() {
@@ -182,7 +206,6 @@ public class SocketController {
             //fields[] = data.getJSONArray("fields");  // todo optisch anzeigen!
             userName = data.getString("username");
             youWon = data.getString("youWon");
-            System.out.println("youWon: " +youWon);
         } catch (JSONException e) {
             return;
         }
@@ -222,7 +245,39 @@ public class SocketController {
     }
 
 
-
+    public Emitter.Listener onStartGame = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            act.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.i(PROG, "****************** onStartGame");
+                    onStartGameActionMethod((JSONObject) args[0]);
+                }
+            });
+        }
+    };
+    public void onStartGameActionMethod(JSONObject data) {
+        Log.i(PROG, "****************** onStartGameActionMethod");
+        Log.i(PROG, "******************" +data.toString());
+        // ich zuerst: ich bin player1, o
+        // anderer zuerst: ich bin player2, x
+        // muessen wir aber nicht speichern, der server weiss es
+        // der letzte beginnt, ist ja zufaellig wer der letzte ist
+        //
+        act.displayStatus("Game started");
+        try {
+            this.setPlayer1Name(data.getString("player1"));
+            this.setPlayer2Name(data.getString("player2"));
+        } catch (JSONException e) {
+            return;
+        }
+        Log.i(PROG, "****************** player1: "+this.getPlayer1Name());
+        Log.i(PROG, "****************** player2: "+this.getPlayer2Name());
+        this.setGameStatus(Status.RUNNING);
+        act.displayPlayers("Player O: " +this.getPlayer1Name() +"  |  Player X: " +this.getPlayer2Name());
+        
+    }
 
 
 
