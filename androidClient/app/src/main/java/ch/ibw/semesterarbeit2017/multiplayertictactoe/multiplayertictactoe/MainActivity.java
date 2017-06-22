@@ -1,15 +1,13 @@
 package ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,13 +21,14 @@ import static java.util.Arrays.asList;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String PROG = "____MAIN";
+    public static final String PROG = "____MAINACTIVITY";
 
     private EditText editUserName;
     private TextView displayZeileStatus;
     private TextView displayZeilePlayers;
     private Toolbar toolbar;
-    private Menu menu;
+    //private Menu menu;
+    private ImageView waitingImage;
 
     private GameButton gameButton0;
     private GameButton gameButton1;
@@ -41,7 +40,10 @@ public class MainActivity extends AppCompatActivity {
     private GameButton gameButton7;
     private GameButton gameButton8;
 
-    private String currentPlayer = "";
+    private String currentPlayer = "";  // todo weg damit!
+
+
+
 
 
     /*
@@ -52,55 +54,37 @@ public class MainActivity extends AppCompatActivity {
     TODO layout hoch/quer/groessen
     TODO layout grid vielleicht durch table ersetzen, wegen grid-lines
     TODO testing socket mock https://stackoverflow.com/questions/5577274/testing-java-sockets
+    TODO disconnect
+    TODO socket.off
     --------------------------------------------------------------------
     */
 
-    private SocketController socketController = new SocketController();
-    //private Socket scSocket = socketController.getSocketController();
+    private SocketController socketController = null; //new SocketController(getApplicationContext(), this);
 
 
-//    // Menu icons are inflated just as they were with actionbar
+//    // Nein, hier nicht disconnecten, wenn die App nur in den Hintergrund geht, man kann sie ja wieder hervorholen
 //    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//
-//        this.menu = menu;
-//       // menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_commit));
-//       // menu.getItem(1).setTitle("Online");
-//        return true;
-//    }
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//    // Handle item selection
-//        switch (item.getItemId()) {
-//            case R.id.miSymbol:
-//                Toast.makeText(MainActivity.this, "clicking on symbol", Toast.LENGTH_SHORT).show();
-//                return true;
-//                //            case R.id.miCompose:
-//                //                Toast.makeText(MainActivity.this, "clicking on email", Toast.LENGTH_SHORT).show();
-//                //                return true;
-//                //            case R.id.miProfile:
-//                //                Toast.makeText(MainActivity.this, "clicking on profile", Toast.LENGTH_SHORT).show();
-//                //                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
+//    protected void onStop() {
+//        super.onStop();
+//        socketController.disconnect();
 //    }
 
-
-
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        socketController.disconnect();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        socketController = new SocketController(getApplicationContext(), this);
         setUpGame();
 
-        // get the values from fields
+
+        // get the view elements
         editUserName = (EditText) findViewById(R.id.edit_username);
         displayZeileStatus = (TextView) findViewById(R.id.label_displayzeile);
         displayZeilePlayers = (TextView) findViewById(R.id.label_displayplayers);
@@ -130,25 +114,7 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     socketController.send("add_user", obj);
-
-                    displayZeileStatus.setText("Hello " +userName +"\n" + "Waiting for other user to play with...");
-
-//                    Log.i(PROG, "username " +userName +" gesendet");
-//                    toolbar.setTitle("Tic-Tac-Toe, User:"+userName);
-
-                    // Test only
-                    //GridLayout gameGridLayout = (GridLayout) findViewById(R.id.Game_GridLayout);
-                    //gameGridLayout.setBackgroundColor(Color.LTGRAY);
-                    //gameGridLayout.setClickable(false);
-                    //gameGridLayout.setEnabled(false);
-                    //gameGridLayout.setVisibility(View.GONE);
-                    /*
-                    for (int i = 0; i < layout.getChildCount(); i++) {
-                        View child = gameGridLayout.getChildAt(i);
-                        child.setEnabled(false);
-                    }
-                    */
-
+                    displayZeileStatus.setText("Hello " +userName +"\n" + "...waiting for server...");
                 } else {
                     Toast.makeText(getApplicationContext(), "Bitte zuerst einen Usernamen eingeben", Toast.LENGTH_LONG).show();
                 }
@@ -156,33 +122,55 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        // Temporaere Buttons, nur fuer Entwicklulng
-        final Button buttonTempEnable = (Button) findViewById(R.id.button_temp_enable_all);
-        buttonTempEnable.setOnClickListener(new View.OnClickListener(){
+
+        // Temporaere Buttons, nur fuer Entwicklulng  // todo alles auskommentieren
+        final Button buttonSimWin = (Button) findViewById(R.id.button_sim_win);
+        buttonSimWin.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                GameButton.enableAllGameButtons();
+                //{"winner":"hans","fields":[2,4,6],"username":"Emma","youWon":"no"}
+                JSONObject obj = new JSONObject();
+                try {
+                    obj.put("winner", "hans");
+                    obj.put("fields", "[2,4,6]");
+                    obj.put("username", "Emma");
+                    obj.put("youWon", "yes");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                socketController.onGameFinishedActionMethod(obj);
             }
         });
-        final Button buttonTempRestart = (Button) findViewById(R.id.button_temp_restart);
-        buttonTempRestart.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                // todo ein exit zum server senden  @Dieter, eigentlich dasselbe wie nach timeout
-                setUpGame();
-            }
-        });
+
+//        // Temporaere Buttons, nur fuer Entwicklulng
+//        final Button buttonTempEnable = (Button) findViewById(R.id.button_temp_enable_all);
+//        buttonTempEnable.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v){
+//                GameButton.enableAllGameButtons();
+//            }
+//        });
+//        final Button buttonTempRestart = (Button) findViewById(R.id.button_temp_restart);
+//        buttonTempRestart.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v){
+//                socketController.disconnect();
+//                setUpGame();
+//            }
+//        });
 
         //////////////////////////////////////////////////////////////////////////////////////
         // socket listening
         // here we listen on message events from the server
-        // todo gehoert in socketcontroller
+        //////////////////////////////////////////////////////////////////////////////////////
         Log.i(PROG, "listening for socket messages from server");
-        socketController.getSocket().on("start_game", onStartGame);
-        socketController.getSocket().on("user_added", onUserAdded);
-        socketController.getSocket().on("your_turn", onYourTurn);
-        socketController.getSocket().on("other_turn", onOtherTurn);
+        socketController.getSocket().on("start_game", socketController.onStartGame);
+        socketController.getSocket().on("user_added", socketController.onUserAdded);
+        socketController.getSocket().on("your_turn", onYourTurn);  // todo auslagern
+        socketController.getSocket().on("other_turn", onOtherTurn);  // todo auslagern
         socketController.getSocket().on("new_move", onNewMove);  // Spielzug des Gegners
+        socketController.getSocket().on("game_finished", socketController.onGameFinished);
+        socketController.getSocket().on("disonnect", socketController.onDisconnectFromServer);  // disconnect from server received!
 
     } // end on-create lifecycle
 
@@ -191,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpGame() {
         // initializing
-        currentPlayer = "";
+        currentPlayer = "";                ;
 
         // als erstes die GameButton Instanzen ermitteln
         //
@@ -278,6 +266,9 @@ public class MainActivity extends AppCompatActivity {
         });
         //
 
+        //
+        waitingImage = (ImageView) findViewById(R.id.waiting_img);
+
         // init game
         GameButton.setSocketController(socketController);
         GameButton.setAllGameButtons(asList(gameButton0,gameButton1,gameButton2,gameButton3,
@@ -289,62 +280,16 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
+
+
+
+
+
+
+
     // todo gehoert in socketcontroller
-    private Emitter.Listener onUserAdded = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Log.i(PROG, "****************** onUserAdded");
-                    JSONObject data = (JSONObject) args[0];
-                    Log.i(PROG, "******************" +data.toString());
-                    String userName;
-                    try {
-                        userName = data.getString("username");
-                    } catch (JSONException e) {
-                        return;
-                    }
-                    displayZeilePlayers.setText("Hallo " +userName);
-                }
-            });
-        }
-    };
-
-
-    // ich zuerst: ich bin player1, o
-    // anderer zuerst: ich bin player2, x
-    // muessen wir aber nicht speichern, der server weiss es
-    // der letzte beginnt   // Todo muesste man nicht eher zufaellig starten @Dieter
-    private Emitter.Listener onStartGame = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Log.i(PROG, "****************** game started");
-                    displayZeileStatus.setText("Game started");
-
-                    JSONObject data = (JSONObject) args[0];
-                    Log.i(PROG, "******************" +data.toString());
-                    String player1;
-                    String player2;
-                    try {
-                        player1 = data.getString("player1");
-                        player2 = data.getString("player2");
-                    } catch (JSONException e) {
-                        return;
-                    }
-                    Log.i(PROG, "****************** player1: "+player1);
-                    Log.i(PROG, "****************** player2: "+player2);
-
-                    displayZeilePlayers.setText("Player O: " +player1 +"  |  Player X: " +player2);
-                }
-            });
-        }
-    };
-
-
     //
     //["other_turn",{"player":"x","username":"Emma"}]
     private Emitter.Listener onYourTurn = new Emitter.Listener() {
@@ -370,13 +315,15 @@ public class MainActivity extends AppCompatActivity {
                     Log.i(PROG, "****************** player: "+player);  // x oder o
 
                     displayZeileStatus.setText(username +", your turn (" +player +")");
-
+                    waitingImage.setVisibility(View.INVISIBLE);
                     GameButton.enableAllGameButtons();
                 }
             });
         }
     };
 
+
+    // todo gehoert in socketcontroller
     //With this we listen on the new message event to receive messages from other users.
     //["other_turn",{"player":"x","username":"Emma"}]
     private Emitter.Listener onOtherTurn = new Emitter.Listener() {
@@ -402,12 +349,14 @@ public class MainActivity extends AppCompatActivity {
                     Log.i(PROG, "****************** player: "+player);
 
                     displayZeileStatus.setText("Others turn ("+username +" as " +player +") \nplease wait...");
+                    waitingImage.setVisibility(View.VISIBLE);
                 }
             });
         }
     };
 
 
+    // todo gehoert in socketcontroller
     // Gegner hat gezogen
     private Emitter.Listener onNewMove = new Emitter.Listener() {
         @Override
@@ -439,5 +388,15 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     };
+
+
+    // DISPLAY Methoden
+    public void displayStatus(String text) {
+        displayZeileStatus.setText(text);
+    }
+    // DISPLAY Methoden
+    public void displayPlayers(String text) {
+        displayZeilePlayers.setText(text);
+    }
 
 }
