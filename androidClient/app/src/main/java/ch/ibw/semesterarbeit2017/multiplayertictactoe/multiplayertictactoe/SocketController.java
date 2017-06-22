@@ -30,11 +30,6 @@ public class SocketController {
     private Socket socket;
 
     //constructor
-//    public SocketController() {
-//        socket = createSocket();
-//    }
-
-    //constructor
     public SocketController() {
     }
     // todo hier die Mainactivity bekommen,  oder wie es der Dozent vorschlaegt: die findViewById redundant nochmals suchen...
@@ -54,12 +49,67 @@ public class SocketController {
 //    }
 
 
+
+
+
+    //-----------------------------------------------------
+    //-----------------------------------------------------
+    //------------------------------------------------------
+    String myName;
+    Boolean myTurn;
+    Boolean othersTurn;
+    int gameStatus; // 0 1  todo enum
+    Boolean iHaveWon;
+    Boolean otherHasWon;
+    public String getMyName() {
+        return myName;
+    }
+    public void setMyName(String myName) {
+        this.myName = myName;
+    }
+    public Boolean getMyTurn() {
+        return myTurn;
+    }
+    public void setMyTurn(Boolean myTurn) {
+        this.myTurn = myTurn;
+    }
+    public Boolean getOthersTurn() {
+        return othersTurn;
+    }
+    public void setOthersTurn(Boolean othersTurn) {
+        this.othersTurn = othersTurn;
+    }
+    public int getGameStatus() {
+        return gameStatus;
+    }
+    public void setGameStatus(int gameStatus) {
+        this.gameStatus = gameStatus;
+    }
+    public Boolean getiHaveWon() {
+        return iHaveWon;
+    }
+    public void setiHaveWon(Boolean iHaveWon) {
+        this.iHaveWon = iHaveWon;
+    }
+    public Boolean getOtherHasWon() {
+        return otherHasWon;
+    }
+    public void setOtherHasWon(Boolean otherHasWon) {
+        this.otherHasWon = otherHasWon;
+    }
+    //-----------------------------------------------------
+    //-----------------------------------------------------
+    //-----------------------------------------------------
+
+
+
     //
     public Socket createSocket() {
         Log.i(PROG, "socking...");
         try {
-            //return IO.socket("https://warm-shelf-33316.herokuapp.com/");          // Test Client http://lastminute.li/ttt/
-            return IO.socket("http://192.168.1.39:3100");
+            //return IO.socket("https://warm-shelf-33316.herokuapp.com/");          // Test Client http://lastminute.li/aaa/
+            //return IO.socket("http://192.168.1.39:3100");
+            return IO.socket("https://warm-shelf-33316.herokuapp.com/");
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -123,10 +173,10 @@ public class SocketController {
 //                    TextView displayZeileStatus = (TextView) act.findViewById(R.id.label_displayzeile);
 //                    displayZeileStatus.setText("Hallo " +userName);
         if (youWon.equals("yes")) {
-            act.getGameInfo().setiHaveWon(true);
+            this.setiHaveWon(true);
             act.displayStatus("You won!");
         } else {
-            act.getGameInfo().setOtherHasWon(true);
+            this.setOtherHasWon(true);
             act.displayStatus("Sorry, you lost");
         }
     }
@@ -156,7 +206,7 @@ public class SocketController {
 //                    act.findViewById(R.id.label_displayzeile);  // TODO  nochmals suchen !!? oder via Mainactivity...
 //                    TextView displayZeileStatus = (TextView) act.findViewById(R.id.label_displayzeile);
 //                    displayZeileStatus.setText("Hallo " +userName);
-        act.getGameInfo().setMyName(userName);
+        //act.getGameInfo().setMyName(userName);
         act.displayStatus("Hallo " +userName);
     }
 

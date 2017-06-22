@@ -40,17 +40,11 @@ public class MainActivity extends AppCompatActivity {
     private GameButton gameButton7;
     private GameButton gameButton8;
 
-    private GameInfo gameInfo;
     private String currentPlayer = "";  // todo weg damit!
 
 
 
-    public GameInfo getGameInfo() {
-        return gameInfo;
-    }
-    public void setGameInfo(GameInfo gameInfo) {
-        this.gameInfo = gameInfo;
-    }
+
 
     /*
     // Test Client http://lastminute.li/ttt/
@@ -76,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         socketController = new SocketController(getApplicationContext(), this);
-        gameInfo = new GameInfo();
         setUpGame();
 
 
