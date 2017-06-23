@@ -59,6 +59,7 @@ public class SocketController {
     private String player2Name;
     private String currentUserName;
     private String currentPlayerSymbol;
+    private String currentField;
     private Boolean isAllButtonsEnabled;
     private Boolean isMyTurn;
     private Boolean isOthersTurn;
@@ -118,13 +119,13 @@ public class SocketController {
     }
     public void setCurrentUserName(String currentUserName) {
         this.currentUserName = currentUserName;
-        Log.i(PROG, "****************** current-username: "+this.currentUserName);
+        Log.i(PROG, "****************** current-username: "+currentUserName);
     }
     public String getCurrentPlayerSymbol() {
         return currentPlayerSymbol;  // x oder o
     }
     public void setCurrentPlayerSymbol(String currentPlayerSymbol) {
-        Log.i(PROG, "****************** current-player-symbol: "+this.currentPlayerSymbol);
+        Log.i(PROG, "****************** current-player-symbol: "+currentPlayerSymbol);
         this.currentPlayerSymbol = currentPlayerSymbol;  // x oder o
     }
     public Boolean getIsAllButtonsEnabled() {
@@ -132,6 +133,13 @@ public class SocketController {
     }
     public void setIsAllButtonsEnabled(Boolean isAllButtonsEnabled) {
         this.isAllButtonsEnabled = isAllButtonsEnabled;
+    }
+    public String getCurrentField() {
+        return currentField;
+    }
+    public void setCurrentField(String currentField) {
+        Log.i(PROG, "****************** current-field: "+currentField);
+        this.currentField = currentField;
     }
     //-----------------------------------------------------
     //-----------------------------------------------------
@@ -224,19 +232,29 @@ public class SocketController {
         try {
             winner = data.getString("winner");
             //fields[] = data.getJSONArray("fields");  // todo optisch anzeigen!
-            userName = data.getString("username");
+            //userName = data.getString("username");
             youWon = data.getString("youWon");
         } catch (JSONException e) {
             return;
         }
-        if (youWon.equals("yes")) {
+        if (winner.equals("draw")) {
+            this.setIsIhaveWon(false);
+            this.setIsOtherHasWon(false);
+            act.displayStatus("This game ended in a draw.");
+        } else if (youWon.equals("yes")) {
             this.setIsIhaveWon(true);
+            this.setIsOtherHasWon(false);
             act.displayStatus("You won!");
         } else {
+            this.setIsIhaveWon(false);
             this.setIsOtherHasWon(true);
             act.displayStatus("Sorry, you lost");
         }
+        this.setGameStatus(Status.STOPPED);
+        act.showWaitingImage(false);
+        act.enableAllGameButtons(false);
     }
+
 
     //{"time":30,"player":"x","username":"Emma"}
     public Emitter.Listener onYourTurn = new Emitter.Listener() {
@@ -295,6 +313,35 @@ public class SocketController {
         this.setIsMyTurn(false);
         this.setIsOthersTurn(true);
 
+    }
+
+    // spielzug des gegners
+    // {"field":"field2","player":"o"}
+    public Emitter.Listener onNewMove = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            act.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.i(PROG, "****************** onNewMove");
+                    onNewMoveActionMethod((JSONObject) args[0]);
+                }
+            });
+        }
+    };
+    public void onNewMoveActionMethod(JSONObject data) {
+        Log.i(PROG, "****************** onNewMoveActionMethod");
+        Log.i(PROG, "******************" +data.toString());
+        try {
+            this.currentField = data.getString("field");
+            this.currentPlayerSymbol = data.getString("player");
+        } catch (JSONException e) {
+            return;
+        }
+        GameButton g = GameButton.findGameButtonByFieldId(this.getCurrentField());
+        if (g != null) {
+            g.clickedByOther();
+        }
     }
 
 

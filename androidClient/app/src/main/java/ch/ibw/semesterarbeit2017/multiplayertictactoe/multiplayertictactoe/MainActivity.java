@@ -141,23 +141,27 @@ public class MainActivity extends AppCompatActivity {
                 socketController.onGameFinishedActionMethod(obj);
             }
         });
+        // Temporaere Buttons, nur fuer Entwicklulng  // todo alles auskommentieren
+        final Button buttonSimUnent = (Button) findViewById(R.id.button_sim_unent);
+        buttonSimUnent.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                //{"winner":"draw","fields":[2,4,6],"username":"Emma","youWon":"no"}
+                JSONObject obj = new JSONObject();
+                try {
+                    obj.put("winner", "draw");
+                    obj.put("fields", "[2,4,6]");
+                    obj.put("username", "Emma");
+                    obj.put("youWon", "yes");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                socketController.onGameFinishedActionMethod(obj);
+            }
+        });
 
-//        // Temporaere Buttons, nur fuer Entwicklulng
-//        final Button buttonTempEnable = (Button) findViewById(R.id.button_temp_enable_all);
-//        buttonTempEnable.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v){
-//                GameButton.enableAllGameButtons();
-//            }
-//        });
-//        final Button buttonTempRestart = (Button) findViewById(R.id.button_temp_restart);
-//        buttonTempRestart.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v){
-//                socketController.disconnect();
-//                setUpGame();
-//            }
-//        });
+
+
 
         //////////////////////////////////////////////////////////////////////////////////////
         // socket listening
@@ -168,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
         socketController.getSocket().on("user_added", socketController.onUserAdded);
         socketController.getSocket().on("your_turn", socketController.onYourTurn);
         socketController.getSocket().on("other_turn", socketController.onOtherTurn);
-        socketController.getSocket().on("new_move", onNewMove);  // Spielzug des Gegners   //todo auslagern
+        socketController.getSocket().on("new_move", socketController.onNewMove);  // Spielzug des Gegners
         socketController.getSocket().on("game_finished", socketController.onGameFinished);
         socketController.getSocket().on("disonnect", socketController.onDisconnectFromServer);  // disconnect from server received!
 
@@ -280,37 +284,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    // Gegner hat gezogen
-    private Emitter.Listener onNewMove = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Log.i(PROG, "****************** new move (gegner)");
-                    //displayZeileStatus.setText("Game started");
-
-                    JSONObject data = (JSONObject) args[0];
-                    Log.i(PROG, "******************" +data.toString());
-                    String player;
-                    String field;
-                    try {
-                        player = data.getString("player");
-                        field = data.getString("field");
-                    } catch (JSONException e) {
-                        return;
-                    }
-                    Log.i(PROG, "****************** player: "+player);
-                    Log.i(PROG, "****************** field: "+field);
-
-                    GameButton g = GameButton.findGameButtonByFieldId(field);
-                    if (g != null) {
-                        g.clickedByOther();
-                    }
-                }
-            });
-        }
-    };
 
 
     // DISPLAY Methoden

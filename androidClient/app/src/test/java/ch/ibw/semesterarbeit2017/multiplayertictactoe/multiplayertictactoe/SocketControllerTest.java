@@ -15,6 +15,9 @@ import static org.mockito.Mockito.*;
  */
 public class SocketControllerTest {
 
+    // todo onGameFinishedActionMethod
+
+
     @Test
     public void MOCKITO_onOtherTurnActionMethod_shouldSet_OthersTurnAndDisable() throws Exception {
         final MainActivity mockedMainActivity = mock(MainActivity.class);

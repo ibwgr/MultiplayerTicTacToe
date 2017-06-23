@@ -166,6 +166,15 @@
         android:layout_marginTop="55px"
         android:text="sim-win" />
 
+    <Button
+        android:id="@+id/button_sim_unent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Game_GridLayout"
+        android:layout_toRightOf="@id/button_sim_win"
+        android:layout_marginTop="55px"
+        android:text="sim-unent" />
+
     <!--
         <Button
             android:id="@+id/button_temp_enable_all"
