@@ -124,6 +124,7 @@ export default class{
     setTimer(time){
         this.showTimer(true)
         this.$timer.innerHTML = `you have <span class="timerSeconds">${time}</span> seconds left`
+        window.setTimeout(_=>this.$doc.querySelector('.timerSeconds').classList.add('timerSecondsSmall'), 400)
     }
 
     showTimer(show){

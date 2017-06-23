@@ -44,6 +44,13 @@ io.on('connection', (socket) => {
         }
     }
     socket.stopCurrentGame = _=>{
+        // clear all timeouts
+        if (socket.board.socketPlayer1.timer){
+            clearTimeout(socket.board.socketPlayer1.timer)
+        }
+        if (socket.board.socketPlayer2.timer){
+            clearTimeout(socket.board.socketPlayer2.timer)
+        }
         if (socket.id === socket.board.socketPlayer2.id) {
             socket.board.stopGame(socket.board.player1)
             socket.socketUtil.gameFinished(socket.board.player1, socket.board.fieldsWon, socket.board.socketPlayer1, socket.board.socketPlayer2)
@@ -70,7 +77,7 @@ io.on('connection', (socket) => {
         //
     }
     socket.connectUsers = _=>{
-        console.log('userQueue: ' + userQueue.map((item)=>item.username))
+        console.log('user added to queue, userQueue: ' + userQueue.map((item)=>item.username))
         if (userQueue.length > 1){
             // first player is player2 !
             socket.board = new Board(userQueue.shift(), userQueue.shift())
@@ -115,7 +122,7 @@ io.on('connection', (socket) => {
     socket.on('add_user', (data)=>{
         //message validation
         if (data && data.username){
-            console.log(`username '${data.username}'`)
+            console.log(`new user, username '${data.username}'`)
             socket.addUserToQueue(data.username)
         }
     })
@@ -128,7 +135,7 @@ io.on('connection', (socket) => {
       let i = userQueue.indexOf(socket)
       if (i >= 0){
           userQueue.splice(i, 1)
-          console.log('userQueue: ' + userQueue.map((item)=>item.username))
+          console.log('user removed from queue, userQueue: ' + userQueue.map((item)=>item.username))
           sendStats()
       }
       // finish a running game

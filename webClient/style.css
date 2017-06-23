@@ -84,6 +84,8 @@ h1 {
 *  INFO CONTAINER
 */
 #infoContainer {
+    display: flex;
+    flex-direction: column;
     font-family: 'Yantramanav', sans-serif;
     font-size: 1em;
     padding: 10px;
@@ -94,7 +96,6 @@ h1 {
     width: 98%;
     box-sizing: border-box;
     text-align: center;
-    transition: all 1s ease-out 0.1s;
     border-radius: 5px;
 }
 
@@ -149,14 +150,25 @@ h1 {
 }
 
 #timer {
+    display: flex;
+    align-self: center;
+    align-items: flex-end;
     color: white;
-    transition: all 1s ease-out 0.1s;
+    height: 1.4em;
 }
 
 .timerSeconds {
     color: yellow;
     font-weight: bold;
-    transition: all 1s ease-out 0.1s;
+    font-size: 1.4em;
+    width: 32px;
+    position: relative;
+    bottom: -4px;
+    transition: all 0.7s ease-out 0.1s;
+}
+.timerSecondsSmall {
+    font-size: 0.1em;
+    bottom: 8px;
 }
 
 /*
