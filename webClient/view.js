@@ -204,7 +204,6 @@ export default class{
                 }
             }, 800)
         }
-
         // return html
         return `<li ${item.change === 'new' ? 'class="changeNew"' : item.change === 'update' ? 'class="changeUpdate"' : ''}>
         <div class="col1">${item.timestamp}</div>

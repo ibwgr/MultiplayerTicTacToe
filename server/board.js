@@ -47,13 +47,13 @@ export default class {
 
         if (this.winner) {
             this.done = true
-            return this.winner
+        } else {
+            if (this.fields.filter((item)=>item===' ').length === 0) {
+                this.winner = 'draw'
+                this.done = true
+            }
         }
-        if (this.fields.filter((item)=>item===' ').length === 0) {
-            this.winner = 'draw'
-            this.done = true
-            return this.winner
-        }
+        return this.winner
     }
 
     stopGame(winner){

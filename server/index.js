@@ -24,6 +24,9 @@ const PLAY_TIMER = 30
 // websocket connection
 //
 io.on('connection', (socket) => {
+    // new connection
+    console.log('connection: ' + socket.id)
+
     // socket variables
     socket.socketUtil = new SocketUtil(socket)
 
@@ -48,7 +51,6 @@ io.on('connection', (socket) => {
             socket.board.stopGame(socket.board.player2)
             socket.socketUtil.gameFinished(socket.board.player2, socket.board.fieldsWon, socket.board.socketPlayer1, socket.board.socketPlayer2)
         }
-        socket.board = null
         if (socket.timer){
             clearTimeout(socket.timer)
         }
@@ -105,17 +107,17 @@ io.on('connection', (socket) => {
         return true
     }
 
-    // new connection
-    console.log('connection: ' + socket.id)
-
     //
     // Messages from the client
     //
 
     // receive new user
     socket.on('add_user', (data)=>{
-        console.log(`username '${data.username}'`)
-        socket.addUserToQueue(data.username)
+        //message validation
+        if (data && data.username){
+            console.log(`username '${data.username}'`)
+            socket.addUserToQueue(data.username)
+        }
     })
 
     // disconnect: remove user from queue
@@ -138,21 +140,23 @@ io.on('connection', (socket) => {
 
     // player moves
     socket.on('player_action', (data)=>{
-        console.log(`player '${data.player}' set field '${data.field}'`)
-        // clear all timeouts
-        if (socket.board.socketPlayer1.timer){
-            clearTimeout(socket.board.socketPlayer1.timer)
-        }
-        if (socket.board.socketPlayer2.timer){
-            clearTimeout(socket.board.socketPlayer2.timer)
-        }
-        if (socket.board) {
+        //message validation
+        if (socket.board && data && data.player && data.field) {
+            console.log(`player '${data.player}' set field '${data.field}'`)
+            // clear all timeouts
+            if (socket.board.socketPlayer1.timer){
+                clearTimeout(socket.board.socketPlayer1.timer)
+            }
+            if (socket.board.socketPlayer2.timer){
+                clearTimeout(socket.board.socketPlayer2.timer)
+            }
             socket.board.setField(data)
             let gameResult = socket.board.checkBoard()
             // send player action to the other user
             socket.socketUtil.newMove(data.field, socket.board.socketPlayer1, socket.board.socketPlayer2)
             if (gameResult) {
                 // send finish message
+                console.log(`game finished, winner: '${gameResult}'`)
                 socket.socketUtil.gameFinished(gameResult, socket.board.fieldsWon, socket.board.socketPlayer1, socket.board.socketPlayer2)
             } else {
                 // start next move
@@ -162,10 +166,12 @@ io.on('connection', (socket) => {
         }
     })
 
-    socket.on('new_game', (data)=>{
-        socket.board = null
-        userQueue.push(socket)
-        socket.connectUsers()
+    socket.on('new_game', _=>{
+        console.log('new game for user: '+socket.username)
+        if (socket.board){
+            socket.board = null
+            socket.addUserToQueue(socket.username)
+        }
     })
 
 })

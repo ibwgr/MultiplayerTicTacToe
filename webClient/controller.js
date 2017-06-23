@@ -157,7 +157,7 @@ export default class{
         this.view.initBoard()
         this.running = true
         this.view.showNewGame(false)
-        this.view.setInfoText('Waiting for other user...')
+        this.view.setInfoText('..........')
         this.view.setPlayer1('')
         this.view.setPlayer2('')
         this.view.showBoard(false)

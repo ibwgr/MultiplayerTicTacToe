@@ -67,7 +67,7 @@ export default class {
         let data = {
             'msg': msg
         }
-        socket.emit('username_validation', data)
+        this.socket.emit('username_validation', data)
      }
 
     /**
