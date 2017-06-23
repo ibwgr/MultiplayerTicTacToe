@@ -60,6 +60,8 @@ public class SocketController {
     private String myName;   // from server
     private String player1Name;
     private String player2Name;
+    private String currentUserName;
+    private String currentPlayerSymbol;
     private Boolean myTurn;
     private Boolean othersTurn;
     private Status gameStatus = Status.STOPPED;
@@ -112,6 +114,20 @@ public class SocketController {
     }
     public void setGameStatus(Status gameStatus) {
         this.gameStatus = gameStatus;
+    }
+    public String getCurrentUserName() {
+        return currentUserName;
+    }
+    public void setCurrentUserName(String currentUserName) {
+        this.currentUserName = currentUserName;
+        Log.i(PROG, "****************** current-username: "+this.currentUserName);
+    }
+    public String getCurrentPlayerSymbol() {
+        return currentPlayerSymbol;  // x oder o
+    }
+    public void setCurrentPlayerSymbol(String currentPlayerSymbol) {
+        Log.i(PROG, "****************** current-player-symbol: "+this.currentPlayerSymbol);
+        this.currentPlayerSymbol = currentPlayerSymbol;  // x oder o
     }
     //-----------------------------------------------------
     //-----------------------------------------------------
@@ -216,6 +232,58 @@ public class SocketController {
             this.setOtherHasWon(true);
             act.displayStatus("Sorry, you lost");
         }
+    }
+
+    public Emitter.Listener onYourTurn = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            act.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.i(PROG, "****************** onYourTurn");
+                    onYourTurnActionMethod((JSONObject) args[0]);
+                }
+            });
+        }
+    };
+    public void onYourTurnActionMethod(JSONObject data) {
+        Log.i(PROG, "****************** onYourTurnActionMethod");
+        Log.i(PROG, "******************" +data.toString());
+        try {
+            this.setCurrentUserName(data.getString("username"));
+            this.setCurrentPlayerSymbol(data.getString("player")); // x oder o
+        } catch (JSONException e) {
+            return;
+        }
+        act.displayStatus(this.getCurrentUserName() +", your turn (" +this.getCurrentPlayerSymbol() +")");
+        act.showWaitingImage(false);
+        act.enableAllGameButtons(true);
+    }
+
+    public Emitter.Listener onOtherTurn = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            act.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.i(PROG, "****************** onYourTurn");
+                    onOtherTurnActionMethod((JSONObject) args[0]);
+                }
+            });
+        }
+    };
+    public void onOtherTurnActionMethod(JSONObject data) {
+        Log.i(PROG, "****************** onOtherTurnActionMethod");
+        Log.i(PROG, "******************" +data.toString());
+        try {
+            this.setCurrentUserName(data.getString("username"));
+            this.setCurrentPlayerSymbol(data.getString("player")); // x oder o
+        } catch (JSONException e) {
+            return;
+        }
+        act.displayStatus("Others turn ("+this.getCurrentUserName() +" as " +this.getCurrentPlayerSymbol() +") \nplease wait...");
+        act.showWaitingImage(true);
+        //act.enableAllGameButtons(false)  //schon beim Buttonclick gesetzt, ist da schneller (w. Latenzzeit Server);
     }
 
 

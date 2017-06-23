@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private GameButton gameButton7;
     private GameButton gameButton8;
 
-    private String currentPlayer = "";  // todo weg damit!
+    //private String currentPlayer = "";
 
 
 
@@ -166,8 +166,8 @@ public class MainActivity extends AppCompatActivity {
         Log.i(PROG, "listening for socket messages from server");
         socketController.getSocket().on("start_game", socketController.onStartGame);
         socketController.getSocket().on("user_added", socketController.onUserAdded);
-        socketController.getSocket().on("your_turn", onYourTurn);  // todo auslagern
-        socketController.getSocket().on("other_turn", onOtherTurn);  // todo auslagern
+        socketController.getSocket().on("your_turn", socketController.onYourTurn);
+        socketController.getSocket().on("other_turn", socketController.onOtherTurn);
         socketController.getSocket().on("new_move", onNewMove);  // Spielzug des Gegners
         socketController.getSocket().on("game_finished", socketController.onGameFinished);
         socketController.getSocket().on("disonnect", socketController.onDisconnectFromServer);  // disconnect from server received!
@@ -179,7 +179,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpGame() {
         // initializing
-        currentPlayer = "";                ;
+        //currentPlayer = "";
+        //socketController.setCurrentPlayerSymbol("");              ;
 
         // als erstes die GameButton Instanzen ermitteln
         //
@@ -189,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked(currentPlayer);
+                ((GameButton) v).clicked(socketController.getCurrentPlayerSymbol());
             }
         });
         //
@@ -198,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked(currentPlayer);
+                ((GameButton) v).clicked(socketController.getCurrentPlayerSymbol());
             }
         });
         //
@@ -207,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked(currentPlayer);
+                ((GameButton) v).clicked(socketController.getCurrentPlayerSymbol());
             }
         });
         //
@@ -216,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked(currentPlayer);
+                ((GameButton) v).clicked(socketController.getCurrentPlayerSymbol());
             }
         });
         //
@@ -225,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked(currentPlayer);
+                ((GameButton) v).clicked(socketController.getCurrentPlayerSymbol());
             }
         });
         //
@@ -234,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked(currentPlayer);
+                ((GameButton) v).clicked(socketController.getCurrentPlayerSymbol());
             }
         });
         //
@@ -243,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked(currentPlayer);
+                ((GameButton) v).clicked(socketController.getCurrentPlayerSymbol());
             }
         });
         //
@@ -252,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked(currentPlayer);
+                ((GameButton) v).clicked(socketController.getCurrentPlayerSymbol());
             }
         });
         //
@@ -261,7 +262,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked(currentPlayer);
+                ((GameButton) v).clicked(socketController.getCurrentPlayerSymbol());
             }
         });
         //
@@ -281,82 +282,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
-
-
-
-
-
-
-    // todo gehoert in socketcontroller
-    //
-    //["other_turn",{"player":"x","username":"Emma"}]
-    private Emitter.Listener onYourTurn = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Log.i(PROG, "****************** your turn");
-
-                    JSONObject data = (JSONObject) args[0];
-                    Log.i(PROG, "******************" +data.toString());
-                    String username;
-                    String player;
-                    try {
-                        username = data.getString("username");
-                        player = data.getString("player");
-                        currentPlayer = player;
-                    } catch (JSONException e) {
-                        return;
-                    }
-                    Log.i(PROG, "****************** username: "+username);
-                    Log.i(PROG, "****************** player: "+player);  // x oder o
-
-                    displayZeileStatus.setText(username +", your turn (" +player +")");
-                    waitingImage.setVisibility(View.INVISIBLE);
-                    GameButton.enableAllGameButtons();
-                }
-            });
-        }
-    };
-
-
-    // todo gehoert in socketcontroller
-    //With this we listen on the new message event to receive messages from other users.
-    //["other_turn",{"player":"x","username":"Emma"}]
-    private Emitter.Listener onOtherTurn = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Log.i(PROG, "****************** other turn");
-
-                    JSONObject data = (JSONObject) args[0];
-                    Log.i(PROG, "******************" +data.toString());
-                    String username;
-                    String player;
-                    try {
-                        username = data.getString("username");
-                        player = data.getString("player");
-                        currentPlayer = player;
-                    } catch (JSONException e) {
-                        return;
-                    }
-                    Log.i(PROG, "****************** username: "+username);
-                    Log.i(PROG, "****************** player: "+player);
-
-                    displayZeileStatus.setText("Others turn ("+username +" as " +player +") \nplease wait...");
-                    waitingImage.setVisibility(View.VISIBLE);
-                }
-            });
-        }
-    };
-
-
-    // todo gehoert in socketcontroller
     // Gegner hat gezogen
     private Emitter.Listener onNewMove = new Emitter.Listener() {
         @Override
@@ -398,5 +323,18 @@ public class MainActivity extends AppCompatActivity {
     public void displayPlayers(String text) {
         displayZeilePlayers.setText(text);
     }
-
+    public void showWaitingImage(boolean toShow) {
+        if (toShow) {
+            waitingImage.setVisibility(View.VISIBLE);
+        } else {
+            waitingImage.setVisibility(View.INVISIBLE);
+        }
+    }
+    public void enableAllGameButtons(boolean toEnable) {
+        if (toEnable) {
+            GameButton.enableAllGameButtons();
+        } else {
+            GameButton.disableAllGameButtons();
+        }
+    }
 }
