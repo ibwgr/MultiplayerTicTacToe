@@ -147,7 +147,7 @@ export default class{
             this.view.setPlayer1('')
             this.view.setPlayer2('')
             this.view.showNameInput(false)
-            this.view.setInfoText('..........')
+            this.view.setInfoText('waiting for server..........')
         }
     }
 
@@ -157,7 +157,7 @@ export default class{
         this.view.initBoard()
         this.running = true
         this.view.showNewGame(false)
-        this.view.setInfoText('..........')
+        this.view.setInfoText('waiting for server..........')
         this.view.setPlayer1('')
         this.view.setPlayer2('')
         this.view.showBoard(false)

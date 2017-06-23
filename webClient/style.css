@@ -366,6 +366,17 @@ div.field {
 }
 
 /*
+*  footer
+*/
+footer {
+    text-align: center;
+    width: 98%;
+    font-family: 'Yantramanav', sans-serif;
+    font-size: 0.8em;
+    padding-bottom: 10px;
+}
+
+/*
 *  Desktop Version
 */
 @media only screen and (min-width: 580px) {
