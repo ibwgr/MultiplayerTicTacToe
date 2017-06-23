@@ -1,9 +1,7 @@
 package ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
-import android.widget.TextView;
 
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
@@ -11,7 +9,6 @@ import com.github.nkzawa.socketio.client.Socket;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.net.URISyntaxException;
 
@@ -62,40 +59,41 @@ public class SocketController {
     private String player2Name;
     private String currentUserName;
     private String currentPlayerSymbol;
-    private Boolean myTurn;
-    private Boolean othersTurn;
+    private Boolean isAllButtonsEnabled;
+    private Boolean isMyTurn;
+    private Boolean isOthersTurn;
+    private Boolean isIhaveWon;
+    private Boolean isOtherHasWon;
     private Status gameStatus = Status.STOPPED;
-    private Boolean iHaveWon;
-    private Boolean otherHasWon;
     public String getMyName() {
         return myName;
     }
     public void setMyName(String myName) {
         this.myName = myName;
     }
-    public Boolean getMyTurn() {
-        return myTurn;
+    public Boolean getIsMyTurn() {
+        return isMyTurn;
     }
-    public void setMyTurn(Boolean myTurn) {
-        this.myTurn = myTurn;
+    public void setIsMyTurn(Boolean isMyTurn) {
+        this.isMyTurn = isMyTurn;
     }
-    public Boolean getOthersTurn() {
-        return othersTurn;
+    public Boolean getIsOthersTurn() {
+        return isOthersTurn;
     }
-    public void setOthersTurn(Boolean othersTurn) {
-        this.othersTurn = othersTurn;
+    public void setIsOthersTurn(Boolean isOthersTurn) {
+        this.isOthersTurn = isOthersTurn;
     }
-    public Boolean getiHaveWon() {
-        return iHaveWon;
+    public Boolean getIsIhaveWon() {
+        return isIhaveWon;
     }
-    public void setiHaveWon(Boolean iHaveWon) {
-        this.iHaveWon = iHaveWon;
+    public void setIsIhaveWon(Boolean isIhaveWon) {
+        this.isIhaveWon = isIhaveWon;
     }
-    public Boolean getOtherHasWon() {
-        return otherHasWon;
+    public Boolean getIsOtherHasWon() {
+        return isOtherHasWon;
     }
-    public void setOtherHasWon(Boolean otherHasWon) {
-        this.otherHasWon = otherHasWon;
+    public void setIsOtherHasWon(Boolean isOtherHasWon) {
+        this.isOtherHasWon = isOtherHasWon;
     }
     public String getPlayer1Name() {
         return player1Name;
@@ -128,6 +126,12 @@ public class SocketController {
     public void setCurrentPlayerSymbol(String currentPlayerSymbol) {
         Log.i(PROG, "****************** current-player-symbol: "+this.currentPlayerSymbol);
         this.currentPlayerSymbol = currentPlayerSymbol;  // x oder o
+    }
+    public Boolean getIsAllButtonsEnabled() {
+        return isAllButtonsEnabled;
+    }
+    public void setIsAllButtonsEnabled(Boolean isAllButtonsEnabled) {
+        this.isAllButtonsEnabled = isAllButtonsEnabled;
     }
     //-----------------------------------------------------
     //-----------------------------------------------------
@@ -226,14 +230,15 @@ public class SocketController {
             return;
         }
         if (youWon.equals("yes")) {
-            this.setiHaveWon(true);
+            this.setIsIhaveWon(true);
             act.displayStatus("You won!");
         } else {
-            this.setOtherHasWon(true);
+            this.setIsOtherHasWon(true);
             act.displayStatus("Sorry, you lost");
         }
     }
 
+    //{"time":30,"player":"x","username":"Emma"}
     public Emitter.Listener onYourTurn = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -258,8 +263,11 @@ public class SocketController {
         act.displayStatus(this.getCurrentUserName() +", your turn (" +this.getCurrentPlayerSymbol() +")");
         act.showWaitingImage(false);
         act.enableAllGameButtons(true);
+        this.setIsMyTurn(true);
+        this.setIsOthersTurn(false);
     }
 
+    // {"time":30,"player":"o","username":"vulkan"}
     public Emitter.Listener onOtherTurn = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -284,6 +292,9 @@ public class SocketController {
         act.displayStatus("Others turn ("+this.getCurrentUserName() +" as " +this.getCurrentPlayerSymbol() +") \nplease wait...");
         act.showWaitingImage(true);
         //act.enableAllGameButtons(false)  //schon beim Buttonclick gesetzt, ist da schneller (w. Latenzzeit Server);
+        this.setIsMyTurn(false);
+        this.setIsOthersTurn(true);
+
     }
 
 

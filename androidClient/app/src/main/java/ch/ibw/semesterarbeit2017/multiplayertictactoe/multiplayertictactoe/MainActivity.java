@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
                     socketController.connect();
                     // username senden
-                    JSONObject obj = new JSONObject();
+                    JSONObject obj = new JSONObject();    // todo das sollte in den socketcontroller (wie im GameButton)
                     try {
                         obj.put("username", userName);
                     } catch (JSONException e) {
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
         socketController.getSocket().on("user_added", socketController.onUserAdded);
         socketController.getSocket().on("your_turn", socketController.onYourTurn);
         socketController.getSocket().on("other_turn", socketController.onOtherTurn);
-        socketController.getSocket().on("new_move", onNewMove);  // Spielzug des Gegners
+        socketController.getSocket().on("new_move", onNewMove);  // Spielzug des Gegners   //todo auslagern
         socketController.getSocket().on("game_finished", socketController.onGameFinished);
         socketController.getSocket().on("disonnect", socketController.onDisconnectFromServer);  // disconnect from server received!
 
@@ -179,9 +179,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpGame() {
         // initializing
-        //currentPlayer = "";
-        //socketController.setCurrentPlayerSymbol("");              ;
-
+             
         // als erstes die GameButton Instanzen ermitteln
         //
         gameButton0 = (GameButton) findViewById(R.id.gameButton0);
@@ -190,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked(socketController.getCurrentPlayerSymbol());
+                ((GameButton) v).clicked();;
             }
         });
         //
@@ -199,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked(socketController.getCurrentPlayerSymbol());
+                ((GameButton) v).clicked();;
             }
         });
         //
@@ -208,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked(socketController.getCurrentPlayerSymbol());
+                ((GameButton) v).clicked();;
             }
         });
         //
@@ -217,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked(socketController.getCurrentPlayerSymbol());
+                ((GameButton) v).clicked();;
             }
         });
         //
@@ -226,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked(socketController.getCurrentPlayerSymbol());
+                ((GameButton) v).clicked();;
             }
         });
         //
@@ -235,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked(socketController.getCurrentPlayerSymbol());
+                ((GameButton) v).clicked();;
             }
         });
         //
@@ -244,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked(socketController.getCurrentPlayerSymbol());
+                ((GameButton) v).clicked();;
             }
         });
         //
@@ -253,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked(socketController.getCurrentPlayerSymbol());
+                ((GameButton) v).clicked();;
             }
         });
         //
@@ -262,7 +260,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked(socketController.getCurrentPlayerSymbol());
+                ((GameButton) v).clicked();;
             }
         });
         //
@@ -307,7 +305,7 @@ public class MainActivity extends AppCompatActivity {
 
                     GameButton g = GameButton.findGameButtonByFieldId(field);
                     if (g != null) {
-                        g.clickedByOther(player);
+                        g.clickedByOther();
                     }
                 }
             });

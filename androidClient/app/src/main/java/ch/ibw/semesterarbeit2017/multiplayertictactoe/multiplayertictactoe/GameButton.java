@@ -92,9 +92,9 @@ public class GameButton extends ImageButton {
     }
 
     ///////////////////////////////
-    public void clicked(String currentPlayerToken) {
-        Log.w(PROG, "Button clicked: " + this.toString() +" , playerToken:"+currentPlayerToken);
-        if (currentPlayerToken.equals(Const.PLAYER_TOKEN_O)) {
+    public void clicked() {
+        Log.w(PROG, "Button clicked: " + this.toString() +" , playerToken:"+socketController.getCurrentPlayerSymbol());
+        if (socketController.getCurrentPlayerSymbol().equals(Const.PLAYER_TOKEN_O)) {
             setGraphicO();
         } else {
             setGraphicX();
@@ -107,20 +107,20 @@ public class GameButton extends ImageButton {
         //
         // dem server den spielzug mitteilen
         // username senden
-        JSONObject obj = new JSONObject();
+        JSONObject obj = new JSONObject();   // todo das sollte in den socketcontroller (wie add_user)
         try {
-            obj.put("player", currentPlayerToken);
+            obj.put("player", socketController.getCurrentPlayerSymbol());
             obj.put("field", getNrFieldId());
         } catch (JSONException e) {
             e.printStackTrace();
         }
         socketController.send("player_action", obj);  // mein Spielzug
-        Log.w(PROG, "spielzug beendet, feld:"+this.getNrFieldId() +", playerToken:"+currentPlayerToken);
+        Log.w(PROG, "spielzug beendet, feld:"+this.getNrFieldId() +", playerToken:"+socketController.getCurrentPlayerSymbol());
     }
     ///////////////////////////////
-    public void clickedByOther(String currentPlayerToken) {
-        Log.i(PROG, "Button clicked by other: " + this.toString() +" , playerToken:"+currentPlayerToken);
-        if (currentPlayerToken.equals(Const.PLAYER_TOKEN_O)) {
+    public void clickedByOther() {
+        Log.i(PROG, "Button clicked by other: " + this.toString() +" , playerToken:"+socketController.getCurrentPlayerSymbol());
+        if (socketController.getCurrentPlayerSymbol().equals(Const.PLAYER_TOKEN_O)) {
             setGraphicO();
         } else {
             setGraphicX();
@@ -142,6 +142,9 @@ public class GameButton extends ImageButton {
         GameButton.socketController = socketController;
     }
 
+
+
+
     //////////////////////////////////////////////////
     private static List<GameButton> allGameButtons;
 
@@ -154,7 +157,11 @@ public class GameButton extends ImageButton {
         Log.i(PROG, "all game buttons set, liste: " +allGameButtons.size());
     }
 
+
+
+
     public static void enableAllGameButtons(){
+        socketController.setIsAllButtonsEnabled(true);
         for (GameButton gamebutton : allGameButtons){
             // only enable if button is unclicked
             //System.out.println("..... gamebutton " +gamebutton);
@@ -165,6 +172,7 @@ public class GameButton extends ImageButton {
     }
 
     public static void disableAllGameButtons() {
+        socketController.setIsAllButtonsEnabled(false);
         for (GameButton gamebutton : allGameButtons){
             if (gamebutton.isEnabled()) {
                 gamebutton.setEnabled(false);
