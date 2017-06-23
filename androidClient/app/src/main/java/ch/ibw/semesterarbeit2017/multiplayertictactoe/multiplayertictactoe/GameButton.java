@@ -119,7 +119,7 @@ public class GameButton extends ImageButton {
     }
     ///////////////////////////////
     public void clickedByOther(String currentPlayerToken) {
-        Log.w(PROG, "Button clicked by other: " + this.toString() +" , playerToken:"+currentPlayerToken);
+        Log.i(PROG, "Button clicked by other: " + this.toString() +" , playerToken:"+currentPlayerToken);
         if (currentPlayerToken.equals(Const.PLAYER_TOKEN_O)) {
             setGraphicO();
         } else {
@@ -151,7 +151,7 @@ public class GameButton extends ImageButton {
 
     public static void setAllGameButtons(List<GameButton> allGameButtons) {
         GameButton.allGameButtons = allGameButtons;
-        System.out.println("........ liste: " +allGameButtons.size());
+        Log.i(PROG, "all game buttons set, liste: " +allGameButtons.size());
     }
 
     public static void enableAllGameButtons(){
