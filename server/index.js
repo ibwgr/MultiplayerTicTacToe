@@ -1,3 +1,10 @@
+/**
+ * Tic Tac Toe Server
+ * 
+ * Semesterarbeit NDK HF Web und Mobile Frontend Entwicklung
+ * Reto Kaufmann / Dieter Biedermann
+ */
+
 'use strict'
 
 import express from 'express'

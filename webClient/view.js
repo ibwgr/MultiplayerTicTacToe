@@ -1,6 +1,6 @@
 'use strict'
 
-import 'es6-symbol'
+import 'babel-polyfill'
 
 const fieldEventListener = Symbol()
 const nameEventListener = Symbol()
@@ -27,25 +27,24 @@ export default class{
         this.$nameInput.addEventListener("change", this[nameEventListener].bind(this))
         this.$newGame.addEventListener("click", this[newGameEventListener].bind(this))
 
+/*
         // for .. of loop
         for (let field of this.$fields) {
             field.addEventListener("click", this[fieldEventListener].bind(this))
         }
-/*
         // with SPREAD parameter
-        [...this.$fields].forEach(item=>{
+        ([...this.$fields]).forEach(item=>{
             item.addEventListener("click", this[fieldEventListener].bind(this))
         })
+*/
 
         // Array.from function
         Array.from(this.$fields).forEach(item=>{
             item.addEventListener("click", this[fieldEventListener].bind(this))
         })
-*/
     }
 
     [fieldEventListener]({target}){
-        // fire event, invoke subscriber
         this.fieldEventListener &&
         this.fieldEventListener(target.id)
     }
@@ -55,7 +54,6 @@ export default class{
     }
 
     [nameEventListener]({target}){
-        // fire event, invoke subscriber
         this.nameEventListener &&
         this.nameEventListener(target.value.trim())
     }
@@ -65,7 +63,6 @@ export default class{
     }
 
     [newGameEventListener]({target}){
-        // fire event, invoke subscriber
         this.newGameEventListener &&
         this.newGameEventListener()
     }
@@ -168,7 +165,7 @@ export default class{
     }
 
     initBoard(){
-        for (let field of this.$fields) {
+        Array.from(this.$fields).forEach(field=>{
             field.classList.remove('fieldWon')
             if (!field.querySelector('.setX').classList.contains('hidden')){
                 field.querySelector('.setX').classList.add('hidden')
@@ -176,7 +173,7 @@ export default class{
             if (!field.querySelector('.setO').classList.contains('hidden')){
                 field.querySelector('.setO').classList.add('hidden')
             }
-        }
+        })
     }
 
     isFieldEmpty(field){
@@ -197,12 +194,8 @@ export default class{
         // animation
         if (item.change) {
             window.setTimeout(_=>{
-                for (let element of this.$doc.querySelectorAll('.changeNew')){
-                    element.classList.remove('changeNew')
-                }
-                for (let element of this.$doc.querySelectorAll('.changeUpdate')){
-                    element.classList.remove('changeUpdate')
-                }
+                Array.from(this.$doc.querySelectorAll('.changeNew')).forEach(element=>element.classList.remove('changeNew'))
+                Array.from(this.$doc.querySelectorAll('.changeUpdate')).forEach(element=>element.classList.remove('changeUpdate'))
             }, 800)
         }
         // return html

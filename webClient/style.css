@@ -237,6 +237,7 @@ h1 {
 .col1 {
     display: flex;
     justify-content: flex-start;
+    align-items: center;
     width: 100% !important;
     min-width: 150px !important;
     margin: 2px;
@@ -246,20 +247,17 @@ h1 {
 
 .col2, .col3, .col4 {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-around;
     width: 100% !important;
     min-width: 80px !important;
-    margin: 2px;
-    padding-left: 2px;
     overflow-x: hidden;
-    box-sizing: border-box;
+    margin: 2px;
+    align-items: center;
 }
 
 .playing::after {
     content: "\f017";
     font-family: FontAwesome;
-    position: relative;
-    right: -10px;
     top: 2px;
 }
 
@@ -271,8 +269,6 @@ h1 {
 .winner::after {
     content: '\f00c';
     font-family: FontAwesome;
-    position: relative;
-    right: -10px;
     top: 2px;
 }
 

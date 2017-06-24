@@ -1,3 +1,10 @@
+/**
+ * socketUtil
+ * Contains all messages sent to the client
+ * 
+ * Semesterarbeit NDK HF Web und Mobile Frontend Entwicklung
+ * Reto Kaufmann / Dieter Biedermann
+ */
 'use strict'
 
 export default class {

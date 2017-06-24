@@ -1,3 +1,10 @@
+/**
+ * board
+ * manages the game
+ * 
+ * Semesterarbeit NDK HF Web und Mobile Frontend Entwicklung
+ * Reto Kaufmann / Dieter Biedermann
+ */
 'use strict'
 
 export default class {
