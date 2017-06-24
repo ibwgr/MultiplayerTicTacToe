@@ -2,8 +2,7 @@
   "name": "tic-tac-toe-webclient",
   "version": "0.1.0",
   "description": "Tic Tac Toe Webclient",
-  "author": "Ueli Kunz",
-  "license": "MIT",
+  "author": "Dieter Biedermann",
   "devDependencies": {
     "babel-preset-es2015": "^6.22.0",
     "babelify": "^7.3.0",
