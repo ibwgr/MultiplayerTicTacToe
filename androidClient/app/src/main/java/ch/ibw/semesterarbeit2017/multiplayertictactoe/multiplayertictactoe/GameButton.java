@@ -114,6 +114,7 @@ public class GameButton extends ImageButton {
         this.setClickable(false);
         // spielzug beendet
         disableAllGameButtons();
+        socketController.stopCounter();
         //
         // dem server den spielzug mitteilen
         // username senden

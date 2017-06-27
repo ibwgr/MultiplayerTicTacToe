@@ -318,9 +318,9 @@ public class MainActivity extends AppCompatActivity {
     }
     public void showWaitingImage(boolean toShow) {
         if (toShow) {
-            waitingImage.setVisibility(View.VISIBLE);
+            //waitingImage.setVisibility(View.VISIBLE);
         } else {
-            waitingImage.setVisibility(View.INVISIBLE);
+            //waitingImage.setVisibility(View.INVISIBLE);
         }
     }
     public void enableAllGameButtons(boolean toEnable) {

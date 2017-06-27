@@ -1,6 +1,7 @@
 package ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe;
 
 import android.content.Context;
+import android.os.CountDownTimer;
 import android.util.Log;
 
 import com.github.nkzawa.emitter.Emitter;
@@ -44,17 +45,28 @@ public class SocketController {
     //------------------------------------------------------
     //------------------------------------------------------
     private String myName;   // from server
+    private MyCount counter;
     private String player1Name;
     private String player2Name;
     private String currentUserName;
     private String currentPlayerSymbol;
     private String currentField;
+    private int countDownTime;
     private Boolean isAllButtonsEnabled;
     private Boolean isMyTurn;
     private Boolean isOthersTurn;
     private Boolean isIhaveWon;
     private Boolean isOtherHasWon;
     private Status gameStatus = Status.STOPPED;
+    public void stopCounter() {
+        counter.cancel();
+    }
+    public int getCountDownTime() {
+        return countDownTime;
+    }
+    public void setCountDownTime(int countDownTime) {
+        this.countDownTime = countDownTime;
+    }
     public String getMyName() {
         return myName;
     }
@@ -267,15 +279,29 @@ public class SocketController {
         try {
             this.setCurrentUserName(data.getString("username"));
             this.setCurrentPlayerSymbol(data.getString("player")); // x oder o
+            this.setCountDownTime(data.getInt("time"));
         } catch (JSONException e) {
             return;
         }
-        act.displayStatus(this.getCurrentUserName() +", your turn (" +this.getCurrentPlayerSymbol() +")");
+        String message = this.getCurrentUserName() +", your turn (" +this.getCurrentPlayerSymbol() +")";
+        act.displayStatus(message);
         act.showWaitingImage(false);
         act.enableAllGameButtons(true);
         this.setIsMyTurn(true);
         this.setIsOthersTurn(false);
+        // // TODO: 27.06.17
+        // 10000 is the starting number (in milliseconds)
+        // 1000 is the number to count down each time (in milliseconds)
+        counter = new MyCount(this.getCountDownTime()*1000, 1000, message);
+        counter.start();
     }
+
+
+
+
+
+
+
 
     // {"time":30,"player":"o","username":"vulkan"}
     public Emitter.Listener onOtherTurn = new Emitter.Listener() {
@@ -397,6 +423,28 @@ public class SocketController {
         
     }
 
+    //inner class
+    // countdowntimer is an abstract class, so extend it and fill in methods
+    public class MyCount extends CountDownTimer {
+        private String message;
+
+        public MyCount(long millisInFuture, long countDownInterval, String message) {
+            super(millisInFuture, countDownInterval);
+            this.message = message;
+        }
+
+        @Override
+        public void onFinish() {
+            // nicht relevant, server beendet das spiel
+            //act.displayStatus("TIMER done!");
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+            // todo ein extra feld fuer den timer machen!
+            act.displayStatus(message +", time left: " + millisUntilFinished / 1000);
+        }
+    }
 
 
 }
