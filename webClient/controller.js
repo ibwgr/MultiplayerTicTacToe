@@ -18,6 +18,7 @@ export default class{
         this.player = 1
         this.running = false
         this.gameEnabled = false
+        this.timer = 0
 
         view.registerFieldEventListener(this.fieldEventListener.bind(this))
         view.registerNameEventListener(this.nameEventListener.bind(this))
@@ -32,8 +33,6 @@ export default class{
             console.log('disconnected')
             this.running = false
             this.gameEnabled = false
-
-            // this context was wrong !!! because of a normal FUNCTION not a ARROW FUNCTION !!!
             this.view.showNameInput(true)
             this.view.initBoard()
             this.view.showBoard(false)
@@ -54,18 +53,14 @@ export default class{
         // new user is added to queue
         socket.on('user_added', (data)=>{
             console.log('user_added')
-
             this.view.setInfoText(`Hi ${data.username}, please wait for other user...`)
         })
 
         // messages from server...
         socket.on('start_game', (data)=>{
             console.log('game started...' + data.player1 + '/' + data.player2)
-            
-            //this.view.setPlayerInfoText(data.player1 + ' is playing with ' + data.player2)
             this.view.setPlayer1(data.player1)
             this.view.setPlayer2(data.player2)
-
             this.running = true
             this.view.showBoard(true)
             this.view.setInfoText('New game started...')
@@ -78,6 +73,17 @@ export default class{
             this.gameEnabled = true
             this.view.setInfoColor('blue')
             this.view.enableBoard(true)
+            // start interval -> setInterval(..., 1000)
+            this.time = data.time
+            this.view.setTimer(this.time)
+            let timer = window.setInterval(_=>{
+                this.time--
+                this.view.setTimer(this.time)
+                if (this.time === 0 || !this.gameEnabled || !this.running){
+                    clearInterval(timer)
+                    this.view.showTimer(false)
+                }
+            }, 1000)
         })
 
         socket.on('other_turn', (data)=>{
@@ -113,7 +119,6 @@ export default class{
         })
 
         socket.on('stats_update', (data)=>{
-            console.log(data)
             this.view.renderStatistics(data)
         })
 
@@ -127,8 +132,6 @@ export default class{
         })
     }
 
-
-
     fieldEventListener(field){
         if (this.view.isFieldEmpty(field) && this.running && this.gameEnabled){
             this.view.setField(field, this.playerToken)
@@ -138,11 +141,13 @@ export default class{
     }
 
     nameEventListener(username){
-        // message to server
         if (!username.isEmpty()) {
+            // message to server
             socket.emit('add_user', {'username': username})
+            this.view.setPlayer1('')
+            this.view.setPlayer2('')
             this.view.showNameInput(false)
-            this.view.setInfoText('..........')
+            this.view.setInfoText('waiting for server..........')
         }
     }
 
@@ -152,7 +157,7 @@ export default class{
         this.view.initBoard()
         this.running = true
         this.view.showNewGame(false)
-        this.view.setInfoText('Waiting for other user...')
+        this.view.setInfoText('waiting for server..........')
         this.view.setPlayer1('')
         this.view.setPlayer2('')
         this.view.showBoard(false)

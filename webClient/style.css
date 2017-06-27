@@ -84,6 +84,8 @@ h1 {
 *  INFO CONTAINER
 */
 #infoContainer {
+    display: flex;
+    flex-direction: column;
     font-family: 'Yantramanav', sans-serif;
     font-size: 1em;
     padding: 10px;
@@ -94,7 +96,6 @@ h1 {
     width: 98%;
     box-sizing: border-box;
     text-align: center;
-    transition: all 1s ease-out 0.1s;
     border-radius: 5px;
 }
 
@@ -148,6 +149,27 @@ h1 {
     margin-top: 10px;
 }
 
+#timer {
+    display: flex;
+    align-self: center;
+    align-items: flex-end;
+    color: white;
+    height: 1.4em;
+}
+
+.timerSeconds {
+    color: yellow;
+    font-weight: bold;
+    font-size: 1.4em;
+    width: 32px;
+    position: relative;
+    bottom: -4px;
+    transition: all 0.7s ease-out 0.1s;
+}
+.timerSecondsSmall {
+    font-size: 0.1em;
+    bottom: 8px;
+}
 
 /*
 *  New Game Container
@@ -215,27 +237,27 @@ h1 {
 .col1 {
     display: flex;
     justify-content: flex-start;
+    align-items: center;
     width: 100% !important;
     min-width: 150px !important;
     margin: 2px;
     padding-left: 4px;
+    box-sizing: border-box;
 }
 
 .col2, .col3, .col4 {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-around;
     width: 100% !important;
     min-width: 80px !important;
-    margin: 2px;
-    padding-left: 2px;
     overflow-x: hidden;
+    margin: 2px;
+    align-items: center;
 }
 
 .playing::after {
     content: "\f017";
     font-family: FontAwesome;
-    position: relative;
-    right: -10px;
     top: 2px;
 }
 
@@ -247,8 +269,6 @@ h1 {
 .winner::after {
     content: '\f00c';
     font-family: FontAwesome;
-    position: relative;
-    right: -10px;
     top: 2px;
 }
 
@@ -295,7 +315,7 @@ div.row {
 
 div.field {
     width: 50vw;
-    height: 33vw;
+    height: 32vw;
     display: flex;
     align-items: center;
     justify-content: center;    
@@ -351,6 +371,17 @@ div.field {
 
 .fieldWon {
     background: mediumseagreen !important;
+}
+
+/*
+*  footer
+*/
+footer {
+    text-align: center;
+    width: 98%;
+    font-family: 'Yantramanav', sans-serif;
+    font-size: 0.8em;
+    padding-bottom: 10px;
 }
 
 /*
