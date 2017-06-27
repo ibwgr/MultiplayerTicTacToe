@@ -36,17 +36,6 @@ public class SocketController {
         //
         socket = createSocket();
     }
-//    // todo wieder loeschen
-//    private MainActivity activity;
-//    public void testSetActivity(MainActivity activity){
-//        this.activity = activity;
-//    }
-//    public void testUseActivity(String text){
-//        this.activity.displayStatus(text);
-//    }
-
-
-
 
 
     //-----------------------------------------------------
@@ -152,7 +141,8 @@ public class SocketController {
         try {
             //return IO.socket("https://warm-shelf-33316.herokuapp.com/");          // Test Client http://lastminute.li/aaa/
             //return IO.socket("http://192.168.1.39:3100");
-            return IO.socket("https://warm-shelf-33316.herokuapp.com/");
+            return IO.socket("http://192.168.1.33:3100");
+            //return IO.socket("https://warm-shelf-33316.herokuapp.com/");
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -240,19 +230,21 @@ public class SocketController {
         if (winner.equals("draw")) {
             this.setIsIhaveWon(false);
             this.setIsOtherHasWon(false);
-            act.displayStatus("This game ended in a draw.");
+            act.displayStatus("This game ended in a draw.\nPlay again?");
         } else if (youWon.equals("yes")) {
             this.setIsIhaveWon(true);
             this.setIsOtherHasWon(false);
-            act.displayStatus("You won!");
+            act.displayStatus("You won!\nPlay again?");
         } else {
             this.setIsIhaveWon(false);
             this.setIsOtherHasWon(true);
-            act.displayStatus("Sorry, you lost");
+            act.displayStatus("Sorry, you lost\nPlay again?");
         }
         this.setGameStatus(Status.STOPPED);
         act.showWaitingImage(false);
         act.enableAllGameButtons(false);
+        // fuer replay
+        act.enableButtonOk();
     }
 
 
@@ -366,7 +358,7 @@ public class SocketController {
         } catch (JSONException e) {
             return;
         }
-        //act.getGameInfo().setMyName(userName);
+        setMyName(userName);
         act.displayStatus("Hello " +userName +"\n" + "Waiting for other user to play with...");
     }
 

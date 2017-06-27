@@ -56,6 +56,10 @@ public class GameButton extends ImageButton {
     public void setClicked() {
         isClicked = true;
     }
+    public void setClickedRevert() {
+        // nur fuer neu-init eines replay games
+        isClicked = false;
+    }
 
     public boolean isX() {
         return isX;
@@ -85,7 +89,13 @@ public class GameButton extends ImageButton {
     }
 
     ///////////////////////////////
+    public void reInitializeButton(){
+        this.setClickable(true);
+        this.setGraphicInit();
+        this.setClickedRevert();
+    }
 
+    ///////////////////////////////
     @Override
     public String toString() {
         return "GameButton" + this.nr +" clicked:"+isClicked;

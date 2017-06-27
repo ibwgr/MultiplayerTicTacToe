@@ -11,8 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.nkzawa.emitter.Emitter;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -41,9 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private GameButton gameButton8;
 
     //private String currentPlayer = "";
-
-
-
+    private Button buttonOk;
 
 
     /*
@@ -53,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
     TODO fixtexte translation ressource
     TODO layout hoch/quer/groessen
     TODO layout grid vielleicht durch table ersetzen, wegen grid-lines
-    TODO testing socket mock https://stackoverflow.com/questions/5577274/testing-java-sockets
     TODO disconnect
     TODO socket.off
     --------------------------------------------------------------------
@@ -81,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         socketController = new SocketController(getApplicationContext(), this);
-        setUpGame();
+        setUpInitalGame();
 
 
         // get the view elements
@@ -89,35 +84,48 @@ public class MainActivity extends AppCompatActivity {
         displayZeileStatus = (TextView) findViewById(R.id.label_displayzeile);
         displayZeilePlayers = (TextView) findViewById(R.id.label_displayplayers);
 
-        // get the OK button
-        final Button buttonOk = (Button) findViewById(R.id.button_ok);
+        // get the OK/Start button
+        buttonOk = (Button) findViewById(R.id.button_ok);
         buttonOk.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                String userName = (editUserName.getText().toString());
-                Log.w(PROG, "Username (aus Feld): " + userName);
-                if (userName.length()>0) {
-                    //
-                    displayZeileStatus.setText("bitte warten..." );
-                    //displayZeileStatus.setText("Hallo " +userName );
-
-                    // Eingabefeld und Button disable
-                    buttonOk.setVisibility(View.INVISIBLE);
-                    editUserName.setVisibility(View.INVISIBLE);
-
-                    socketController.connect();
-                    // username senden
-                    JSONObject obj = new JSONObject();    // todo das sollte in den socketcontroller (wie im GameButton)
-                    try {
-                        obj.put("username", userName);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                //
+                // Button wird benoetigt fuer:
+                //  a) start
+                //  b) restart nach spielende
+                //
+                String userName = "";
+                if (socketController.getGameStatus().equals(Status.NEW)) {
+                    userName = (editUserName.getText().toString());
+                    Log.w(PROG, "Username (aus Feld): " + userName);
+                    if (userName.length() > 0) {
+                        //
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Bitte zuerst einen Usernamen eingeben", Toast.LENGTH_LONG).show();
+                        return;
                     }
-                    socketController.send("add_user", obj);
-                    displayZeileStatus.setText("Hello " +userName +"\n" + "...waiting for server...");
                 } else {
-                    Toast.makeText(getApplicationContext(), "Bitte zuerst einen Usernamen eingeben", Toast.LENGTH_LONG).show();
+                    userName = socketController.getMyName();
                 }
+                // wenn username eingegeben oder es ist ein restart nach spielelnde
+                displayStatus("bitte warten...");
+                disableButtonOk();
+                disableEingabefeld();
+                if (socketController.getGameStatus().equals(Status.STOPPED)) {
+                    setUpReplayGame();
+                }
+
+                socketController.connect();
+                // username senden, egal ob erstes spiel oder restart, ist ein registrieren am server
+                JSONObject obj = new JSONObject();    // todo das sollte in den socketcontroller (wie im GameButton)
+                try {
+                    obj.put("username", userName);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                socketController.send("add_user", obj);
+                displayStatus("Hello " + userName + "\n" + "...waiting for server...");
+
             }
         });
 
@@ -180,9 +188,23 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-    private void setUpGame() {
+    private void setUpReplayGame() {
         // initializing
+        socketController.setGameStatus(Status.NEW);
+        gameButton0.reInitializeButton();
+        gameButton1.reInitializeButton();
+        gameButton2.reInitializeButton();
+        gameButton3.reInitializeButton();
+        gameButton4.reInitializeButton();
+        gameButton5.reInitializeButton();
+        gameButton6.reInitializeButton();
+        gameButton7.reInitializeButton();
+        gameButton8.reInitializeButton();
+    }
+
+    private void setUpInitalGame() {
+        // initializing
+        socketController.setGameStatus(Status.NEW);
              
         // als erstes die GameButton Instanzen ermitteln
         //
@@ -307,5 +329,17 @@ public class MainActivity extends AppCompatActivity {
         } else {
             GameButton.disableAllGameButtons();
         }
+    }
+    public void disableButtonOk() {
+        buttonOk.setVisibility(View.INVISIBLE);
+    }
+    public void enableButtonOk() {
+        buttonOk.setVisibility(View.VISIBLE);
+    }
+    public void disableEingabefeld() {
+        editUserName.setVisibility(View.INVISIBLE);
+    }
+    public void enableEingabefeld() {
+        editUserName.setVisibility(View.VISIBLE);
     }
 }

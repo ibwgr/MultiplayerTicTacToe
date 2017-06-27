@@ -7,5 +7,5 @@ import java.util.HashMap;
  */
 
 public enum Status {
-    STOPPED, RUNNING
+    STOPPED, RUNNING, NEW
 }
