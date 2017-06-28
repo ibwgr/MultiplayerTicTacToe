@@ -3,6 +3,8 @@ sudo: false
 android:
   # rka: FEHLER Caused by: com.android.builder.testing.api.DeviceException: No connected devices!
   # ich glaube das lassen wir sein, keine Zeit
+  # zudem erkennt Travis das Repos im Github nicht, weil wir unter ibwgr unterwegs sind,
+  # wir muessten ein Request for auth machen
 
 
   # Emulator Management: Create, Start and Wait
