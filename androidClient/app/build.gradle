@@ -22,6 +22,12 @@ android {
         unitTests.returnDefaultValues = true
     }
 
+    // rka, wegen Travis bzw.   ./gradlew build connectedCheck
+    lintOptions {
+        abortOnError false
+    }
+
+
 }
 
 dependencies {
