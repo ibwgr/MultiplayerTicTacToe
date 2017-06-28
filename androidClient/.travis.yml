@@ -2,6 +2,7 @@ language: android
 sudo: false
 android:
   # rka: FEHLER Caused by: com.android.builder.testing.api.DeviceException: No connected devices!
+  # ich glaube das lassen wir sein, keine Zeit
 
 
   # Emulator Management: Create, Start and Wait
