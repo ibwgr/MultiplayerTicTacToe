@@ -465,12 +465,13 @@ public class SocketController {
         String statsTimestamp;
         String statsP1;
         String statsP2;
-        String statsStatus; // playing oder der Name eines Spielers (Sieger)
+        String statsStatus; // playing oder der Name eines Spielers (winner)
         String statsChange; // new/update
         String output = "";
         try {
             JSONArray boardList = data.getJSONArray("boardList");
             Log.i(PROG, "******************" +boardList.toString());
+            // todo optik
             for (int i = 0; i < boardList.length(); i++) {
                 JSONObject jsonobject = boardList.getJSONObject(i);
                 statsTimestamp = jsonobject.getString("timestamp").replace(",","");
@@ -480,73 +481,30 @@ public class SocketController {
                 statsChange = jsonobject.getString("change");
                 //Log.i(PROG, "****************** timestamp:" +statsTimestamp);
                 if (statsStatus.equals(statsP1)) {
-                    statsP1 += "+";
+                    statsP1 += "\u2713";  //"\u2713"   siehe https://unicode-table.com/en/
                     statsP2 += " ";
                 } else if (statsStatus.equals(statsP2)) {
-                    statsP2 += "+";
+                    statsP2 += "\u2713";
                     statsP1 += " ";
                 } //else playing
-                output += statsTimestamp +" -- " +statsP1 +" " +statsP2  +" ("+statsChange +")\n";
+                statsP1 = Util.padRight(statsP1,8)+" ";
+                statsP2 = Util.padRight(statsP2,8)+" ";
+                if (statsChange.equals("update")) {
+                    statsChange = "upd";
+                } else {
+                    statsChange = "   ";
+                }
+                output += statsTimestamp +": " +statsP1 +" " +statsP2  +" ("+statsChange +")\n";
             }
         } catch (JSONException e1) {
             e1.printStackTrace();
         }
         act.displayStatistics(output);
-
-
-//        try {
-
-//        } catch (JSONException e) {
-//            return;
-//        }
     }
-/*
-    {
-        "boardList":[
-        {
-            "timestamp":"6\/28\/2017, 9:59:58 PM",
-                "player1":"Emma",
-                "player2":"hans",
-                "status":"playing",
-                "change":"new"
-        },
-        {
-            "timestamp":"6\/28\/2017, 9:41:10 PM",
-                "player1":"Emma",
-                "player2":"hans",
-                "status":"hans",
-                "change":""
-        },
-   ]
-   */
-/*
-server:
-    let stats = {
-            'boardList': boardList.map((item)=>{return {
-            'timestamp': item.timestamp,
-            'player1': item.player1,
-            'player2': item.player2,
-            'status': item.winner || 'playing',
-            'change': newBoard === item ? 'new' : updateBoard === item ? 'update' : ''
-        }}),
-            'userQueue': userQueue.map((item)=>item.username)
-client:
-            [renderStatsItem](item) {
-        // animation
-        if (item.change) {
-            window.setTimeout(_=>{
-                    Array.from(this.$doc.querySelectorAll('.changeNew')).forEach(element=>element.classList.remove('changeNew'))
-            Array.from(this.$doc.querySelectorAll('.changeUpdate')).forEach(element=>element.classList.remove('changeUpdate'))
-            }, 800)
-        }
-        // return html
-        return `<li ${item.change === 'new' ? 'class="changeNew"' : item.change === 'update' ? 'class="changeUpdate"' : ''}>
-        <div class="col1">${item.timestamp}</div>
-        <div class="col2 ${item.status === item.player1 ? 'winner' : ''}">${item.player1}</div>
-        <div class="col3 ${item.status === item.player2 ? 'winner' : item.status === 'playing' ? 'playing' : ''}">${item.player2}</div>
-        </li>`
-    }
-*/
+
+
+
+
 
 
 

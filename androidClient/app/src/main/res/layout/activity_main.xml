@@ -163,12 +163,12 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:layout_below="@id/Game_GridLayout"
         android:textColor="@android:color/background_dark"
         android:textSize="14sp"
         android:fontFamily="monospace"
-        android:lines="6"
+        android:lines="8"
         android:textStyle="normal" />
 
     <!--

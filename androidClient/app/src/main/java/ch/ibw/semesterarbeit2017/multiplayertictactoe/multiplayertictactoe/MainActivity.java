@@ -81,8 +81,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         socketController = new SocketController(getApplicationContext(), this);
+        socketController.connect();
         setUpInitalGame();
-
 
         // get the view elements
         editUserName = (EditText) findViewById(R.id.edit_username);
@@ -121,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
                     setUpReplayGame();
                 }
 
-                socketController.connect();
                 // username senden, egal ob erstes spiel oder restart, ist ein registrieren am server
                 JSONObject obj = new JSONObject();    // todo das sollte in den socketcontroller (wie im GameButton)
                 try {
