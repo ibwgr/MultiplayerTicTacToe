@@ -42,7 +42,7 @@ public class GameButton extends ImageButton {
         return nr;
     }
     public String getNrFieldId() {
-        return Const.FIELD_PREFIX+getNr();   //field0, field1, ...
+        return socketController.FIELD_PREFIX+getNr();   //field0, field1, ...
     }
 
     public void setNr(int nr) {
@@ -104,7 +104,7 @@ public class GameButton extends ImageButton {
     ///////////////////////////////
     public void clicked() {
         Log.w(PROG, "Button clicked: " + this.toString() +" , playerToken:"+socketController.getCurrentPlayerSymbol());
-        if (socketController.getCurrentPlayerSymbol().equals(Const.PLAYER_TOKEN_O)) {
+        if (socketController.getCurrentPlayerSymbol().equals(socketController.PLAYER_TOKEN_O)) {
             setGraphicO();
         } else {
             setGraphicX();
@@ -131,7 +131,7 @@ public class GameButton extends ImageButton {
     ///////////////////////////////
     public void clickedByOther() {
         Log.i(PROG, "Button clicked by other: " + this.toString() +" , playerToken:"+socketController.getCurrentPlayerSymbol());
-        if (socketController.getCurrentPlayerSymbol().equals(Const.PLAYER_TOKEN_O)) {
+        if (socketController.getCurrentPlayerSymbol().equals(socketController.PLAYER_TOKEN_O)) {
             setGraphicO();
         } else {
             setGraphicX();

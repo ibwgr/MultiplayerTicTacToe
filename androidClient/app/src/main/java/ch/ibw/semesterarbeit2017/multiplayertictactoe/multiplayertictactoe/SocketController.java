@@ -8,6 +8,7 @@ import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,6 +21,9 @@ import java.net.URISyntaxException;
 public class SocketController {
 
     public static final String PROG = "____SOCKETCONTROLLER";
+    public static final String PLAYER_TOKEN_O = "o";
+    public static final String PLAYER_TOKEN_X = "x";
+    public static final String FIELD_PREFIX = "field";
 
     // da der SocketController selbst keine Activity ist
     Context ctx;
@@ -423,6 +427,130 @@ public class SocketController {
         
     }
 
+
+    /* STATISTICS
+        {
+            "boardList":[
+            {
+                "timestamp":"6\/28\/2017, 9:59:58 PM",
+                    "player1":"Emma",
+                    "player2":"hans",
+                    "status":"playing",
+                    "change":"new"
+            },
+            {
+                "timestamp":"6\/28\/2017, 9:41:10 PM",
+                    "player1":"Emma",
+                    "player2":"hans",
+                    "status":"hans",
+                    "change":""
+            },
+       ]
+       */
+    public Emitter.Listener onStatsUpdate = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            act.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.i(PROG, "****************** onStatsUpdate");
+                    onStatsUpdateActionMethod((JSONObject) args[0]);
+                }
+            });
+        }
+    };
+    public void onStatsUpdateActionMethod(JSONObject data) {
+        Log.i(PROG, "****************** onStatsUpdateActionMethod");
+        Log.i(PROG, "******************" +data.toString());
+        String statsTimestamp;
+        String statsP1;
+        String statsP2;
+        String statsStatus; // playing oder der Name eines Spielers (Sieger)
+        String statsChange; // new/update
+        String output = "";
+        try {
+            JSONArray boardList = data.getJSONArray("boardList");
+            Log.i(PROG, "******************" +boardList.toString());
+            for (int i = 0; i < boardList.length(); i++) {
+                JSONObject jsonobject = boardList.getJSONObject(i);
+                statsTimestamp = jsonobject.getString("timestamp").replace(",","");
+                statsP1 = jsonobject.getString("player1");
+                statsP2 = jsonobject.getString("player2");
+                statsStatus = jsonobject.getString("status");
+                statsChange = jsonobject.getString("change");
+                //Log.i(PROG, "****************** timestamp:" +statsTimestamp);
+                if (statsStatus.equals(statsP1)) {
+                    statsP1 += "+";
+                    statsP2 += " ";
+                } else if (statsStatus.equals(statsP2)) {
+                    statsP2 += "+";
+                    statsP1 += " ";
+                } //else playing
+                output += statsTimestamp +" -- " +statsP1 +" " +statsP2  +" ("+statsChange +")\n";
+            }
+        } catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+        act.displayStatistics(output);
+
+
+//        try {
+
+//        } catch (JSONException e) {
+//            return;
+//        }
+    }
+/*
+    {
+        "boardList":[
+        {
+            "timestamp":"6\/28\/2017, 9:59:58 PM",
+                "player1":"Emma",
+                "player2":"hans",
+                "status":"playing",
+                "change":"new"
+        },
+        {
+            "timestamp":"6\/28\/2017, 9:41:10 PM",
+                "player1":"Emma",
+                "player2":"hans",
+                "status":"hans",
+                "change":""
+        },
+   ]
+   */
+/*
+server:
+    let stats = {
+            'boardList': boardList.map((item)=>{return {
+            'timestamp': item.timestamp,
+            'player1': item.player1,
+            'player2': item.player2,
+            'status': item.winner || 'playing',
+            'change': newBoard === item ? 'new' : updateBoard === item ? 'update' : ''
+        }}),
+            'userQueue': userQueue.map((item)=>item.username)
+client:
+            [renderStatsItem](item) {
+        // animation
+        if (item.change) {
+            window.setTimeout(_=>{
+                    Array.from(this.$doc.querySelectorAll('.changeNew')).forEach(element=>element.classList.remove('changeNew'))
+            Array.from(this.$doc.querySelectorAll('.changeUpdate')).forEach(element=>element.classList.remove('changeUpdate'))
+            }, 800)
+        }
+        // return html
+        return `<li ${item.change === 'new' ? 'class="changeNew"' : item.change === 'update' ? 'class="changeUpdate"' : ''}>
+        <div class="col1">${item.timestamp}</div>
+        <div class="col2 ${item.status === item.player1 ? 'winner' : ''}">${item.player1}</div>
+        <div class="col3 ${item.status === item.player2 ? 'winner' : item.status === 'playing' ? 'playing' : ''}">${item.player2}</div>
+        </li>`
+    }
+*/
+
+
+
+    ////////////////////////////////////////////////////////////////////////////
     //inner class
     // countdowntimer is an abstract class, so extend it and fill in methods
     public class MyCount extends CountDownTimer {
