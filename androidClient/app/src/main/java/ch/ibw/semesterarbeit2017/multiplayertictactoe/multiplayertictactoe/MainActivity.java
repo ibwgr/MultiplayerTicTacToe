@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     /*
-    // Test Client http://lastminute.li/ttt/
+    // Test Client http://lastminute.li/aaa/   (oder /ttt/)
     --------------------------------------------------------------------
     TODO background je nach groesse mit hdpi usw.
     TODO fixtexte translation ressource
