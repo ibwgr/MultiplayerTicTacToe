@@ -12,7 +12,7 @@ Dies ist der Web Client zum Multiplayer Tic Tac Toe Spiel.
 
 - Serer URL kann unter config/config.json angepasst werden:
 
-  ``{"serverUrl": "http://localhost:8008" } ``
+  ``{"serverUrl": "http://localhost:3100" } ``
 
 - Server starten mit:
 
