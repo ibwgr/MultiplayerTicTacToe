@@ -1,9 +1,11 @@
 'use strict'
 
 import io from 'socket.io-client'
+import config from '../config/config.json'
 
-let socket = io.connect('http://localhost:3100', {reconnect: true})
-//let socket = io.connect('http://warm-shelf-33316.herokuapp.com:80', {reconnect: true})
+console.log(config)
+
+let socket = io.connect(config.serverUrl, {reconnect: true})
 
 String.prototype.isEmpty = function() {
     return (this.length === 0 || !this.trim());

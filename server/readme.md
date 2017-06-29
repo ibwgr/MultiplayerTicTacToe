@@ -1,18 +1,22 @@
 # MultiplayerTicTacToe - Server
 
-Dies ist ein nodeJS Server für das Multiplayer Tic Tac Toe Spiel.
+Dies ist der nodeJS Server für das Multiplayer Tic Tac Toe Spiel.
 
 ----------
 
-Projekt installieren mit:
+# Setup
 
-``yarn install ``
+- Projekt installieren mit:
 
-Server starten mit:
+    ``yarn install ``
 
-``npm run start ``
+- Server starten mit:
+
+    ``npm run start ``
 
 ----------
+
+# Test
 
 Die Tests werden mit folgendem Befehl ausgeführt:
 
@@ -20,12 +24,16 @@ Die Tests werden mit folgendem Befehl ausgeführt:
 
 ----------
 
-Setup für Heroku:
+# Deployment auf einen Server
 
-package.json: 
-    - DevDependencies auf normale Dependencies verschieben
-        - babel-cli
-        - babel-preset-es2015
+Am Beispiel von Heroku.
+
+- git init
+- git add .
+- git commit -m "first commit"
+- heroku login
+- heroku git:remote -a <i>heroku-app-name</i>
+- git push heroku master
 
 ----------
 
