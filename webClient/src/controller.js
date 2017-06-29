@@ -18,7 +18,6 @@ export default class{
         this.player = 1
         this.running = false
         this.gameEnabled = false
-        this.timer = 0
 
         view.registerFieldEventListener(this.fieldEventListener.bind(this))
         view.registerNameEventListener(this.nameEventListener.bind(this))

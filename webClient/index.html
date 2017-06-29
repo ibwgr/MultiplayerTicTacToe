@@ -6,43 +6,45 @@
     <title>Tic Tac Toe</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="../build/build.js" defer></script>
+    <script src="./build/build.js" defer></script>
 </head>
 <body>
     <header>
         <h1>Tic Tac Toe</h1>
     </header>
     <main>
-        <div id="name">
-            <input id="nameInput" autofocus placeholder="Your name..."/>
-        </div>
-        <div id="infoContainer" class="hidden">
-            <div id="playerInfo">
-                <div id="player1Icon"></div><div id="player1"></div>
-                <div id="player2Icon"></div><div id="player2"></div>
+        <div id="mainContainer">
+            <div id="name">
+                <input id="nameInput" autofocus placeholder="Your name..."/>
             </div>
-            <div id="info"></div>
-            <div id="timer" class="hidden"></div>
-        </div>
-        <div id="newGame" class="hidden"><a href="#">start new game</a></div>
-        <div id="board" class="hidden inactivate">
-            <div class="row">
-                <div id="field0" class="field"><div class="setX hidden"></div><div class="setO hidden"></div></div>
-                <div id="field1" class="field"><div class="setX hidden"></div><div class="setO hidden"></div></div>
-                <div id="field2" class="field"><div class="setX hidden"></div><div class="setO hidden"></div></div>
+            <div id="infoContainer" class="hidden">
+                <div id="playerInfo">
+                    <div id="player1Icon"></div><div id="player1"></div>
+                    <div id="player2Icon"></div><div id="player2"></div>
+                </div>
+                <div id="info"></div>
+                <div id="timer" class="hidden"></div>
             </div>
-            <div class="row">
-                <div id="field3" class="field"><div class="setX hidden"></div><div class="setO hidden"></div></div>
-                <div id="field4" class="field"><div class="setX hidden"></div><div class="setO hidden"></div></div>
-                <div id="field5" class="field"><div class="setX hidden"></div><div class="setO hidden"></div></div>
-            </div>
-            <div class="row">
-                <div id="field6" class="field"><div class="setX hidden"></div><div class="setO hidden"></div></div>
-                <div id="field7" class="field"><div class="setX hidden"></div><div class="setO hidden"></div></div>
-                <div id="field8" class="field"><div class="setX hidden"></div><div class="setO hidden"></div></div>
-            </div>
+            <div id="newGame" class="hidden"><a href="#">start new game</a></div>
+            <div id="board" class="hidden inactivate">
+                <div class="row">
+                    <div id="field0" class="field"><div class="setX hidden"></div><div class="setO hidden"></div></div>
+                    <div id="field1" class="field"><div class="setX hidden"></div><div class="setO hidden"></div></div>
+                    <div id="field2" class="field"><div class="setX hidden"></div><div class="setO hidden"></div></div>
+                </div>
+                <div class="row">
+                    <div id="field3" class="field"><div class="setX hidden"></div><div class="setO hidden"></div></div>
+                    <div id="field4" class="field"><div class="setX hidden"></div><div class="setO hidden"></div></div>
+                    <div id="field5" class="field"><div class="setX hidden"></div><div class="setO hidden"></div></div>
+                </div>
+                <div class="row">
+                    <div id="field6" class="field"><div class="setX hidden"></div><div class="setO hidden"></div></div>
+                    <div id="field7" class="field"><div class="setX hidden"></div><div class="setO hidden"></div></div>
+                    <div id="field8" class="field"><div class="setX hidden"></div><div class="setO hidden"></div></div>
+                </div>
 
-          </div>
+            </div>
+        </div>
         <div id="statsContainer"><ul id="stats"></ul></div>
     </main>
     <footer>

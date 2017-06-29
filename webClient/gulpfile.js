@@ -10,7 +10,7 @@ const connect = require('gulp-connect');
 function compile(watch) {
     const bundler = watchify(
         browserify({
-            entries: ['./app.js'],
+            entries: ['./src/app.js'],
             debug: true,
             extensions: [' ', 'js']
         }).transform(babel.configure({
@@ -60,6 +60,4 @@ gulp.task('connect', function () {
     });
 });
 
-
 gulp.task('default', ['connect', 'watch']);
-
