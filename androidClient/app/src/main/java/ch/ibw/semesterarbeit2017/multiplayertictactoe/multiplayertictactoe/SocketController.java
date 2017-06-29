@@ -159,8 +159,9 @@ public class SocketController {
             try {
                 //return IO.socket("https://warm-shelf-33316.herokuapp.com/");          // Test Client http://lastminute.li/aaa/
                 //return IO.socket("http://192.168.1.39:3100");
-                return IO.socket("http://192.168.1.33:3100");
+                //return IO.socket("http://192.168.1.33:3100");
                 //return IO.socket("https://warm-shelf-33316.herokuapp.com/");
+                return IO.socket(serviceEndpoint);
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
