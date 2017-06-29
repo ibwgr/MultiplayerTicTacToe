@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText editUserName;
     private TextView displayZeileStatus;
     private TextView displayZeilePlayers;
+    private TextView displayStatistics;
     private Toolbar toolbar;
     //private Menu menu;
     private ImageView waitingImage;
@@ -47,10 +48,14 @@ public class MainActivity extends AppCompatActivity {
     --------------------------------------------------------------------
     TODO background je nach groesse mit hdpi usw.
     TODO fixtexte translation ressource
+    TODO gamebuttons optik
     TODO layout hoch/quer/groessen
     TODO layout grid vielleicht durch table ersetzen, wegen grid-lines
-    TODO disconnect
-    TODO socket.off
+    TODO on username_validation
+    TODO on connect_failed
+    TODO on error
+    TODO on stats_update
+    TODO bei spielende anzeigen welche 3 buttons gewonnen haben
     --------------------------------------------------------------------
     */
 
@@ -76,13 +81,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         socketController = new SocketController(getApplicationContext(), this);
+        socketController.connect();
         setUpInitalGame();
-
 
         // get the view elements
         editUserName = (EditText) findViewById(R.id.edit_username);
         displayZeileStatus = (TextView) findViewById(R.id.label_displayzeile);
         displayZeilePlayers = (TextView) findViewById(R.id.label_displayplayers);
+        displayStatistics = (TextView) findViewById(R.id.label_statistics);
 
         // get the OK/Start button
         buttonOk = (Button) findViewById(R.id.button_ok);
@@ -115,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
                     setUpReplayGame();
                 }
 
-                socketController.connect();
                 // username senden, egal ob erstes spiel oder restart, ist ein registrieren am server
                 JSONObject obj = new JSONObject();    // todo das sollte in den socketcontroller (wie im GameButton)
                 try {
@@ -130,43 +135,43 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-        // Temporaere Buttons, nur fuer Entwicklulng  // todo alles auskommentieren
-        final Button buttonSimWin = (Button) findViewById(R.id.button_sim_win);
-        buttonSimWin.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                //{"winner":"hans","fields":[2,4,6],"username":"Emma","youWon":"no"}
-                JSONObject obj = new JSONObject();
-                try {
-                    obj.put("winner", "hans");
-                    obj.put("fields", "[2,4,6]");
-                    obj.put("username", "Emma");
-                    obj.put("youWon", "yes");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                socketController.onGameFinishedActionMethod(obj);
-            }
-        });
-        // Temporaere Buttons, nur fuer Entwicklulng  // todo alles auskommentieren
-        final Button buttonSimUnent = (Button) findViewById(R.id.button_sim_unent);
-        buttonSimUnent.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                //{"winner":"draw","fields":[2,4,6],"username":"Emma","youWon":"no"}
-                JSONObject obj = new JSONObject();
-                try {
-                    obj.put("winner", "draw");
-                    obj.put("fields", "[2,4,6]");
-                    obj.put("username", "Emma");
-                    obj.put("youWon", "yes");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                socketController.onGameFinishedActionMethod(obj);
-            }
-        });
+//
+//        // Temporaere Buttons, nur fuer Entwicklulng  // todo alles auskommentieren
+//        final Button buttonSimWin = (Button) findViewById(R.id.button_sim_win);
+//        buttonSimWin.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v){
+//                //{"winner":"hans","fields":[2,4,6],"username":"Emma","youWon":"no"}
+//                JSONObject obj = new JSONObject();
+//                try {
+//                    obj.put("winner", "hans");
+//                    obj.put("fields", "[2,4,6]");
+//                    obj.put("username", "Emma");
+//                    obj.put("youWon", "yes");
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//                socketController.onGameFinishedActionMethod(obj);
+//            }
+//        });
+//        // Temporaere Buttons, nur fuer Entwicklulng  // todo alles auskommentieren
+//        final Button buttonSimUnent = (Button) findViewById(R.id.button_sim_unent);
+//        buttonSimUnent.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v){
+//                //{"winner":"draw","fields":[2,4,6],"username":"Emma","youWon":"no"}
+//                JSONObject obj = new JSONObject();
+//                try {
+//                    obj.put("winner", "draw");
+//                    obj.put("fields", "[2,4,6]");
+//                    obj.put("username", "Emma");
+//                    obj.put("youWon", "yes");
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//                socketController.onGameFinishedActionMethod(obj);
+//            }
+//        });
 
 
 
@@ -183,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
         socketController.getSocket().on("new_move", socketController.onNewMove);  // Spielzug des Gegners
         socketController.getSocket().on("game_finished", socketController.onGameFinished);
         socketController.getSocket().on("disonnect", socketController.onDisconnectFromServer);  // disconnect from server received!
-
+        socketController.getSocket().on("stats_update", socketController.onStatsUpdate);
     } // end on-create lifecycle
 
 
@@ -315,6 +320,9 @@ public class MainActivity extends AppCompatActivity {
     // DISPLAY Methoden
     public void displayPlayers(String text) {
         displayZeilePlayers.setText(text);
+    }
+    public void displayStatistics(String text) {
+        displayStatistics.setText(text);
     }
     public void showWaitingImage(boolean toShow) {
         if (toShow) {
