@@ -19,6 +19,7 @@ public class Stats extends Fragment{
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_stats, container, false);
         //------------------------------------
+        System.out.println("...............stats!");
 
         TextView test = (TextView) rootView.findViewById(R.id.section_test);
         test.setText("halli hallo");

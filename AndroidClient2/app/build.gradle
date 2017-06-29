@@ -17,6 +17,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    // rka...
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+
+    // rka, wegen Travis bzw.   ./gradlew build connectedCheck
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
@@ -25,6 +34,21 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    // rka: fuer MultiplayerTicTacToe
+    compile 'com.github.nkzawa:socket.io-client:0.3.0'
+    compile ('io.socket:socket.io-client:0.8.3') {
+        // excluding org.json which is provided by Android
+        exclude group: 'org.json', module: 'json'
+    }
+
+    // rka: fuer StringUtils
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+    //compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+
+
     testCompile 'junit:junit:4.12'
+    testCompile "org.mockito:mockito-core:1.+"
+    testCompile "org.json:json:20170516"
 }

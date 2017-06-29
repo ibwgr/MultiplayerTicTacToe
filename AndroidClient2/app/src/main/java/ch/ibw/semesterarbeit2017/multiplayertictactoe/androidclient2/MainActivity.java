@@ -36,10 +36,6 @@ public class MainActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
-
-
-    TextView test;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
