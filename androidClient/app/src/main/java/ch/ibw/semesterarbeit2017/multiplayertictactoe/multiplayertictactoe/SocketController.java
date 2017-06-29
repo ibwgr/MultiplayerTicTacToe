@@ -154,13 +154,18 @@ public class SocketController {
     //
     public Socket createSocket() {
         Log.i(PROG, "socking...");
-        try {
-            //return IO.socket("https://warm-shelf-33316.herokuapp.com/");          // Test Client http://lastminute.li/aaa/
-            //return IO.socket("http://192.168.1.39:3100");
-            return IO.socket("http://192.168.1.33:3100");
-            //return IO.socket("https://warm-shelf-33316.herokuapp.com/");
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+        String serviceEndpoint = Util.getServiceEndpoint(act);
+        if (serviceEndpoint != null) {
+            try {
+                //return IO.socket("https://warm-shelf-33316.herokuapp.com/");          // Test Client http://lastminute.li/aaa/
+                //return IO.socket("http://192.168.1.39:3100");
+                return IO.socket("http://192.168.1.33:3100");
+                //return IO.socket("https://warm-shelf-33316.herokuapp.com/");
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        } else {
+            act.displayStatus("configuration error.\nplease check configfile in res/xml");
         }
         return null;
     }
