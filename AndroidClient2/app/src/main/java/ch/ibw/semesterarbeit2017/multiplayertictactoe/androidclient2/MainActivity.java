@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 public class MainActivity extends AppCompatActivity {
 
     /**
@@ -33,6 +35,10 @@ public class MainActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+
+
+
+    TextView test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
