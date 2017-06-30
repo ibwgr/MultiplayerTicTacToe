@@ -6,6 +6,7 @@ body {
     flex-flow: column;
     align-items: center;
     width: 100%;
+    background: whitesmoke;
 }
 
 main {
@@ -13,17 +14,35 @@ main {
     flex-flow: column;
     align-items: center;
     justify-content: center;
-    width: 95%;
+    width: 100%;
+    transition: all 1s ease-out 0.1s;
 }
 
 /*
 *  HEADER
 */
+header {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
 h1 {
     font-family: 'Press Start 2P', cursive;
-    font-size: 2em;
+    font-size: 1.6em;
     color: dodgerblue;
     text-shadow: 5px 5px 2px lightgrey;
+}
+
+/*
+*  Main Container
+*/
+#mainContainer {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    width: 96%;
 }
 
 /*
@@ -33,7 +52,7 @@ h1 {
     display: flex;
     flex-flow: column;
     align-items: center;
-    width: 98%;
+    width: 100%;
 }
 
 #nameInput {
@@ -89,14 +108,14 @@ h1 {
     font-family: 'Yantramanav', sans-serif;
     font-size: 1em;
     padding: 10px;
-    margin: 5px;
     background: dimgrey;
     color: white;
     box-shadow: 5px 5px 2px lightgrey;
-    width: 98%;
+    width: 100%;
     box-sizing: border-box;
     text-align: center;
     border-radius: 5px;
+    transition: all 1s ease-out 0.1s;
 }
 
 #playerInfo {
@@ -178,14 +197,14 @@ h1 {
     font-family: 'Press Start 2P', cursive;
     font-size: 0.8em;
     padding: 10px;
-    margin: 5px;
     background: mediumseagreen;
     box-shadow: 5px 5px 2px lightgrey;
-    width: 98%;
+    width: 100%;
     box-sizing: border-box;
     text-align: center;
     transition: all 1s ease-out 0.1s;
     border-radius: 5px;
+    margin-top: 10px;
 }
 
 #newGame a {
@@ -207,13 +226,12 @@ h1 {
 #statsContainer {
     display: flex;
     flex-flow: column;
-    width: 98%;
+    width: 96%;
     background: dodgerblue;
     box-shadow: 5px 5px 2px lightgrey;
-    margin: 5px;
-    margin-bottom: 20px;
     border-radius: 5px;
     color: white;
+    box-sizing: border-box;
 }
 
 #stats {
@@ -287,8 +305,9 @@ h1 {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 98%;
-    margin: 5px;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .setO.hidden .setX.hidden {
@@ -378,10 +397,11 @@ div.field {
 */
 footer {
     text-align: center;
-    width: 98%;
+    width: 96%;
     font-family: 'Yantramanav', sans-serif;
     font-size: 0.8em;
-    padding-bottom: 10px;
+    margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 /*
@@ -389,13 +409,42 @@ footer {
 */
 @media only screen and (min-width: 580px) {
 
-    #name, #statsContainer, #infoContainer, #newGame {
+    #mainContainer, #statsContainer {
         max-width: 480px;
     }
 
     div.field {
         max-width: 159px;
         max-height: 159px;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+}
+
+@media only screen and (min-width: 980px) {
+
+    main {
+        flex-flow: row;
+        align-items: flex-start;
+    }
+
+    #mainContainer, #statsContainer {
+        width: 49%;
+    }
+
+    #mainContainer {
+        margin-right: 5px;
+    }
+
+    #statsContainer {
+        margin-left: 5px;
+    }
+
+    h1 {
+        font-size: 2.6em;
     }
 
 }

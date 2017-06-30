@@ -155,7 +155,7 @@ io.on('connection', (socket) => {
     // player moves
     socket.on('player_action', (data)=>{
         //message validation
-        if (socket.board && data && data.player && data.field) {
+        if (socket.board && data && data.player && data.field && data.field.match('^field[0-8]$')) {
             console.log(`player '${data.player}' set field '${data.field}'`)
             // clear all timeouts
             if (socket.board.socketPlayer1.timer){
