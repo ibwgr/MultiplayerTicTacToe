@@ -49,7 +49,7 @@ public class SocketController {
     //------------------------------------------------------
     //------------------------------------------------------
     private String myName;   // from server
-    private MyCount counter;
+    private GameCountDown counter;
     private String player1Name;
     private String player2Name;
     private String currentUserName;
@@ -259,8 +259,9 @@ public class SocketController {
             act.displayStatus("Sorry, you lost\nPlay again?");
         }
         this.setGameStatus(Status.STOPPED);
-        act.showWaitingImage(false);
+        //act.showWaitingImage(false);
         act.enableAllGameButtons(false);
+        act.clearCountDownDisplay();
         // fuer replay
         act.enableButtonOk();
     }
@@ -289,24 +290,19 @@ public class SocketController {
         } catch (JSONException e) {
             return;
         }
-        String message = this.getCurrentUserName() +", your turn (" +this.getCurrentPlayerSymbol() +")";
+        String message = this.getCurrentUserName() +", your turn, watch the time";  //  +(" +this.getCurrentPlayerSymbol() +")";
         act.displayStatus(message);
-        act.showWaitingImage(false);
+        //act.showWaitingImage(false);
         act.enableAllGameButtons(true);
+        act.clearCountDownDisplay();
         this.setIsMyTurn(true);
         this.setIsOthersTurn(false);
-        // // TODO: 27.06.17
+        //
         // 10000 is the starting number (in milliseconds)
         // 1000 is the number to count down each time (in milliseconds)
-        counter = new MyCount(this.getCountDownTime()*1000, 1000, message);
+        counter = new GameCountDown(this.getCountDownTime()*1000, 1000);
         counter.start();
     }
-
-
-
-
-
-
 
 
     // {"time":30,"player":"o","username":"vulkan"}
@@ -332,11 +328,11 @@ public class SocketController {
             return;
         }
         act.displayStatus("Others turn ("+this.getCurrentUserName() +" as " +this.getCurrentPlayerSymbol() +") \nplease wait...");
-        act.showWaitingImage(true);
+        //act.showWaitingImage(true);
         //act.enableAllGameButtons(false)  //schon beim Buttonclick gesetzt, ist da schneller (w. Latenzzeit Server);
+        act.clearCountDownDisplay();
         this.setIsMyTurn(false);
         this.setIsOthersTurn(true);
-
     }
 
     // spielzug des gegners
@@ -368,7 +364,7 @@ public class SocketController {
         }
     }
 
-
+    //{"username":"Emma"}
     public Emitter.Listener onUserAdded = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -395,6 +391,35 @@ public class SocketController {
     }
 
 
+    //{"msg":"Name is too long"}  ... oder already used
+    public Emitter.Listener onUserNameValidation = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            act.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.i(PROG, "****************** onUserNameValidation");
+                    onUserNameValidationActionMethod((JSONObject) args[0]);
+                }
+            });
+        }
+    };
+    public void onUserNameValidationActionMethod(JSONObject data) {
+        Log.i(PROG, "****************** onUserNameValidationActionMethod");
+        Log.i(PROG, "******************" +data.toString());
+        String msg;
+        try {
+            msg = data.getString("msg");
+        } catch (JSONException e) {
+            return;
+        }
+        act.displayStatus(msg);
+        act.enableButtonOk();
+        act.enableEingabefeld();
+    }
+
+
+    //{"player1":"kkkkkkkkk","player2":"uuuu"}
     public Emitter.Listener onStartGame = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -425,7 +450,8 @@ public class SocketController {
         Log.i(PROG, "****************** player1: "+this.getPlayer1Name());
         Log.i(PROG, "****************** player2: "+this.getPlayer2Name());
         this.setGameStatus(Status.RUNNING);
-        act.displayPlayers("Player O: " +this.getPlayer1Name() +"  |  Player X: " +this.getPlayer2Name());
+//        act.displayPlayers("Player O: " +this.getPlayer1Name() +"  |  Player X: " +this.getPlayer2Name());
+        act.displayPlayers(this.getPlayer1Name() ,this.getPlayer2Name());
         
     }
 
@@ -513,12 +539,10 @@ public class SocketController {
     ////////////////////////////////////////////////////////////////////////////
     //inner class
     // countdowntimer is an abstract class, so extend it and fill in methods
-    public class MyCount extends CountDownTimer {
-        private String message;
+    public class GameCountDown extends CountDownTimer {
 
-        public MyCount(long millisInFuture, long countDownInterval, String message) {
+        public GameCountDown(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
-            this.message = message;
         }
 
         @Override
@@ -530,7 +554,19 @@ public class SocketController {
         @Override
         public void onTick(long millisUntilFinished) {
             // todo ein extra feld fuer den timer machen!
-            act.displayStatus(message +", time left: " + millisUntilFinished / 1000);
+            //act.displayStatus(currentPlayerSymbol +", time left: " + millisUntilFinished / 1000);
+            Long secsL = ((millisUntilFinished / 1000)-1);
+            String secs;
+            if (secsL < 10) {
+                secs = "0"+Long.toString(secsL);
+            } else {
+                secs = Long.toString(secsL);
+            }
+            if (getCurrentPlayerSymbol().equals("x")) {
+                act.displayCountdownPlayerX(secs);
+            } else if (getCurrentPlayerSymbol().equals("o")) {
+                act.displayCountdownPlayerO(secs);
+            }
         }
     }
 

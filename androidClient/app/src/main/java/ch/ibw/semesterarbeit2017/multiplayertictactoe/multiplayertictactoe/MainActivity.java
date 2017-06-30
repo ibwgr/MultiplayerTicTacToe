@@ -1,5 +1,6 @@
 package ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import static java.util.Arrays.asList;
 
@@ -24,11 +26,13 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText editUserName;
     private TextView displayZeileStatus;
-    private TextView displayZeilePlayers;
+    //private TextView displayZeilePlayers;
     private TextView displayStatistics;
+    private TextView displayPlayerXname, displayPlayerOname;
+    private TextView displayPlayerXcountdown, displayPlayerOcountdown;
     private Toolbar toolbar;
     //private Menu menu;
-    private ImageView waitingImage;
+    //private ImageView waitingImage;
 
     private GameButton gameButton0;
     private GameButton gameButton1;
@@ -52,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     TODO gamebuttons optik
     TODO layout hoch/quer/groessen
     TODO layout grid vielleicht durch table ersetzen, wegen grid-lines
-    TODO on username_validation
+
     TODO on connect_failed
     TODO on error
     TODO on stats_update optik
@@ -112,8 +116,12 @@ public class MainActivity extends AppCompatActivity {
         // get the view elements
         editUserName = (EditText) findViewById(R.id.edit_username);
         displayZeileStatus = (TextView) findViewById(R.id.label_displayzeile);
-        displayZeilePlayers = (TextView) findViewById(R.id.label_displayplayers);
+//        displayZeilePlayers = (TextView) findViewById(R.id.label_displayplayers);
         displayStatistics = (TextView) findViewById(R.id.label_statistics);
+        displayPlayerXname = (TextView) findViewById(R.id.player_x_name);
+        displayPlayerOname = (TextView) findViewById(R.id.player_o_name);
+        displayPlayerXcountdown= (TextView) findViewById(R.id.player_x_countdown);
+        displayPlayerOcountdown= (TextView) findViewById(R.id.player_o_countdown);
 
         // get the OK/Start button
         buttonOk = (Button) findViewById(R.id.button_ok);
@@ -154,8 +162,8 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 socketController.send("add_user", obj);
-                displayStatus("Hello " + userName + "\n" + "...waiting for server...");
-
+                // jetzt koennte vom Server aber noch (irgendwann) zurueckkommen, dass der username nicht ok sei!!
+                displayStatus("...waiting for server...");
             }
         });
 
@@ -206,8 +214,9 @@ public class MainActivity extends AppCompatActivity {
         // here we listen on message events from the server
         //////////////////////////////////////////////////////////////////////////////////////
         Log.i(PROG, "listening for socket messages from server");
-        socketController.getSocket().on("start_game", socketController.onStartGame);
         socketController.getSocket().on("user_added", socketController.onUserAdded);
+        socketController.getSocket().on("username_validation", socketController.onUserNameValidation);
+        socketController.getSocket().on("start_game", socketController.onStartGame);
         socketController.getSocket().on("your_turn", socketController.onYourTurn);
         socketController.getSocket().on("other_turn", socketController.onOtherTurn);
         socketController.getSocket().on("new_move", socketController.onNewMove);  // Spielzug des Gegners
@@ -323,7 +332,7 @@ public class MainActivity extends AppCompatActivity {
         //
 
         //
-        waitingImage = (ImageView) findViewById(R.id.waiting_img);
+        //waitingImage = (ImageView) findViewById(R.id.waiting_img);
 
         // init game
         GameButton.setSocketController(socketController);
@@ -343,20 +352,43 @@ public class MainActivity extends AppCompatActivity {
     public void displayStatus(String text) {
         displayZeileStatus.setText(text);
     }
-    // DISPLAY Methoden
-    public void displayPlayers(String text) {
-        displayZeilePlayers.setText(text);
+    public void displayCountdownPlayerO(String text) {
+        if (socketController.getIsMyTurn()) {
+            displayPlayerOcountdown.setText(text);
+//            displayPlayerOcountdown.setTextColor(Color.parseColor("#ff5100")); // orange
+//        } else {
+//            displayPlayerOcountdown.setTextColor(Color.parseColor("#54514f"));  // grau
+        }
+    }
+    public void displayCountdownPlayerX(String text) {
+        if (socketController.getIsMyTurn()) {
+            displayPlayerXcountdown.setText(text);
+//            displayPlayerXcountdown.setTextColor(Color.parseColor("#ff5100"));  // orange
+//        } else {
+//            displayPlayerXcountdown.setTextColor(Color.parseColor("#54514f"));  // grau
+        }
+    }
+    public void clearCountDownDisplay() {
+        displayPlayerXcountdown.setText("  ");
+        displayPlayerOcountdown.setText("  ");
+    }
+//    public void displayPlayers(String text) {
+//        displayZeilePlayers.setText(text);
+//    }
+    public void displayPlayers(String playerO, String playerX) {
+        displayPlayerOname.setText(playerO);
+        displayPlayerXname.setText(playerX);
     }
     public void displayStatistics(String text) {
         displayStatistics.setText(text);
     }
-    public void showWaitingImage(boolean toShow) {
-        if (toShow) {
-            //waitingImage.setVisibility(View.VISIBLE);
-        } else {
-            //waitingImage.setVisibility(View.INVISIBLE);
-        }
-    }
+//    public void showWaitingImage(boolean toShow) {
+//        if (toShow) {
+//            //waitingImage.setVisibility(View.VISIBLE);
+//        } else {
+//            //waitingImage.setVisibility(View.INVISIBLE);
+//        }
+//    }
     public void enableAllGameButtons(boolean toEnable) {
         if (toEnable) {
             GameButton.enableAllGameButtons();
@@ -376,4 +408,6 @@ public class MainActivity extends AppCompatActivity {
     public void enableEingabefeld() {
         editUserName.setVisibility(View.VISIBLE);
     }
+
+
 }

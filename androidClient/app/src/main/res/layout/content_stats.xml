@@ -8,6 +8,7 @@
     android:orientation="vertical"
     tools:context="ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.MainActivity"
     android:weightSum="1"
+    android:background="@drawable/bg_city_2386857_640"
     >
     <!--android:background="@drawable/bg_neu4reverse"  -->
 
