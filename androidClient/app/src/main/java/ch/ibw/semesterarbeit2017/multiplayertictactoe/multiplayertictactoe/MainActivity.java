@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     TODO on username_validation
     TODO on connect_failed
     TODO on error
-    TODO on stats_update
+    TODO on stats_update optik
     TODO bei spielende anzeigen welche 3 buttons gewonnen haben
     --------------------------------------------------------------------
     */
@@ -62,12 +63,13 @@ public class MainActivity extends AppCompatActivity {
     private SocketController socketController = null; //new SocketController(getApplicationContext(), this);
 
 
-//    // Nein, hier nicht disconnecten, wenn die App nur in den Hintergrund geht, man kann sie ja wieder hervorholen
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        socketController.disconnect();
-//    }
+   // Kein disconnect bei onPause, wenn die App nur in den Hintergrund geht, man kann sie ja wieder hervorholen
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        socketController.disconnect();
+    }
 
     @Override
     protected void onDestroy() {
@@ -80,6 +82,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //---------------------------------------------------------------------
+        // TABS
+        TabHost mTabHost = (TabHost)findViewById(R.id.tabHost);
+        mTabHost.setup();
+        //Lets add the first Tab
+        TabHost.TabSpec mSpec = mTabHost.newTabSpec("play");
+        mSpec.setContent(R.id.play_Tab);
+        mSpec.setIndicator("play");
+        mTabHost.addTab(mSpec);
+        //Lets add the second Tab
+        mSpec = mTabHost.newTabSpec("stats");
+        mSpec.setContent(R.id.stats_Tab);
+        mSpec.setIndicator("stats");
+        mTabHost.addTab(mSpec);
+        //Lets add the third Tab
+        mSpec = mTabHost.newTabSpec("about");
+        mSpec.setContent(R.id.about_Tab);
+        mSpec.setIndicator("about");
+        mTabHost.addTab(mSpec);
+
+
+
+        //---------------------------------------------------------------------
         socketController = new SocketController(getApplicationContext(), this);
         socketController.connect();
         setUpInitalGame();
@@ -189,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
         socketController.getSocket().on("game_finished", socketController.onGameFinished);
         socketController.getSocket().on("disonnect", socketController.onDisconnectFromServer);  // disconnect from server received!
         socketController.getSocket().on("stats_update", socketController.onStatsUpdate);
+
     } // end on-create lifecycle
 
 

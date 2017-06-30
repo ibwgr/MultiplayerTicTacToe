@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.MainActivity"
+    android:weightSum="1"
+    >
+    <!--android:background="@drawable/bg_neu4reverse"  -->
+
+
+    <TextView
+        android:id="@+id/label_statistics"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/Game_GridLayout"
+        android:textColor="@android:color/background_dark"
+        android:textSize="14sp"
+        android:text="Life Statistics"
+        android:fontFamily="monospace"
+        android:lines="80"
+        android:textStyle="normal"
+        />
+    <!--android:background="#cc7e7b7b"-->
+
+</RelativeLayout>
