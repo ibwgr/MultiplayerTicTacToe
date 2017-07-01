@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -17,16 +17,21 @@
         android:id="@+id/label_statistics"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="30dp"
-        android:layout_below="@id/Game_GridLayout"
+        android:layout_marginStart="5sp"
+        android:layout_marginLeft="5sp"
+        android:layout_marginTop="20sp"
         android:textColor="@android:color/background_dark"
-        android:textSize="14sp"
-        android:text="Life Statistics"
-        android:fontFamily="monospace"
-        android:lines="80"
-        android:textStyle="normal"
+        android:text="Live Statistics"
+        android:textAlignment="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        />
+
+    <ListView
+        android:id="@+id/list_stats"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10sp"
         />
     <!--android:background="#cc7e7b7b"-->
 
-</RelativeLayout>
+</LinearLayout>
