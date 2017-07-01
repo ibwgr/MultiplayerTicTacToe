@@ -253,6 +253,7 @@ public class SocketController {
         } else if (youWon.equals("yes")) {
             this.setIsIhaveWon(true);
             this.setIsOtherHasWon(false);
+            this.stopCounter();
             act.displayStatus("You won!\nPlay again?");
         } else {
             this.setIsIhaveWon(false);
@@ -501,7 +502,6 @@ public class SocketController {
         try {
             JSONArray boardList = data.getJSONArray("boardList");
             Log.i(PROG, "******************" +boardList.toString());
-            // todo optik
             for (int i = 0; i < boardList.length(); i++) {
                 JSONObject jsonobject = boardList.getJSONObject(i);
                 statsTimestamp = jsonobject.getString("timestamp").replace(",","");

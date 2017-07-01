@@ -2,33 +2,26 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context="ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.MainActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.MainActivity"
-    android:weightSum="1"
     android:background="@drawable/bg_city_2386857_640"
+    android:gravity="center_horizontal"
     >
     <!--android:background="@drawable/bg_960_720"
         android:background="@drawable/bg_beach_2333282_640"
      -->
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        >
 
-
-
-
-        <LinearLayout
-        android:id="@+id/layout_top_players"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal"
-        >
+    <LinearLayout
+    android:id="@+id/layout_top_players"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:orientation="horizontal"
+    android:gravity="center_horizontal"
+    >
 
         <ImageView
             android:id="@+id/player_x_img"
@@ -95,23 +88,9 @@
             android:textColor="#ff1500"
             android:textStyle="bold"
             />
-
     </LinearLayout>
 
-    <!--
-        <TextView
-            android:id="@+id/label_displayplayers"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/layout_top_players"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:textSize="20sp"
-            android:text=""
-            android:lines="2"
-            android:textStyle="normal"
-            android:layout_weight="0.08" />
-    -->
+
     <TextView
         android:id="@+id/label_displayzeile"
         android:layout_width="fill_parent"
@@ -119,171 +98,146 @@
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_below="@id/layout_top_players"
         android:text="Bitte Spielernamen eingeben:"
         android:textColor="@android:color/background_dark"
         android:textSize="20sp"
         android:lines="2"
-        android:textStyle="normal" />
-
-
-    <EditText
-        android:id="@+id/edit_username"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
-        android:layout_below="@id/label_displayzeile"
-        android:inputType="text"
-        android:text="Emma"
-        android:background="@drawable/eingabefeld"
-        android:textColor="@android:color/background_dark"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_alignLeft="@+id/label_displayzeile"
-        android:layout_alignStart="@+id/label_displayzeile" />
-
-    <Button
-        android:id="@+id/button_ok"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start"
-        android:layout_alignBaseline="@+id/edit_username"
-        android:layout_alignBottom="@+id/edit_username"
-        android:layout_alignRight="@+id/Game_GridLayout"
-        android:layout_alignEnd="@+id/Game_GridLayout" />
-
-    <!--
-    <ImageView
-        android:id="@+id/waiting_img"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_marginLeft="20dp"
-        android:src="@drawable/blocked3"
-        android:visibility="invisible"
-        />
--->
-    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/Game_GridLayout"
-        android:layout_centerHorizontal="false"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:columnCount="3"
-        android:rowCount="3"
-        android:orientation="horizontal"
-        android:layout_below="@id/edit_username"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="20dp"
-        android:background="@drawable/border"
-        android:layout_centerVertical="true"
-        tools:context=".GridXMLActivity" >
-
-        <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
-            android:id="@+id/gameButton0"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:scaleX="0.96"
-            android:scaleY="0.96"
-            android:background="@drawable/neu_i"
-            />
-<!--
-            android:drawableLeft="@drawable/gf_init"
-            android:gravity="left|center_vertical"
-            -->
-        <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
-            android:id="@+id/gameButton1"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:scaleX="0.96"
-            android:scaleY="0.96"
-            android:background="@drawable/neu_i"
-            />
-
-        <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
-            android:id="@+id/gameButton2"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:scaleX="0.96"
-            android:scaleY="0.96"
-            android:background="@drawable/neu_i"
-            />
-
-        <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
-            android:id="@+id/gameButton3"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:scaleType="fitCenter"
-            android:scaleX="0.96"
-            android:scaleY="0.96"
-            android:background="@drawable/neu_i"
-            />
-
-        <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
-            android:id="@+id/gameButton4"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:scaleX="0.96"
-            android:scaleY="0.96"
-            android:background="@drawable/neu_i"
-            />
-
-        <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
-            android:id="@+id/gameButton5"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:scaleX="0.96"
-            android:scaleY="0.96"
-            android:background="@drawable/neu_i"
-            />
-
-        <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
-            android:id="@+id/gameButton6"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:scaleX="0.96"
-            android:scaleY="0.96"
-            android:background="@drawable/neu_i"
-            />
-
-        <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
-            android:id="@+id/gameButton7"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:scaleX="0.96"
-            android:scaleY="0.96"
-            android:background="@drawable/neu_i"
-            />
-
-        <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
-            android:id="@+id/gameButton8"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:scaleX="0.96"
-            android:scaleY="0.96"
-            android:background="@drawable/neu_i"
-            />
-    </GridLayout>
-
-    <!--
-    <TextView
-        android:id="@+id/label_statistics"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="30dp"
-        android:layout_below="@id/Game_GridLayout"
-        android:textColor="@android:color/background_dark"
-        android:textSize="14sp"
-        android:fontFamily="monospace"
-        android:lines="8"
         android:textStyle="normal"
+        android:gravity="center_horizontal"
         />
-        -->
 
+    <LinearLayout
+        android:id="@+id/layout_middle_name_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        >
 
+        <EditText
+            android:id="@+id/edit_username"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:text="Emma"
+            android:background="@drawable/eingabefeld"
+            android:textColor="@android:color/background_dark"
+            android:textSize="18sp"
+            android:textStyle="bold"
+        />
 
-    <!--android:background="#cc7e7b7b"-->
+        <Button
+            android:id="@+id/button_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start"
+            android:layout_alignBaseline="@+id/edit_username"
+            android:layout_alignBottom="@+id/edit_username"
+            android:layout_alignRight="@+id/Game_GridLayout"
+            android:layout_alignEnd="@+id/Game_GridLayout" />
+
+    </LinearLayout>
+
+    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/Game_GridLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:columnCount="3"
+            android:rowCount="3"
+            android:orientation="horizontal"
+            android:layout_below="@id/edit_username"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/border"
+            tools:context=".GridXMLActivity" >
+
+            <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
+                android:id="@+id/gameButton0"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleX="0.96"
+                android:scaleY="0.96"
+                android:background="@drawable/neu_i"
+                />
+    <!--
+                android:drawableLeft="@drawable/gf_init"
+                android:gravity="left|center_vertical"
+                -->
+            <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
+                android:id="@+id/gameButton1"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleX="0.96"
+                android:scaleY="0.96"
+                android:background="@drawable/neu_i"
+                />
+
+            <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
+                android:id="@+id/gameButton2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleX="0.96"
+                android:scaleY="0.96"
+                android:background="@drawable/neu_i"
+                />
+
+            <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
+                android:id="@+id/gameButton3"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="fitCenter"
+                android:scaleX="0.96"
+                android:scaleY="0.96"
+                android:background="@drawable/neu_i"
+                />
+
+            <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
+                android:id="@+id/gameButton4"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleX="0.96"
+                android:scaleY="0.96"
+                android:background="@drawable/neu_i"
+                />
+
+            <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
+                android:id="@+id/gameButton5"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleX="0.96"
+                android:scaleY="0.96"
+                android:background="@drawable/neu_i"
+                />
+
+            <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
+                android:id="@+id/gameButton6"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleX="0.96"
+                android:scaleY="0.96"
+                android:background="@drawable/neu_i"
+                />
+
+            <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
+                android:id="@+id/gameButton7"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleX="0.96"
+                android:scaleY="0.96"
+                android:background="@drawable/neu_i"
+                />
+
+            <ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.GameButton
+                android:id="@+id/gameButton8"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleX="0.96"
+                android:scaleY="0.96"
+                android:background="@drawable/neu_i"
+                />
+    </GridLayout>
 
     <!--
     <Button
@@ -303,5 +257,5 @@
         android:layout_marginTop="55px"
         android:text="sim-unent" />
     -->
-    </RelativeLayout>
+
 </LinearLayout>

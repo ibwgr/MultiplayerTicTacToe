@@ -56,10 +56,7 @@ public class MainActivity extends AppCompatActivity {
     --------------------------------------------------------------------
     TODO background je nach groesse mit hdpi usw.
     TODO fixtexte translation ressource
-    TODO gamebuttons optik
     TODO layout hoch/quer/groessen
-    TODO layout grid vielleicht durch table ersetzen, wegen grid-lines
-
     TODO on connect_failed
     TODO on error
     TODO on stats_update optik
