@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -50,13 +52,10 @@ public class MainActivity extends AppCompatActivity {
     /*
     // Test Client http://lastminute.li/aaa/   (oder /ttt/)
     --------------------------------------------------------------------
-    TODO background je nach groesse mit hdpi usw.
     TODO fixtexte translation ressource
-    TODO layout hoch/quer/groessen
     TODO on connect_failed
     TODO on error
-    TODO on stats_update optik
-    TODO bei spielende anzeigen welche 3 buttons gewonnen haben
+    TODO mehr tests
     --------------------------------------------------------------------
     */
 
@@ -247,7 +246,6 @@ public class MainActivity extends AppCompatActivity {
         //
         gameButton0 = (GameButton) findViewById(R.id.gameButton0);
         gameButton0.setNr(0);
-        //gameButton0.setAlpha(0.5f);  // todo neue init methode (auch fuer nochmals-spielen)
         gameButton0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -411,4 +409,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void animateWinningFiedlds(int[] winningFields) {
+        int wf1 = winningFields[0];
+        int wf2 = winningFields[1];
+        int wf3 = winningFields[2];
+        Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+        for (int i=0; i<10; i++) {
+            if (i==0 && (i == wf1 || i == wf2 || i == wf3)) gameButton0.startAnimation(shake);
+            if (i==1 && (i == wf1 || i == wf2 || i == wf3)) gameButton1.startAnimation(shake);
+            if (i==2 && (i == wf1 || i == wf2 || i == wf3)) gameButton2.startAnimation(shake);
+            if (i==3 && (i == wf1 || i == wf2 || i == wf3)) gameButton3.startAnimation(shake);
+            if (i==4 && (i == wf1 || i == wf2 || i == wf3)) gameButton4.startAnimation(shake);
+            if (i==5 && (i == wf1 || i == wf2 || i == wf3)) gameButton5.startAnimation(shake);
+            if (i==6 && (i == wf1 || i == wf2 || i == wf3)) gameButton6.startAnimation(shake);
+            if (i==7 && (i == wf1 || i == wf2 || i == wf3)) gameButton7.startAnimation(shake);
+            if (i==8 && (i == wf1 || i == wf2 || i == wf3)) gameButton8.startAnimation(shake);
+        }
+    }
 }

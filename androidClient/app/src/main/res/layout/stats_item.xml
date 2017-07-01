@@ -4,7 +4,7 @@
     >
     <TextView
         android:id="@+id/stats_timestamp"
-        android:layout_width="wrap_content"
+        android:layout_width="160sp"
         android:layout_height="wrap_content"
         android:text="Timestamp"
         android:layout_marginLeft="5sp"
@@ -13,7 +13,6 @@
         android:layout_marginEnd="10sp"
         android:textColor="#000000"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:width="80sp"
         android:shadowColor="@color/text_shadow_white"
         android:shadowDx="5"
         android:shadowDy="5"
@@ -22,7 +21,7 @@
         />
     <TextView
         android:id="@+id/stats_player1"
-        android:layout_width="wrap_content"
+        android:layout_width="100sp"
         android:layout_height="wrap_content"
         android:layout_weight="35"
         android:text="User1"
@@ -34,12 +33,12 @@
         android:shadowDx="5"
         android:shadowDy="5"
         android:shadowRadius="5"
-        android:textAlignment="center"
+        android:textAlignment="textStart"
         android:layout_gravity="center"
         />
     <TextView
         android:id="@+id/stats_player2"
-        android:layout_width="wrap_content"
+        android:layout_width="100sp"
         android:layout_height="wrap_content"
         android:layout_weight="35"
         android:text="User2"
@@ -51,12 +50,12 @@
         android:shadowDx="5"
         android:shadowDy="5"
         android:shadowRadius="5"
-        android:textAlignment="center"
+        android:textAlignment="textStart"
         android:layout_gravity="center"
         />
     <TextView
         android:id="@+id/stats_change"
-        android:layout_width="wrap_content"
+        android:layout_width="50sp"
         android:layout_height="wrap_content"
         android:text="Update"
         android:layout_marginEnd="10sp"

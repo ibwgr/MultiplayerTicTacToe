@@ -57,6 +57,7 @@ public class SocketController {
     private String currentPlayerSymbol;
     private String currentField;
     private int countDownTime;
+    private int[] winningFields;
     private Boolean isAllButtonsEnabled;
     private Boolean isMyTurn;
     private Boolean isOthersTurn;
@@ -147,6 +148,12 @@ public class SocketController {
         Log.i(PROG, "****************** current-field: "+currentField);
         this.currentField = currentField;
     }
+    public int[] getWinningFields() {
+        return winningFields;
+    }
+    public void setWinningFields(int[] winningFields) {
+        this.winningFields = winningFields;
+    }
     //-----------------------------------------------------
     //-----------------------------------------------------
     //-----------------------------------------------------
@@ -235,13 +242,14 @@ public class SocketController {
         Log.i(PROG, "******************" +data.toString());
         //{"winner":"hans","fields":[2,4,6],"username":"Emma","youWon":"no"}
         String winner;
-        String[] fields;
-        String userName;
         String youWon;
         try {
             winner = data.getString("winner");
-            //fields[] = data.getJSONArray("fields");  // todo optisch anzeigen!
-            //userName = data.getString("username");
+            JSONArray fields = data.getJSONArray("fields");
+            this.setWinningFields( new int[]{(int)fields.get(0), (int)fields.get(1), (int)fields.get(2)} );
+            Log.i(PROG, "****************** Winning Field1: " +this.getWinningFields()[0]);
+            Log.i(PROG, "****************** Winning Field2: " +this.getWinningFields()[1]);
+            Log.i(PROG, "****************** Winning Field3: " +this.getWinningFields()[2]);
             youWon = data.getString("youWon");
         } catch (JSONException e) {
             return;
@@ -266,6 +274,7 @@ public class SocketController {
         act.clearCountDownDisplay();
         // fuer replay
         act.enableButtonOk();
+        act.animateWinningFiedlds(this.getWinningFields());
     }
 
 
