@@ -102,7 +102,7 @@ public class SocketControllerTest {
     public void MOCKITO_onStartGameActionMethod_shouldSet_Player1Player2andGameRunning() throws Exception {
         final MainActivity mockedMainActivity = mock(MainActivity.class);
         doNothing().when(mockedMainActivity).displayStatus(anyString());
-        doNothing().when(mockedMainActivity).displayPlayers(anyString());
+        //doNothing().when(mockedMainActivity).displayPlayers(anyString());
         SocketController socketController = new SocketController(null, mockedMainActivity);
         JSONObject obj = new JSONObject();  //{"player1":"Emma","player2":"fritzli"}
         try {

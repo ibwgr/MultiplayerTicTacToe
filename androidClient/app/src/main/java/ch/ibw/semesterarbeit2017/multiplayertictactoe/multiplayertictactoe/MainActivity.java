@@ -1,22 +1,19 @@
 package ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -29,13 +26,9 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText editUserName;
     private TextView displayZeileStatus;
-    //private TextView displayZeilePlayers;
     private TextView displayStatistics;
     private TextView displayPlayerXname, displayPlayerOname;
     private TextView displayPlayerXcountdown, displayPlayerOcountdown;
-    private Toolbar toolbar;
-    //private Menu menu;
-    //private ImageView waitingImage;
 
     private GameButton gameButton0;
     private GameButton gameButton1;
@@ -50,7 +43,10 @@ public class MainActivity extends AppCompatActivity {
     //private String currentPlayer = "";
     private Button buttonOk;
 
-
+    private TabHost mTabHost;
+    public TabHost getTabHost() {
+        return mTabHost;
+    }
     /*
     // Test Client http://lastminute.li/aaa/   (oder /ttt/)
     --------------------------------------------------------------------
@@ -88,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
         //---------------------------------------------------------------------
         // TABS
-        TabHost mTabHost = (TabHost)findViewById(R.id.tabHost);
+        mTabHost = (TabHost)findViewById(R.id.tabHost);
         mTabHost.setup();
         //Lets add the first Tab
         TabHost.TabSpec mSpec = mTabHost.newTabSpec("play");
@@ -106,6 +102,8 @@ public class MainActivity extends AppCompatActivity {
         mSpec.setIndicator("about");
         mTabHost.addTab(mSpec);
 
+        RelativeLayout layoutMain = (RelativeLayout) findViewById(R.id.layout_main);
+        layoutMain.setOnTouchListener(new OnSwipeTouchListener(this));
 
 
         //---------------------------------------------------------------------
@@ -116,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
         // get the view elements
         editUserName = (EditText) findViewById(R.id.edit_username);
         displayZeileStatus = (TextView) findViewById(R.id.label_displayzeile);
-//        displayZeilePlayers = (TextView) findViewById(R.id.label_displayplayers);
         displayStatistics = (TextView) findViewById(R.id.label_statistics);
         displayPlayerXname = (TextView) findViewById(R.id.player_x_name);
         displayPlayerOname = (TextView) findViewById(R.id.player_o_name);
