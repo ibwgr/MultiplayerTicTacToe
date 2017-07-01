@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe.MainActivity"
+    android:weightSum="1"
+    android:background="@drawable/bg_city_2386857_640"
+    >
+    <!--android:background="@drawable/bg_neu4reverse"  -->
+
+
+    <TextView
+        android:id="@+id/label_about"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/background_dark"
+        android:textSize="18sp"
+        android:layout_marginLeft="40sp"
+        android:layout_marginTop="45dp"
+        android:text="NDS HF Applikationsentwicklung\nNDK HF Web und Mobile Frontend\nIBW Chur\n\nSemesterarbeit Juni 2017\nDieter Biedermann, Reto Kaufmann"
+        android:fontFamily="sans-serif"
+        android:lines="8"
+        android:textStyle="normal"
+        />
+    <!--android:background="#cc7e7b7b"-->
+
+</RelativeLayout>
