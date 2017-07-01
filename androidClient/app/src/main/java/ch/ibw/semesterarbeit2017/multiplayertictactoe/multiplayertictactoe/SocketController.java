@@ -555,7 +555,7 @@ public class SocketController {
         public void onTick(long millisUntilFinished) {
             // todo ein extra feld fuer den timer machen!
             //act.displayStatus(currentPlayerSymbol +", time left: " + millisUntilFinished / 1000);
-            Long secsL = ((millisUntilFinished / 1000)-1);
+            Long secsL = ((millisUntilFinished / 1000));
             String secs;
             if (secsL < 10) {
                 secs = "0"+Long.toString(secsL);

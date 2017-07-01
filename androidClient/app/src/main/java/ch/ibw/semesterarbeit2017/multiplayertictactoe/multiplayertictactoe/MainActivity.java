@@ -369,8 +369,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void clearCountDownDisplay() {
-        displayPlayerXcountdown.setText("  ");
-        displayPlayerOcountdown.setText("  ");
+        displayPlayerXcountdown.setText("   ");
+        displayPlayerOcountdown.setText("   ");
     }
 //    public void displayPlayers(String text) {
 //        displayZeilePlayers.setText(text);
