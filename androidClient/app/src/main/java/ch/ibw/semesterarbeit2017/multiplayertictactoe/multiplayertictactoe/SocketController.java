@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 
 /**
  * Created by rk on 11.06.17.
@@ -496,6 +497,7 @@ public class SocketController {
         String statsStatus; // playing oder der Name eines Spielers (winner)
         String statsChange; // new/update
         String output = "";
+        ArrayList<StatsItem> statsItems = new ArrayList<>();
         try {
             JSONArray boardList = data.getJSONArray("boardList");
             Log.i(PROG, "******************" +boardList.toString());
@@ -515,19 +517,13 @@ public class SocketController {
                     statsP2 += "\u2713";
                     statsP1 += " ";
                 } //else playing
-                statsP1 = Util.padRight(statsP1,8)+" ";
-                statsP2 = Util.padRight(statsP2,8)+" ";
-                if (statsChange.equals("update")) {
-                    statsChange = "upd";
-                } else {
-                    statsChange = "   ";
-                }
-                output += statsTimestamp +": " +statsP1 +" " +statsP2  +" ("+statsChange +")\n";
+                //output += statsTimestamp +": " +statsP1 +" " +statsP2  +" ("+statsChange +")\n";
+                statsItems.add(new StatsItem(statsTimestamp, statsP1, statsP2, statsChange));
             }
         } catch (JSONException e1) {
             e1.printStackTrace();
         }
-        act.displayStatistics(output);
+        act.displayStatistics(statsItems);
     }
 
 
