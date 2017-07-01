@@ -327,7 +327,7 @@ public class SocketController {
         } catch (JSONException e) {
             return;
         }
-        act.displayStatus("Others turn ("+this.getCurrentUserName() +" as " +this.getCurrentPlayerSymbol() +") \nplease wait...");
+        act.displayStatus("Waiting for "+this.getCurrentUserName() +"..."); // as " +this.getCurrentPlayerSymbol() +") \nplease wait...");
         //act.showWaitingImage(true);
         //act.enableAllGameButtons(false)  //schon beim Buttonclick gesetzt, ist da schneller (w. Latenzzeit Server);
         act.clearCountDownDisplay();

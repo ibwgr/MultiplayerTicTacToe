@@ -51,7 +51,7 @@
             android:textSize="20sp"
             android:text="  "
             android:lines="1"
-            android:textColor="#ff5100"
+            android:textColor="#000dff"
             android:textStyle="bold"
             />
 
@@ -84,34 +84,35 @@
             android:textSize="20sp"
             android:text="  "
             android:lines="1"
-            android:textColor="#ff5100"
+            android:textColor="#ff1500"
             android:textStyle="bold"
             />
 
     </LinearLayout>
 
-<!--
-    <TextView
-        android:id="@+id/label_displayplayers"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/layout_top_players"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:textSize="20sp"
-        android:text=""
-        android:lines="2"
-        android:textStyle="normal"
-        android:layout_weight="0.08" />
--->
+    <!--
+        <TextView
+            android:id="@+id/label_displayplayers"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layout_top_players"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:textSize="20sp"
+            android:text=""
+            android:lines="2"
+            android:textStyle="normal"
+            android:layout_weight="0.08" />
+    -->
     <TextView
         android:id="@+id/label_displayzeile"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_below="@id/layout_top_players"
-        android:text="Bitte Spielernamen eingeben"
+        android:text="Bitte Spielernamen eingeben:"
         android:textColor="@android:color/background_dark"
         android:textSize="20sp"
         android:lines="2"
@@ -120,25 +121,28 @@
 
     <EditText
         android:id="@+id/edit_username"
-        android:layout_width="200dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
         android:layout_marginTop="0dp"
         android:layout_below="@id/label_displayzeile"
         android:inputType="text"
         android:text="Emma"
+        android:background="@drawable/eingabefeld"
         android:textColor="@android:color/background_dark"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_alignLeft="@+id/label_displayzeile"
+        android:layout_alignStart="@+id/label_displayzeile" />
 
     <Button
         android:id="@+id/button_ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/label_displayzeile"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="20dp"
-        android:text="Start" />
+        android:text="Start"
+        android:layout_alignBaseline="@+id/edit_username"
+        android:layout_alignBottom="@+id/edit_username"
+        android:layout_alignRight="@+id/Game_GridLayout"
+        android:layout_alignEnd="@+id/Game_GridLayout" />
 
     <!--
     <ImageView
