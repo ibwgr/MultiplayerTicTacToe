@@ -16,11 +16,11 @@ describe('board', function(){
             let result = this.board.fields
             assert.deepEqual([' ','x',' ',' ',' ',' ',' ',' ',' '], result)
         })
-        it(`should return [' ',' ',' ',' ',' ','o',' ',' ',' '] for x on field 6`, function(){
+        it(`should return [' ',' ',' ',' ',' ',' ','o',' ',' '] for o on field 6`, function(){
             let data = {'field': 'field6', 'player': 'o'}
             this.board.setField(data)
             let result = this.board.fields
-            assert.deepEqual([' ',' ',' ',' ',' ','o',' ',' ',' '], result)
+            assert.deepEqual([' ',' ',' ',' ',' ',' ','o',' ',' '], result)
         })
     })
 
@@ -32,8 +32,8 @@ describe('board', function(){
             assert.equal('user1', result)
         })
         it(`should return 'user2' for fields xxx`, function(){
-            this.board.fields = [' ','x ',' ',' ','x',' ',' ','x',' ']
-            let data = [0,1,2]
+            this.board.fields = [' ','x',' ',' ','x',' ',' ','x',' ']
+            let data = [1,4,7]
             let result = this.board.checkFields(data)
             assert.equal('user2', result)
         })
