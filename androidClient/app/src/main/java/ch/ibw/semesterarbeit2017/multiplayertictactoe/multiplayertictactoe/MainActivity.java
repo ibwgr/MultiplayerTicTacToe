@@ -1,22 +1,21 @@
 package ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -29,13 +28,9 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText editUserName;
     private TextView displayZeileStatus;
-    //private TextView displayZeilePlayers;
     private TextView displayStatistics;
     private TextView displayPlayerXname, displayPlayerOname;
     private TextView displayPlayerXcountdown, displayPlayerOcountdown;
-    private Toolbar toolbar;
-    //private Menu menu;
-    //private ImageView waitingImage;
 
     private GameButton gameButton0;
     private GameButton gameButton1;
@@ -50,20 +45,17 @@ public class MainActivity extends AppCompatActivity {
     //private String currentPlayer = "";
     private Button buttonOk;
 
-
+    private TabHost mTabHost;
+    public TabHost getTabHost() {
+        return mTabHost;
+    }
     /*
     // Test Client http://lastminute.li/aaa/   (oder /ttt/)
     --------------------------------------------------------------------
-    TODO background je nach groesse mit hdpi usw.
     TODO fixtexte translation ressource
-    TODO gamebuttons optik
-    TODO layout hoch/quer/groessen
-    TODO layout grid vielleicht durch table ersetzen, wegen grid-lines
-
     TODO on connect_failed
     TODO on error
-    TODO on stats_update optik
-    TODO bei spielende anzeigen welche 3 buttons gewonnen haben
+    TODO mehr tests
     --------------------------------------------------------------------
     */
 
@@ -91,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
         //---------------------------------------------------------------------
         // TABS
-        TabHost mTabHost = (TabHost)findViewById(R.id.tabHost);
+        mTabHost = (TabHost)findViewById(R.id.tabHost);
         mTabHost.setup();
         //Lets add the first Tab
         TabHost.TabSpec mSpec = mTabHost.newTabSpec("play");
@@ -109,6 +101,8 @@ public class MainActivity extends AppCompatActivity {
         mSpec.setIndicator("about");
         mTabHost.addTab(mSpec);
 
+        RelativeLayout layoutMain = (RelativeLayout) findViewById(R.id.layout_main);
+        layoutMain.setOnTouchListener(new OnSwipeTouchListener(this));
 
 
         //---------------------------------------------------------------------
@@ -119,7 +113,6 @@ public class MainActivity extends AppCompatActivity {
         // get the view elements
         editUserName = (EditText) findViewById(R.id.edit_username);
         displayZeileStatus = (TextView) findViewById(R.id.label_displayzeile);
-//        displayZeilePlayers = (TextView) findViewById(R.id.label_displayplayers);
         displayStatistics = (TextView) findViewById(R.id.label_statistics);
         displayPlayerXname = (TextView) findViewById(R.id.player_x_name);
         displayPlayerOname = (TextView) findViewById(R.id.player_o_name);
@@ -253,7 +246,6 @@ public class MainActivity extends AppCompatActivity {
         //
         gameButton0 = (GameButton) findViewById(R.id.gameButton0);
         gameButton0.setNr(0);
-        //gameButton0.setAlpha(0.5f);  // todo neue init methode (auch fuer nochmals-spielen)
         gameButton0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -372,8 +364,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void clearCountDownDisplay() {
-        displayPlayerXcountdown.setText("  ");
-        displayPlayerOcountdown.setText("  ");
+        displayPlayerXcountdown.setText("   ");
+        displayPlayerOcountdown.setText("   ");
     }
 //    public void displayPlayers(String text) {
 //        displayZeilePlayers.setText(text);
@@ -417,4 +409,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void animateWinningFiedlds(int[] winningFields) {
+        int wf1 = winningFields[0];
+        int wf2 = winningFields[1];
+        int wf3 = winningFields[2];
+        Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+        for (int i=0; i<10; i++) {
+            if (i==0 && (i == wf1 || i == wf2 || i == wf3)) gameButton0.startAnimation(shake);
+            if (i==1 && (i == wf1 || i == wf2 || i == wf3)) gameButton1.startAnimation(shake);
+            if (i==2 && (i == wf1 || i == wf2 || i == wf3)) gameButton2.startAnimation(shake);
+            if (i==3 && (i == wf1 || i == wf2 || i == wf3)) gameButton3.startAnimation(shake);
+            if (i==4 && (i == wf1 || i == wf2 || i == wf3)) gameButton4.startAnimation(shake);
+            if (i==5 && (i == wf1 || i == wf2 || i == wf3)) gameButton5.startAnimation(shake);
+            if (i==6 && (i == wf1 || i == wf2 || i == wf3)) gameButton6.startAnimation(shake);
+            if (i==7 && (i == wf1 || i == wf2 || i == wf3)) gameButton7.startAnimation(shake);
+            if (i==8 && (i == wf1 || i == wf2 || i == wf3)) gameButton8.startAnimation(shake);
+        }
+    }
 }
