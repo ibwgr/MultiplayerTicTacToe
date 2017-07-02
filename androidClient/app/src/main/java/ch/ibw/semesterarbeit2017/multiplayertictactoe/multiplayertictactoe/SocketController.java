@@ -196,6 +196,7 @@ public class SocketController {
         socket.emit(event, json);
     }
 
+
     // getters/setters
     public Socket getSocket() {
         return socket;
@@ -205,6 +206,7 @@ public class SocketController {
     }
 
 
+    //------------------------------------------------------------------------
     public Emitter.Listener onDisconnectFromServer = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -218,11 +220,50 @@ public class SocketController {
         }
     };
     private void onDisconnectFromServerActionMethod() {
-        //  todo "sorry, technisches problem"
-        //  todo spiel beenden
-        //  todo screen aufraeumen
+        this.setGameStatus(Status.STOPPED);
+        act.displayStatus("Sorry, technical problems\ndisconnect from server");
+        act.enableAllGameButtons(false);
+        act.clearCountDownDisplay();
     }
 
+
+    public Emitter.Listener onConnectFailed = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            act.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.i(PROG, "****************** onConnectFailed");
+                    onConnectFailedActionMethod();
+                }
+            });
+        }
+    };
+    private void onConnectFailedActionMethod() {
+        this.setGameStatus(Status.STOPPED);
+        act.displayStatus("Sorry, technical problems\nserver-connection failed");
+        act.enableAllGameButtons(false);
+        act.clearCountDownDisplay();
+    }
+
+    public Emitter.Listener onError = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            act.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.i(PROG, "****************** onError");
+                    onErrorActionMethod();
+                }
+            });
+        }
+    };
+    private void onErrorActionMethod() {
+        this.setGameStatus(Status.STOPPED);
+        act.displayStatus("Sorry, technical problems\ntechnical error");
+        act.enableAllGameButtons(false);
+        act.clearCountDownDisplay();
+    }
 
 
     public Emitter.Listener onGameFinished = new Emitter.Listener() {
