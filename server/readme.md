@@ -6,13 +6,13 @@ Dies ist der nodeJS Server für das Multiplayer Tic Tac Toe Spiel.
 
 # Setup
 
-- Projekt installieren mit:
+### Projekt installieren mit:
 
-    ``yarn install ``
+``yarn install ``
 
-- Server starten mit:
+### Server starten für Development mit:
 
-    ``npm run start ``
+``npm run start-nodemon ``
 
 ----------
 
@@ -26,7 +26,7 @@ Die Tests werden mit folgendem Befehl ausgeführt:
 
 # Deployment auf einen Server
 
-Am Beispiel von Heroku.
+Am Beispiel von Heroku. Der start Befehlt im package.json ist bereits für Heroku konfiguriert.
 
 - git init
 - git add .

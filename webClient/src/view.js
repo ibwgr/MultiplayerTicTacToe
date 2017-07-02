@@ -27,17 +27,6 @@ export default class{
         this.$nameInput.addEventListener("change", this[nameEventListener].bind(this))
         this.$newGame.addEventListener("click", this[newGameEventListener].bind(this))
 
-/*
-        // for .. of loop
-        for (let field of this.$fields) {
-            field.addEventListener("click", this[fieldEventListener].bind(this))
-        }
-        // with SPREAD parameter
-        ([...this.$fields]).forEach(item=>{
-            item.addEventListener("click", this[fieldEventListener].bind(this))
-        })
-*/
-
         // Array.from function
         Array.from(this.$fields).forEach(item=>{
             item.addEventListener("click", this[fieldEventListener].bind(this))
