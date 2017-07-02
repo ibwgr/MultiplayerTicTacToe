@@ -241,18 +241,24 @@ public class SocketController {
         Log.i(PROG, "****************** onGameFinishedActionMethod");
         Log.i(PROG, "******************" +data.toString());
         //{"winner":"hans","fields":[2,4,6],"username":"Emma","youWon":"no"}
-        String winner;
-        String youWon;
+        //{"winner":"TestFritz","username":"Emma","youWon":"no"}   <== falls der andere z.b. aufgegeben hat
+        String winner ="";
+        String youWon ="";
+        Boolean hasFields = false;
         try {
             winner = data.getString("winner");
-            JSONArray fields = data.getJSONArray("fields");
-            this.setWinningFields( new int[]{(int)fields.get(0), (int)fields.get(1), (int)fields.get(2)} );
-            Log.i(PROG, "****************** Winning Field1: " +this.getWinningFields()[0]);
-            Log.i(PROG, "****************** Winning Field2: " +this.getWinningFields()[1]);
-            Log.i(PROG, "****************** Winning Field3: " +this.getWinningFields()[2]);
             youWon = data.getString("youWon");
+            JSONArray fields = data.getJSONArray("fields");
+            if (fields != null) {
+                hasFields = true;
+                this.setWinningFields( new int[]{(int)fields.get(0), (int)fields.get(1), (int)fields.get(2)} );
+                Log.i(PROG, "****************** Winning Field1: " +this.getWinningFields()[0]);
+                Log.i(PROG, "****************** Winning Field2: " +this.getWinningFields()[1]);
+                Log.i(PROG, "****************** Winning Field3: " +this.getWinningFields()[2]);
+            }
         } catch (JSONException e) {
-            return;
+            Log.i(PROG, "****************** JSON EXCEPTION! " );
+            e.printStackTrace();
         }
         if (winner.equals("draw")) {
             this.setIsIhaveWon(false);
@@ -274,7 +280,9 @@ public class SocketController {
         act.clearCountDownDisplay();
         // fuer replay
         act.enableButtonOk();
-        act.animateWinningFiedlds(this.getWinningFields());
+        if (hasFields) {
+            act.animateWinningFiedlds(this.getWinningFields());
+        }
     }
 
 
