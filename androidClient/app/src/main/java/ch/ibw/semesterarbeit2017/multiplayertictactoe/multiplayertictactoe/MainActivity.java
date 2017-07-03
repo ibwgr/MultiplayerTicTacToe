@@ -54,15 +54,8 @@ public class MainActivity extends AppCompatActivity {
     /*
     // Test Client http://lastminute.li/aaa/   (oder /ttt/)
     --------------------------------------------------------------------
-    TODO fixtexte translation ressource
-    TODO on connect_failed
-    TODO on error
-    TODO mehr tests
-    --------------------------------------------------------------------
     */
-
     private SocketController socketController = null; //new SocketController(getApplicationContext(), this);
-
 
    // Kein disconnect bei onPause, wenn die App nur in den Hintergrund geht, man kann sie ja wieder hervorholen
 
