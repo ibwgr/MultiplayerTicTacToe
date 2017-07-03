@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe" >
+    android:versionCode="2"
+    package="ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe"
+    >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
