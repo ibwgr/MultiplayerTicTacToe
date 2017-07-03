@@ -1,11 +1,13 @@
 package ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -146,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
                 displayStatus("bitte warten...");
                 disableButtonOk();
                 disableEingabefeld();
+                hideKeyboard();
                 if (socketController.getGameStatus().equals(Status.STOPPED)) {
                     setUpReplayGame();
                 }
@@ -340,8 +343,10 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
+    // um das aufgepoppte keyboard verschwinden zu lassen
+    public void hideKeyboard() {
+       Util.hideSoftKeyboard(this);
+    }
 
 
 
