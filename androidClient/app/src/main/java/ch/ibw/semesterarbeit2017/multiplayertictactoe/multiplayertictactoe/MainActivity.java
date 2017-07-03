@@ -127,17 +127,19 @@ public class MainActivity extends AppCompatActivity {
                 String userName = "";
                 if (socketController.getGameStatus().equals(Status.NEW)) {
                     userName = (editUserName.getText().toString());
-                    Log.w(PROG, "Username (aus Feld): " + userName);
+                    // cleanup userName for security reasons
+                    userName = Util.cleanString(userName);
+                    Log.w(PROG, "Username (aus Feld, cleaned): " + userName);
                     if (userName.length() > 0) {
                         //
                     } else {
                         Toast.makeText(getApplicationContext(), "Bitte zuerst einen Usernamen eingeben", Toast.LENGTH_LONG).show();
                         return;
                     }
-                } else {
+                } else {  // hat sich bereits registriert
                     userName = socketController.getMyName();
                 }
-                // wenn username eingegeben oder es ist ein restart nach spielelnde
+                // wenn username eingegeben oder es ist ein restart nach spielende
                 displayStatus("bitte warten...");
                 disableButtonOk();
                 disableEingabefeld();
@@ -147,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 // username senden, egal ob erstes spiel oder restart, ist ein registrieren am server
-                JSONObject obj = new JSONObject();    // todo das sollte in den socketcontroller (wie im GameButton)
+                JSONObject obj = new JSONObject();
                 try {
                     obj.put("username", userName);
                 } catch (JSONException e) {
@@ -161,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 //
-//        // Temporaere Buttons, nur fuer Entwicklulng  // todo alles auskommentieren
+//        // Temporaere Buttons, nur fuer Entwicklulng
 //        final Button buttonSimWin = (Button) findViewById(R.id.button_sim_win);
 //        buttonSimWin.setOnClickListener(new View.OnClickListener(){
 //            @Override
@@ -179,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
 //                socketController.onGameFinishedActionMethod(obj);
 //            }
 //        });
-//        // Temporaere Buttons, nur fuer Entwicklulng  // todo alles auskommentieren
+//        // Temporaere Buttons, nur fuer Entwicklulng
 //        final Button buttonSimUnent = (Button) findViewById(R.id.button_sim_unent);
 //        buttonSimUnent.setOnClickListener(new View.OnClickListener(){
 //            @Override
@@ -324,9 +326,6 @@ public class MainActivity extends AppCompatActivity {
         });
         //
 
-        //
-        //waitingImage = (ImageView) findViewById(R.id.waiting_img);
-
         // init game
         GameButton.setSocketController(socketController);
         GameButton.setAllGameButtons(asList(gameButton0,gameButton1,gameButton2,gameButton3,
@@ -350,26 +349,17 @@ public class MainActivity extends AppCompatActivity {
     public void displayCountdownPlayerO(String text) {
         if (socketController.getIsMyTurn()) {
             displayPlayerOcountdown.setText(text);
-//            displayPlayerOcountdown.setTextColor(Color.parseColor("#ff5100")); // orange
-//        } else {
-//            displayPlayerOcountdown.setTextColor(Color.parseColor("#54514f"));  // grau
         }
     }
     public void displayCountdownPlayerX(String text) {
         if (socketController.getIsMyTurn()) {
             displayPlayerXcountdown.setText(text);
-//            displayPlayerXcountdown.setTextColor(Color.parseColor("#ff5100"));  // orange
-//        } else {
-//            displayPlayerXcountdown.setTextColor(Color.parseColor("#54514f"));  // grau
         }
     }
     public void clearCountDownDisplay() {
         displayPlayerXcountdown.setText("   ");
         displayPlayerOcountdown.setText("   ");
     }
-//    public void displayPlayers(String text) {
-//        displayZeilePlayers.setText(text);
-//    }
     public void displayPlayers(String playerO, String playerX) {
         displayPlayerOname.setText(playerO);
         displayPlayerXname.setText(playerX);
@@ -381,13 +371,6 @@ public class MainActivity extends AppCompatActivity {
         ListView listStats = (ListView) findViewById(R.id.list_stats);
         listStats.setAdapter(statsAdapter);
     }
-//    public void showWaitingImage(boolean toShow) {
-//        if (toShow) {
-//            //waitingImage.setVisibility(View.VISIBLE);
-//        } else {
-//            //waitingImage.setVisibility(View.INVISIBLE);
-//        }
-//    }
     public void enableAllGameButtons(boolean toEnable) {
         if (toEnable) {
             GameButton.enableAllGameButtons();

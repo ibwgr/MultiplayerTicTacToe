@@ -257,7 +257,7 @@ public class SocketController {
                 @Override
                 public void run() {
                     Log.i(PROG, "****************** onError");
-                    onErrorActionMethod();
+                   // onErrorActionMethod();
                 }
             });
         }
@@ -293,8 +293,9 @@ public class SocketController {
         try {
             winner = data.getString("winner");
             youWon = data.getString("youWon");
-            JSONArray fields = data.getJSONArray("fields");
-            if (fields != null) {
+            JSONArray fields = null;
+            if (data.has("fields")) {
+                fields = data.getJSONArray("fields");
                 hasFields = true;
                 this.setWinningFields( new int[]{(int)fields.get(0), (int)fields.get(1), (int)fields.get(2)} );
                 Log.i(PROG, "****************** Winning Field1: " +this.getWinningFields()[0]);

@@ -38,6 +38,9 @@ public class GameButton extends ImageButton {
         super(context, attrs, defStyleAttr);
     }
 
+
+
+
     public int getNr() {
         return nr;
     }
@@ -87,7 +90,7 @@ public class GameButton extends ImageButton {
         this.setBackgroundResource(R.drawable.game_fig_x);
     }
     public void setGraphicInit(){
-        this.setBackgroundResource(R.drawable.gf_init);
+        //this.setBackgroundResource(R.drawable.gf_init);
         this.setBackgroundResource(R.drawable.neu_i);
     }
 
@@ -121,7 +124,7 @@ public class GameButton extends ImageButton {
         //
         // dem server den spielzug mitteilen
         // username senden
-        JSONObject obj = new JSONObject();   // todo das sollte in den socketcontroller (wie add_user)
+        JSONObject obj = new JSONObject();
         try {
             obj.put("player", socketController.getCurrentPlayerSymbol());
             obj.put("field", getNrFieldId());
