@@ -26,14 +26,14 @@ Die Tests werden mit folgendem Befehl ausgeführt:
 
 # Deployment auf einen Server
 
-Am Beispiel von Heroku. Der start Befehlt im package.json ist bereits für Heroku konfiguriert.
+Am Beispiel von Heroku. Der start Befehl im package.json ist bereits für Heroku konfiguriert.
 
-- git init
-- git add .
-- git commit -m "first commit"
-- heroku login
-- heroku git:remote -a <i>heroku-app-name</i>
-- git push heroku master
+- ``git init``
+- ``git add .``
+- ``git commit -m "first commit"``
+- ``heroku login``
+- ``heroku git:remote -a`` <i>heroku-app-name</i>
+- ``git push heroku master``
 
 ----------
 

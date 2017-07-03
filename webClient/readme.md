@@ -16,7 +16,7 @@ Dies ist der Web Client zum Multiplayer Tic Tac Toe Spiel.
 
     ``{"serverUrl": "http://localhost:3100" } ``
 
-- zentraler Webserver:
+- Zentraler Webserver:
 
   ``{"serverUrl": "https://warm-shelf-33316.herokuapp.com/" } ``
 

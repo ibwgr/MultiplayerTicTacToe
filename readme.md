@@ -3,6 +3,18 @@
 Semesterarbeit NDK HF Web und Mobile Frontend Entwicklung<br>
 Reto Kaufmann / Dieter Biedermann
 
+## Spielbeschrieb
+
+Bei TicTacToe spielen jeweils zwei Spieler gegeneinander. Die Spieler können sich mit einem selbstgewählten Spielername anmelden. Sobald sich zwei Spieler angemeldet haben, wird ein neues Spiel automatisch gestartet. Jeder Spieler hat jeweils 30 Sekunden Zeit für seinen Spielzug. Benötigt ein Spieler länger oder schliesst er den Browser bzw. die App, so hat dieser Spieler automatisch verloren. 
+
+Gleichzeitig wird eine Statistik über alle laufenden und die zwanzig letzten abgeschlossenen Spiele angezeigt. Die Statistik wird nach jedem Zug aktualisiert. 
+
+## Was ist Tic Tac Toe?
+
+- <a 
+href="https://de.wikipedia.org/wiki/Tic-Tac-Toe"
+titel="Tic-Tac-Toe auf Wikipedia">Tic-Tac-Toe auf Wikipedia</a>
+
 
 ## Details und Konfiguration Server
 - <a href="https://github.com/ibwgr/MultiplayerTicTacToe/tree/master/server" title="Server">Server</a>
@@ -18,15 +30,5 @@ Folgende Clients stehen öffentlich zur Verfügung (bereits Deployed):<br>
 
 ## Aufbau
 
-Es gibt einen zentralen Server, welcher die Spieler von einem Web Client oder Android Client entgegennimmt. Wenn sich zwei Spieler mit dem Server verbunden haben, wird ein neues Spiel für diese zwei Spieler eröffnet. Der Server verwaltet danach das Spiel zwischen den zwei Spielern.
-
-Während diese zwei Spieler spielen können sich ständig neue Spieler mit dem Server verbinden und ein Spiel mit einem anderen Spieler starten.
-
-
-## Was ist Tic Tac Toe?
-
-- <a 
-href="https://de.wikipedia.org/wiki/Tic-Tac-Toe"
-titel="Tic-Tac-Toe auf Wikipedia">Tic-Tac-Toe auf Wikipedia<a/>
-
+Für die Verbindung zwischen Client und Server werden WebSockets verwendet (sockets.io). Der Client verbindet sich mit dem Server sobald der Web oder Android Client geöffnet wird. Der Client und der Server können dann Events senden und empfangen.
 
