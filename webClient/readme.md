@@ -6,15 +6,21 @@ Dies ist der Web Client zum Multiplayer Tic Tac Toe Spiel.
 
 # Setup
 
-- Projekt installieren mit:
+### Projekt installieren mit:
 
   ``yarn install ``
 
-- Serer URL kann unter config/config.json angepasst werden:
+### Server URL kann unter config/config.json angepasst werden:
 
-  ``{"serverUrl": "http://localhost:3100" } ``
+- Lokaler Entwicklungs-PC:
 
-- Server starten mit:
+    ``{"serverUrl": "http://localhost:3100" } ``
+
+- Zentraler Webserver:
+
+  ``{"serverUrl": "https://warm-shelf-33316.herokuapp.com/" } ``
+
+### Server starten mit:
 
   ``gulp ``
 
@@ -25,6 +31,7 @@ Dies ist der Web Client zum Multiplayer Tic Tac Toe Spiel.
 Deployment des Web Clients auf einen Web-Server:
 
 - Anpassen der Sever URL im config/config.json File
+- gulp ausführen
 - Folgende Files/Verzeichnisse auf den Webserver kopieren:
   - bundle/bundle.js
   - index.html

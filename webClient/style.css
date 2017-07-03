@@ -87,6 +87,10 @@ h1 {
     background: saddlebrown !important;
 }
 
+.yellow {
+    background: yellow !important;
+}
+
 .hidden {
     display: none;
     visibility: hidden;
@@ -128,22 +132,22 @@ h1 {
 #player1Icon {
     width: 25px;
     height: 25px;
-    background: white;
+    background: antiquewhite;
     content: " ";
     border-radius: 100%;
     margin-right: 10px;
-    box-shadow: inset 0 0 1vw dodgerblue;
+    box-shadow: inset 0 0 2px dodgerblue;
 }
 
 #player2Icon {
     display: flex;
     content: " ";
-    background: white;
+    background: aliceblue;
     width: 25px;
     height: 8px;
     margin-left: 30px;
     margin-right: 10px;
-    box-shadow: inset 0 0 1vw dodgerblue;
+    box-shadow: inset 0 0 2px dodgerblue;
     transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
     -moz-transform: rotate(45deg);
@@ -152,11 +156,11 @@ h1 {
 }
 
 #player2Icon::after {
-  background: white;
+  background: aliceblue;
   content: " ";
   width: 25px;
   height: 8px;
-  box-shadow: inset 0 0 1vw dodgerblue;
+  box-shadow: inset 0 0 2px dodgerblue;
   transform: rotate(-90deg);
   -webkit-transform: rotate(-90deg);
   -moz-transform: rotate(-90deg);
@@ -351,22 +355,22 @@ div.field {
 
 .setO {
     display: flex;
-    background: white;
+    background: antiquewhite;
     width: 80%;
     height: 80%;
     content: " ";
     border-radius: 100%;
-    box-shadow: inset 0 0 10vw dodgerblue;
+    box-shadow: inset 0 0 20px dodgerblue;
     transition: all 2s ease-out 0.1s;
 }
 
 .setX {
   display: flex;
   content: " ";
-  background: white;
+  background: aliceblue;
   width: 80%;
   height: 20%;
-  box-shadow: inset 0 0 3vw dodgerblue;
+  box-shadow: inset 0 0 20px dodgerblue;
   transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
   -moz-transform: rotate(45deg);
@@ -376,11 +380,11 @@ div.field {
 }
 
 .setX::after {
-  background: white;
+  background: aliceblue;
   content: "";
   width: 100%;
   height: 100%;
-  box-shadow: inset 0 0 3vw dodgerblue;
+  box-shadow: inset 0 0 20px dodgerblue;
   transform: rotate(-90deg);
   -webkit-transform: rotate(-90deg);
   -moz-transform: rotate(-90deg);
@@ -405,7 +409,7 @@ footer {
 }
 
 /*
-*  Desktop Version
+*  Desktop Version - small
 */
 @media only screen and (min-width: 580px) {
 
@@ -424,6 +428,9 @@ footer {
 
 }
 
+/*
+*  Desktop Version - wide
+*/
 @media only screen and (min-width: 980px) {
 
     main {
