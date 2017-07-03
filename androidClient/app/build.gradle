@@ -7,8 +7,8 @@ android {
         applicationId "ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode 101
+        versionName "1.01"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -53,4 +53,13 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile "org.mockito:mockito-core:1.+"
     testCompile "org.json:json:20170516"
+
+
+    // https://mvnrepository.com/artifact/org.powermock/powermock-api-mockito
+    //testCompile group: 'org.powermock', name: 'powermock-api-mockito', version: '1.7.0'
+    // https://mvnrepository.com/artifact/org.powermock/powermock-mockito-release-full
+    //testCompile ('org.powermock:powermock-module-junit4:1.6.2') {
+    //    exclude module: 'hamcrest-core'
+    //    exclude module: 'objenesis'
+    //}
 }

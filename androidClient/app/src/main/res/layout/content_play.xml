@@ -120,8 +120,8 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:text="Emma"
-            android:background="@drawable/eingabefeld"
+            android:text=""
+
             android:textColor="@android:color/background_dark"
             android:textSize="18sp"
             android:textStyle="bold"

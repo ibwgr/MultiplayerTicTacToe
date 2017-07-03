@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Config>
+    <ServiceEndpoint>https://warm-shelf-33316.herokuapp.com/</ServiceEndpoint>
     <!--
         *** TicTacToe Configuration ***
         https://warm-shelf-33316.herokuapp.com/
         http://192.168.1.33:3100
         http://192.168.1.39:3100
     -->
-    <ServiceEndpoint>http://192.168.1.39:3100</ServiceEndpoint>
 </Config>
