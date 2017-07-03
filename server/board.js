@@ -24,7 +24,7 @@ export default class {
     setField(data) {
         let field = parseInt(data.field.replace('field', ''))
         this.fields = this.fields.map((item,pos)=>pos === field ? data.player : item)
-        this.move++
+        this.moves++
         this.timestamp = new Date().toLocaleString("en-US")
         console.log('board: ' + this.fields)
     }

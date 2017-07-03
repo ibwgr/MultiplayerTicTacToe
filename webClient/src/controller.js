@@ -3,8 +3,6 @@
 import io from 'socket.io-client'
 import config from '../config/config.json'
 
-console.log(config)
-
 let socket = io.connect(config.serverUrl, {reconnect: true})
 
 String.prototype.isEmpty = function() {
@@ -41,6 +39,8 @@ export default class{
             this.view.showInfo(false)
         })
 
+        // messages from server...
+
         // username already in queue
         socket.on('username_validation', (data)=>{
             console.log('username_validation: '+data.msg)
@@ -57,7 +57,7 @@ export default class{
             this.view.setInfoText(`Hi ${data.username}, please wait for other user...`)
         })
 
-        // messages from server...
+        // new game started
         socket.on('start_game', (data)=>{
             console.log('game started...' + data.player1 + '/' + data.player2)
             this.view.setPlayer1(data.player1)
@@ -67,6 +67,7 @@ export default class{
             this.view.setInfoText('New game started...')
         })
 
+        // the client's user has to make a move, enable board
         socket.on('your_turn', (data)=>{
             console.log('your turn...' + data.player)
             this.playerToken = data.player
@@ -74,7 +75,6 @@ export default class{
             this.gameEnabled = true
             this.view.setInfoColor('blue')
             this.view.enableBoard(true)
-            // start interval -> setInterval(..., 1000)
             this.time = data.time
             this.view.setTimer(this.time)
             let timer = window.setInterval(_=>{
@@ -87,6 +87,7 @@ export default class{
             }, 1000)
         })
 
+        // the other player has to make a move, disable baord
         socket.on('other_turn', (data)=>{
             console.log('other turn...')
             this.view.setInfoText(`Waiting for ${data.username} ...`)
@@ -94,11 +95,13 @@ export default class{
             this.view.enableBoard(false)
         })
 
+        // the other player made a move, show it on the board
         socket.on('new_move', (data)=>{
             console.log('new move: ' + data.field + '('+data.player+')')
             this.view.setField(data.field, data.player)
         })
 
+        // game is done, show result
         socket.on('game_finished', (data)=>{
             console.log('game finished, winner: ' + data.winner)
             this.running = false
@@ -119,6 +122,7 @@ export default class{
             this.view.showNewGame(true)
         })
 
+        // statistics, just show it
         socket.on('stats_update', (data)=>{
             this.view.renderStatistics(data)
         })
