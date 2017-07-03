@@ -12,6 +12,7 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/launcher_icon_multiplayer_ttt"
+        android:logo="@mipmap/launcher_icon_multiplayer_ttt"
         android:roundIcon="@mipmap/launcher_icon_multiplayer_ttt"
         android:label="TicTacToe"
         android:supportsRtl="true"
@@ -20,7 +21,8 @@
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize">
-            <intent-filter>
+            android:label="TicTacToe"
+            <intent-filter android:label="TicTacToe">
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
