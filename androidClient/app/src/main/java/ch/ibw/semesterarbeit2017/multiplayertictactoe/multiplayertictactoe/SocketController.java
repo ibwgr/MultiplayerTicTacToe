@@ -257,7 +257,7 @@ public class SocketController {
                 @Override
                 public void run() {
                     Log.i(PROG, "****************** onError");
-                    onErrorActionMethod();
+                   // onErrorActionMethod();
                 }
             });
         }
