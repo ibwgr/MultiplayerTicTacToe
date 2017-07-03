@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //---------------------------------------------------------------------
-        socketController = new SocketController(getApplicationContext(), this);
+        socketController = new SocketController(getApplicationContext(), this, Util.getServiceEndpoint(this));
         socketController.connect();
         setUpInitalGame();
 

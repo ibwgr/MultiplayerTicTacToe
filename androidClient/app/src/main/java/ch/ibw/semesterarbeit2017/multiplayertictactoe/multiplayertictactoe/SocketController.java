@@ -35,12 +35,13 @@ public class SocketController {
     //constructor
     public SocketController() {
     }
-    // todo hier die Mainactivity bekommen,  oder wie es der Dozent vorschlaegt: die findViewById redundant nochmals suchen...
-    public SocketController(Context ctx, MainActivity act) {
+    // hier die Mainactivity bekommen,  oder wie es der Dozent vorschlaegt: die findViewById redundant nochmals suchen...
+    // den ServiceEndpoint injection wir hier, damit es testbar wird
+    public SocketController(Context ctx, MainActivity act, String serviceEndpoint) {
         this.ctx = ctx;
         this.act = act;
         //
-        socket = createSocket();
+        socket = createSocket(serviceEndpoint);
     }
 
 
@@ -160,9 +161,12 @@ public class SocketController {
 
 
     //
-    public Socket createSocket() {
+    public Socket createSocket(String serviceEndpoint) {
         Log.i(PROG, "socking...");
-        String serviceEndpoint = Util.getServiceEndpoint(act);
+        // zum testen
+        if (serviceEndpoint == null) {
+            serviceEndpoint = Util.getServiceEndpoint(act);
+        }
         if (serviceEndpoint != null) {
             try {
                 return IO.socket(serviceEndpoint);
