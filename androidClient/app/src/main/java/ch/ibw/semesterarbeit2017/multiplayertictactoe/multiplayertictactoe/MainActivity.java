@@ -1,11 +1,13 @@
 package ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -106,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //---------------------------------------------------------------------
-        socketController = new SocketController(getApplicationContext(), this);
+        socketController = new SocketController(getApplicationContext(), this, Util.getServiceEndpoint(this));
         socketController.connect();
         setUpInitalGame();
 
@@ -146,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
                 displayStatus("bitte warten...");
                 disableButtonOk();
                 disableEingabefeld();
+                hideKeyboard();
                 if (socketController.getGameStatus().equals(Status.STOPPED)) {
                     setUpReplayGame();
                 }
@@ -218,6 +221,8 @@ public class MainActivity extends AppCompatActivity {
         socketController.getSocket().on("new_move", socketController.onNewMove);  // Spielzug des Gegners
         socketController.getSocket().on("game_finished", socketController.onGameFinished);
         socketController.getSocket().on("disonnect", socketController.onDisconnectFromServer);  // disconnect from server received!
+        socketController.getSocket().on("connect_failed", socketController.onConnectFailed);
+        socketController.getSocket().on("error", socketController.onError);
         socketController.getSocket().on("stats_update", socketController.onStatsUpdate);
 
     } // end on-create lifecycle
@@ -338,8 +343,10 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
+    // um das aufgepoppte keyboard verschwinden zu lassen
+    public void hideKeyboard() {
+       Util.hideSoftKeyboard(this);
+    }
 
 
 
