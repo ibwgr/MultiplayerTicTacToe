@@ -72,7 +72,6 @@ io.on('connection', (socket) => {
     }
     socket.changePlayer = _=>{
         let otherSocket = socket.socketUtil.changePlayer(socket.board.socketPlayer1, socket.board.socketPlayer2, PLAY_TIMER)
-        // start timer -> setTimeout(..., 30000)
         if (socket.timer){
             clearTimeout(socket.timer)
         }
