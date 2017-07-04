@@ -10,8 +10,6 @@
     android:weightSum="1"
     android:background="@drawable/bg_city_2386857_640_hell"
     >
-    <!--android:background="@drawable/bg_neu4reverse"  -->
-
 
     <TextView
         android:id="@+id/label_statistics"

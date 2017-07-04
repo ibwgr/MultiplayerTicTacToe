@@ -7,8 +7,8 @@ android {
         applicationId "ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 103
-        versionName "1.03"
+        versionCode 104
+        versionName "1.04"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

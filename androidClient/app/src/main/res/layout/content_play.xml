@@ -6,13 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/bg_city_2386857_640"
+    android:background="@drawable/bg_city_2386857_640_hell"
     android:gravity="center_horizontal"
     >
-    <!--android:background="@drawable/bg_960_720"
-        android:background="@drawable/bg_beach_2333282_640"
-     -->
-
 
     <LinearLayout
     android:id="@+id/layout_top_players"
@@ -28,7 +24,7 @@
             android:layout_width="90px"
             android:layout_height="90px"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:src="@drawable/game_fig_x"
             android:visibility="visible"
             />
@@ -61,7 +57,7 @@
             android:layout_width="90px"
             android:layout_height="90px"
             android:layout_marginTop="12dp"
-            android:layout_marginLeft="70dp"
+            android:layout_marginLeft="40dp"
             android:src="@drawable/game_fig_o"
             android:visibility="visible"
             />
@@ -149,7 +145,7 @@
             android:rowCount="3"
             android:orientation="horizontal"
             android:layout_below="@id/edit_username"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:background="@drawable/border"
             tools:context=".GridXMLActivity" >
 
