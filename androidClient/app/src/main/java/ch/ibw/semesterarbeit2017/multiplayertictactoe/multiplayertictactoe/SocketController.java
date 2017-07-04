@@ -357,7 +357,6 @@ public class SocketController {
         }
         String message = this.getCurrentUserName() +", your turn, watch the time";  //  +(" +this.getCurrentPlayerSymbol() +")";
         act.displayStatus(message);
-        //act.showWaitingImage(false);
         act.enableAllGameButtons(true);
         act.clearCountDownDisplay();
         this.setIsMyTurn(true);
@@ -560,7 +559,6 @@ public class SocketController {
         String statsP2;
         String statsStatus; // playing oder der Name eines Spielers (winner)
         String statsChange; // new/update
-        String output = "";
         ArrayList<StatsItem> statsItems = new ArrayList<>();
         try {
             JSONArray boardList = data.getJSONArray("boardList");
@@ -572,7 +570,6 @@ public class SocketController {
                 statsP2 = jsonobject.getString("player2");
                 statsStatus = jsonobject.getString("status");
                 statsChange = jsonobject.getString("change");
-                //Log.i(PROG, "****************** timestamp:" +statsTimestamp);
                 if (statsStatus.equals(statsP1)) {
                     statsP1 += "\u2713";  //"\u2713"   siehe https://unicode-table.com/en/
                     statsP2 += " ";
@@ -580,7 +577,6 @@ public class SocketController {
                     statsP2 += "\u2713";
                     statsP1 += " ";
                 } //else playing
-                //output += statsTimestamp +": " +statsP1 +" " +statsP2  +" ("+statsChange +")\n";
                 statsItems.add(new StatsItem(statsTimestamp, statsP1, statsP2, statsChange));
             }
         } catch (JSONException e1) {
