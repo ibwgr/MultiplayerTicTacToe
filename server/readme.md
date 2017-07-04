@@ -6,9 +6,13 @@ Dies ist der nodeJS Server für das Multiplayer Tic Tac Toe Spiel.
 
 # Setup
 
-### Projekt klonen
+### ganzes Projekt klonen
 
 ``git clone https://github.com/ibwgr/MultiplayerTicTacToe.git``
+
+### in das Server Verzeichnis wechseln
+
+``cd server``
 
 ### Projekt installieren mit:
 
