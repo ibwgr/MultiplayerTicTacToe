@@ -16,7 +16,7 @@ Am besten verwendet man Android Studio
 
 - in das androidClient Verzeichnis wechseln
 
-   ``cd androidClient``
+   ``cd MultiplayerTicTacToe/androidClient``
 
 ### Projekt konfigurieren
 

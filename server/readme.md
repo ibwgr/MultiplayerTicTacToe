@@ -1,6 +1,6 @@
 # MultiplayerTicTacToe - Server
 
-Dies ist der nodeJS Server für das Multiplayer Tic Tac Toe Spiel.
+Dies ist der node.js Server für das Multiplayer Tic Tac Toe Spiel.
 
 ----------
 
@@ -12,7 +12,7 @@ Dies ist der nodeJS Server für das Multiplayer Tic Tac Toe Spiel.
 
 ### in das Server Verzeichnis wechseln
 
-``cd server``
+``cd MultiplayerTicTacToe/server``
 
 ### Projekt installieren mit:
 

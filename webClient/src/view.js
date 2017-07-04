@@ -1,3 +1,10 @@
+/*
+ * view
+ * handles/manipulates the HTML
+ * 
+ * Semesterarbeit NDK HF Web und Mobile Frontend Entwicklung
+ * Reto Kaufmann / Dieter Biedermann
+ */
 'use strict'
 
 import 'babel-polyfill'
