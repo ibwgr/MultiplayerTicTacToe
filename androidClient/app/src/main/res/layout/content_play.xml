@@ -36,7 +36,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginTop="10dp"
             android:textSize="20sp"
-            android:text="armerschlu"
+            android:text="---"
             android:lines="1"
             android:textStyle="normal"
             />
@@ -70,7 +70,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginTop="10dp"
             android:textSize="20sp"
-            android:text="millionaer"
+            android:text="---"
             android:lines="1"
             android:textStyle="normal"
             />
