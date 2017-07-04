@@ -40,7 +40,7 @@ Am Beispiel von Heroku. Der start Befehl im package.json ist bereits für Heroku
 - ``git add .``
 - ``git commit -m "first commit"``
 - ``heroku login``
-- ``heroku git:remote -a`` <i>heroku-app-name</i>
+- ``heroku git:remote -a`` *heroku-app-name*
 - ``git push heroku master``
 
 ----------
