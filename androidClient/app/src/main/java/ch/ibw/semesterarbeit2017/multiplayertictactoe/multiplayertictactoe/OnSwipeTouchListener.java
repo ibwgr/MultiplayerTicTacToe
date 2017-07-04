@@ -9,11 +9,12 @@ import android.widget.Toast;
 
 /**
  * Created by rk on 01.07.17.
+ * basically copied from stackoverflow and adapted...
  */
 
 public class OnSwipeTouchListener implements View.OnTouchListener {
 
-    public static final String PROG = "____MAINACTIVITY";
+    public static final String PROG = "____ONSWIPE";
     private MainActivity activity;
     static final int MIN_DISTANCE = 100;//  change this runtime based on screen resolution. for 1920x1080 is to small the 100 distance
     private float downX, downY, upX, upY;
@@ -63,7 +64,6 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
                 upY = event.getY();
 
                 float deltaX = downX - upX;
-                float deltaY = downY - upY;
 
                 // swipe horizontal?
                 if (Math.abs(deltaX) > MIN_DISTANCE) {

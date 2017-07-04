@@ -22,10 +22,10 @@ public class GameButton extends ImageButton {
 
     private int nr;
     private boolean isClicked = false;  //per default nicht gelickt
-    private boolean isX;
-    private boolean isO;
 
-
+    //---------------------------------------------------------------------------
+    // Constructors
+    //---------------------------------------------------------------------------
     public GameButton(Context context) {
         super(context);
     }
@@ -40,7 +40,7 @@ public class GameButton extends ImageButton {
 
 
 
-
+    //---------------------------------------------------------------------------
     public int getNr() {
         return nr;
     }
@@ -64,50 +64,31 @@ public class GameButton extends ImageButton {
         isClicked = false;
     }
 
-    public boolean isX() {
-        return isX;
-    }
-
-    public void setX(boolean x) {
-        isX = x;
-    }
-
-    public boolean isO() {
-        return isO;
-    }
-
-    public void setO(boolean o) {
-        isO = o;
-    }
-
-    ///////////////////////////////
+    //---------------------------------------------------------------------------
     public void setGraphicO(){
-        //this.setBackgroundResource(R.drawable.gf_test_o);
         this.setBackgroundResource(R.drawable.game_fig_o);
     }
     public void setGraphicX(){
-        //this.setBackgroundResource(R.drawable.gf_test_x);
         this.setBackgroundResource(R.drawable.game_fig_x);
     }
     public void setGraphicInit(){
-        //this.setBackgroundResource(R.drawable.gf_init);
         this.setBackgroundResource(R.drawable.neu_i);
     }
 
-    ///////////////////////////////
+    //---------------------------------------------------------------------------
     public void reInitializeButton(){
         this.setClickable(true);
         this.setGraphicInit();
         this.setClickedRevert();
     }
 
-    ///////////////////////////////
+    //---------------------------------------------------------------------------
     @Override
     public String toString() {
         return "GameButton" + this.nr +" clicked:"+isClicked;
     }
 
-    ///////////////////////////////
+    //---------------------------------------------------------------------------
     public void clicked() {
         Log.w(PROG, "Button clicked: " + this.toString() +" , playerToken:"+socketController.getCurrentPlayerSymbol());
         if (socketController.getCurrentPlayerSymbol().equals(socketController.PLAYER_TOKEN_O)) {
@@ -134,7 +115,8 @@ public class GameButton extends ImageButton {
         socketController.send("player_action", obj);  // mein Spielzug
         Log.w(PROG, "spielzug beendet, feld:"+this.getNrFieldId() +", playerToken:"+socketController.getCurrentPlayerSymbol());
     }
-    ///////////////////////////////
+
+    //---------------------------------------------------------------------------
     public void clickedByOther() {
         Log.i(PROG, "Button clicked by other: " + this.toString() +" , playerToken:"+socketController.getCurrentPlayerSymbol());
         if (socketController.getCurrentPlayerSymbol().equals(socketController.PLAYER_TOKEN_O)) {
@@ -148,7 +130,7 @@ public class GameButton extends ImageButton {
     }
 
 
-    //////////////////////////////////////////////////
+    //---------------------------------------------------------------------------
     private static SocketController socketController;
 
     public static SocketController getSocketController() {
@@ -161,8 +143,7 @@ public class GameButton extends ImageButton {
 
 
 
-
-    //////////////////////////////////////////////////
+    //---------------------------------------------------------------------------
     private static List<GameButton> allGameButtons;
 
     public static List<GameButton> getAllGameButtons() {
@@ -176,7 +157,7 @@ public class GameButton extends ImageButton {
 
 
 
-
+    //---------------------------------------------------------------------------
     public static void enableAllGameButtons(){
         socketController.setIsAllButtonsEnabled(true);
         for (GameButton gamebutton : allGameButtons){
