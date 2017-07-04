@@ -1,4 +1,4 @@
-/**
+/*
  * socketUtil
  * Contains all messages sent to the client
  * 
@@ -12,7 +12,7 @@ export default class {
         this.socket = socket
     }
 
-    /**
+    /*
      * event: start_game
      * json: {'player1': 'user1', 'player2': 'user2'}
      */
@@ -29,7 +29,7 @@ export default class {
         }
     }
 
-    /**
+    /*
      * event: your_turn, other_turn
      * json: {'player': 'x', 'username': 'user2', 'time': '30'}
      * returns the socket of the new player
@@ -53,7 +53,7 @@ export default class {
         }
     }
 
-    /**
+    /*
      * event: user_added
      * json: {'username': 'user1'}
      * 
@@ -65,7 +65,7 @@ export default class {
        this.socket.emit('user_added', data)
     }
 
-    /**
+    /*
      * event: username_validation
      * json: {'msg': 'error message'}
      * 
@@ -77,7 +77,7 @@ export default class {
         this.socket.emit('username_validation', data)
      }
 
-    /**
+    /*
      * event: new_move
      * json: {'field': '0', 'player': 'x'}
      * 
@@ -95,7 +95,7 @@ export default class {
         }
     }
 
-    /**
+    /*
      * event: game_finished
      * json: {'winner': 'user1', 'fields': '[0,1,2]', 'username': 'user1', 'youWon': 'yes'}
      * 

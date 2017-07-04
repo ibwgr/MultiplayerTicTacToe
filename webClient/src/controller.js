@@ -1,3 +1,10 @@
+/*
+ * controller
+ * coordinates the websockets and the view
+ * 
+ * Semesterarbeit NDK HF Web und Mobile Frontend Entwicklung
+ * Reto Kaufmann / Dieter Biedermann
+ */
 'use strict'
 
 import io from 'socket.io-client'
@@ -13,9 +20,6 @@ export default class{
 
     constructor(view){
         this.view = view
-        this.player1 = 0
-        this.player2 = 0
-        this.player = 1
         this.running = false
         this.gameEnabled = false
 

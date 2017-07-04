@@ -12,7 +12,7 @@ Dies ist der Web Client zum Multiplayer Tic Tac Toe Spiel.
 
 ### in das webClient Verzeichnis wechseln
 
-``cd webClient``
+``cd MultiplayerTicTacToe/webClient``
 
 ### Projekt installieren mit:
 
@@ -24,7 +24,7 @@ Dies ist der Web Client zum Multiplayer Tic Tac Toe Spiel.
 
     ``{"serverUrl": "http://localhost:3100" } ``
 
-- Zentraler Webserver:
+- Zentraler Webserver (bereits vorkonfiguriert):
 
   ``{"serverUrl": "https://warm-shelf-33316.herokuapp.com/" } ``
 
