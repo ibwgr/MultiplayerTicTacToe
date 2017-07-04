@@ -65,6 +65,11 @@ public class SocketController {
     private Boolean isIhaveWon;
     private Boolean isOtherHasWon;
     private Status gameStatus = Status.STOPPED;
+    //------------------------------------------------------
+    // getters/setters
+    public Socket getSocket() {
+        return socket;
+    }
     public void stopCounter() {
         counter.cancel();
     }
@@ -155,12 +160,9 @@ public class SocketController {
     public void setWinningFields(int[] winningFields) {
         this.winningFields = winningFields;
     }
-    //-----------------------------------------------------
-    //-----------------------------------------------------
-    //-----------------------------------------------------
 
 
-    //
+    //-----------------------------------------------------
     public Socket createSocket(String serviceEndpoint) {
         Log.i(PROG, "socking...");
         // zum testen
@@ -183,7 +185,6 @@ public class SocketController {
     public void connect() {
         Log.i(PROG, "****************** connect()");
         socket.connect();
-        //Log.i(PROG, socket.toString());
     }
 
     //
@@ -201,15 +202,11 @@ public class SocketController {
     }
 
 
-    // getters/setters
-    public Socket getSocket() {
-        return socket;
-    }
-    public void setSocket(Socket socket) {
-        this.socket = socket;
-    }
 
 
+
+    //------------------------------------------------------------------------
+    // onDisconnectFromServer
     //------------------------------------------------------------------------
     public Emitter.Listener onDisconnectFromServer = new Emitter.Listener() {
         @Override
@@ -230,7 +227,9 @@ public class SocketController {
         act.clearCountDownDisplay();
     }
 
-
+    //------------------------------------------------------------------------
+    // onConnectFailed
+    //------------------------------------------------------------------------
     public Emitter.Listener onConnectFailed = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -250,26 +249,9 @@ public class SocketController {
         act.clearCountDownDisplay();
     }
 
-    public Emitter.Listener onError = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            act.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Log.i(PROG, "****************** onError");
-                   // onErrorActionMethod();
-                }
-            });
-        }
-    };
-    private void onErrorActionMethod() {
-        this.setGameStatus(Status.STOPPED);
-        act.displayStatus("Sorry, technical problems\ntechnical error");
-        act.enableAllGameButtons(false);
-        act.clearCountDownDisplay();
-    }
-
-
+    //------------------------------------------------------------------------
+    // onGameFinished
+    //------------------------------------------------------------------------
     public Emitter.Listener onGameFinished = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -331,7 +313,9 @@ public class SocketController {
         }
     }
 
-
+    //------------------------------------------------------------------------
+    // onYourTurn
+    //------------------------------------------------------------------------
     //{"time":30,"player":"x","username":"Emma"}
     public Emitter.Listener onYourTurn = new Emitter.Listener() {
         @Override
@@ -368,7 +352,9 @@ public class SocketController {
         counter.start();
     }
 
-
+    //------------------------------------------------------------------------
+    // onOtherTurn
+    //------------------------------------------------------------------------
     // {"time":30,"player":"o","username":"vulkan"}
     public Emitter.Listener onOtherTurn = new Emitter.Listener() {
         @Override
@@ -399,6 +385,9 @@ public class SocketController {
         this.setIsOthersTurn(true);
     }
 
+    //------------------------------------------------------------------------
+    // onNewMove
+    //------------------------------------------------------------------------
     // spielzug des gegners
     // {"field":"field2","player":"o"}
     public Emitter.Listener onNewMove = new Emitter.Listener() {
@@ -428,6 +417,9 @@ public class SocketController {
         }
     }
 
+    //------------------------------------------------------------------------
+    // onUserAdded
+    //------------------------------------------------------------------------
     //{"username":"Emma"}
     public Emitter.Listener onUserAdded = new Emitter.Listener() {
         @Override
@@ -454,7 +446,9 @@ public class SocketController {
         act.displayStatus("Hello " +userName +"\n" + "Waiting for other user to play with...");
     }
 
-
+    //------------------------------------------------------------------------
+    // onUserNameValidation
+    //------------------------------------------------------------------------
     //{"msg":"Name is too long"}  ... oder already used
     public Emitter.Listener onUserNameValidation = new Emitter.Listener() {
         @Override
@@ -482,7 +476,9 @@ public class SocketController {
         act.enableEingabefeld();
     }
 
-
+    //------------------------------------------------------------------------
+    // onStartGame
+    //------------------------------------------------------------------------
     //{"player1":"kkkkkkkkk","player2":"uuuu"}
     public Emitter.Listener onStartGame = new Emitter.Listener() {
         @Override
@@ -514,12 +510,13 @@ public class SocketController {
         Log.i(PROG, "****************** player1: "+this.getPlayer1Name());
         Log.i(PROG, "****************** player2: "+this.getPlayer2Name());
         this.setGameStatus(Status.RUNNING);
-//        act.displayPlayers("Player O: " +this.getPlayer1Name() +"  |  Player X: " +this.getPlayer2Name());
         act.displayPlayers(this.getPlayer1Name() ,this.getPlayer2Name());
         
     }
 
-
+    //------------------------------------------------------------------------
+    // onStatsUpdate
+    //------------------------------------------------------------------------
     /* STATISTICS
         {
             "boardList":[
@@ -587,13 +584,9 @@ public class SocketController {
 
 
 
-
-
-
-
-    ////////////////////////////////////////////////////////////////////////////
-    //inner class
-    // countdowntimer is an abstract class, so extend it and fill in methods
+    //------------------------------------------------------------------------
+    // INNER CLASS GameCountDown
+    //------------------------------------------------------------------------
     public class GameCountDown extends CountDownTimer {
 
         public GameCountDown(long millisInFuture, long countDownInterval) {
