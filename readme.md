@@ -35,4 +35,4 @@ Diese kapselt die dahinterliegende Technik und wählt eine für die Übertragung
 Socket.io verwendet alternativ zu WebSocket bei Bedarf Adobe Flash Socket, AJAX Long Polling, JAX Multipart Streaming, Forever Iframe oder JSONP Polling. Mit Heartbeats, Time-outs und Disconnection-Unterstützung komplettiert Socket.io den Umfang wichtiger Funktionen für die Konnektivität.<br>
 Auch für Java/Android gibt es Libraries die Socket.io implementiert haben, sodass für Java wie auch für JavaScript fast dieselbe API zur Anwendung gelangt.<br>
 
-<img src="https://github.com/ibwgr/MultiplayerTicTacToe/tree/master/androidClient/documentation/TicTacToe-Komponentendiagramm-500x374.jpg" width="500" height="374"/>
+![Komponenten](androidClient/documentation/TicTacToe-Komponentendiagramm-500x374.jpg?raw=true "Komonenten")
