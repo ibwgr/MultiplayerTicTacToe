@@ -7,8 +7,16 @@ Dies ist die Android App (Client) zum Multiplayer Tic Tac Toe Spiel.
 # Setup
 
 ### Projekt Setup
-Klonen dieses Repositories (https://github.com/ibwgr/MultiplayerTicTacToe/tree/master/androidClient) auf den eigenen Entwicklungs-PC<br>
+Klonen dieses Repositories auf den eigenen Entwicklungs-PC<br>
 Am besten verwendet man Android Studio
+
+- ganzes Projekt klonen
+
+   ``git clone https://github.com/ibwgr/MultiplayerTicTacToe.git``
+
+- in das androidClient Verzeichnis wechseln
+
+   ``cd androidClient``
 
 ### Projekt konfigurieren
 
