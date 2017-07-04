@@ -99,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
         RelativeLayout layoutMain = (RelativeLayout) findViewById(R.id.layout_main);
         layoutMain.setOnTouchListener(new OnSwipeTouchListener(this));
 
-
         //---------------------------------------------------------------------
         socketController = new SocketController(getApplicationContext(), this, Util.getServiceEndpoint(this));
         socketController.connect();
@@ -217,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
         socketController.getSocket().on("game_finished", socketController.onGameFinished);
         socketController.getSocket().on("disonnect", socketController.onDisconnectFromServer);  // disconnect from server received!
         socketController.getSocket().on("connect_failed", socketController.onConnectFailed);
-        socketController.getSocket().on("error", socketController.onError);
+      //socketController.getSocket().on("error", socketController.onError);
         socketController.getSocket().on("stats_update", socketController.onStatsUpdate);
 
     } // end on-create lifecycle
