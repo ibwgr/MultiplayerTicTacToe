@@ -11,16 +11,14 @@ Gleichzeitig wird eine Statistik über alle laufenden und die zwanzig letzten ab
 
 ## Was ist Tic Tac Toe?
 
-- <a 
-href="https://de.wikipedia.org/wiki/Tic-Tac-Toe"
-titel="Tic-Tac-Toe auf Wikipedia">Tic-Tac-Toe auf Wikipedia</a>
+- [Tic-Tac-Toe auf Wikipedia](https://de.wikipedia.org/wiki/Tic-Tac-Toe)
 
 
 ## Details und Konfiguration Server
-- <a href="https://github.com/ibwgr/MultiplayerTicTacToe/tree/master/server" title="Server">Server</a>
+- [Server](https://github.com/ibwgr/MultiplayerTicTacToe/tree/master/server)
 ## Details und Konfiguration Clients
-- <a href="https://github.com/ibwgr/MultiplayerTicTacToe/tree/master/webClient" title="Web Client">Web Client</a>
-- <a href="https://github.com/ibwgr/MultiplayerTicTacToe/tree/master/androidClient" title="Android Client">Android App</a>
+- [Web Client](https://github.com/ibwgr/MultiplayerTicTacToe/tree/master/webClient)
+- [Android Client](https://github.com/ibwgr/MultiplayerTicTacToe/tree/master/androidClient)
 
 
 ## Produktive Version öffentlich Verfügbar

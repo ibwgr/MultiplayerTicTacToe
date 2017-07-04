@@ -7,8 +7,16 @@ Dies ist die Android App (Client) zum Multiplayer Tic Tac Toe Spiel.
 # Setup
 
 ### Projekt Setup
-Klonen dieses Repositories (https://github.com/ibwgr/MultiplayerTicTacToe/tree/master/androidClient) auf den eigenen Entwicklungs-PC<br>
+Klonen dieses Repositories auf den eigenen Entwicklungs-PC<br>
 Am besten verwendet man Android Studio
+
+- ganzes Projekt klonen
+
+   ``git clone https://github.com/ibwgr/MultiplayerTicTacToe.git``
+
+- in das androidClient Verzeichnis wechseln
+
+   ``cd androidClient``
 
 ### Projekt konfigurieren
 
@@ -23,7 +31,7 @@ Entweder laeuft der Server oeffentlich auf einem zentralen Webserver (was er sow
 #### b) lokale Entwicklungsmaschine
    Anpassen Configfile:<br>
    **/src/main/res/xml/tictactoe_config.xml**<br>
-   ```<ServiceEndpoint>"lokale-ip-adresse-des-servers:3100"</ServiceEndpoint>```
+   ```<ServiceEndpoint>"lokale-ip-adresse-des-servers:3100"</ServiceEndpoint>```<br>
    Die Android App laeuft hierbei sicher auf dem Emulator. Aus Sicht App ist also localhost oder 127.0.0.1 der Emulator.<br>
    Der Server laeuft aber auf dem PC, somit darf man nicht localhost oder 127.0.0.1 als Server Endpoint verwenden.<br>
    Auf dem PC muss man sich die IP Adresse ermitteln (Windows-Terminal: ipconfig, Linux-Terminal: ifconfig)<br>

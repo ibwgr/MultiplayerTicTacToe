@@ -6,6 +6,14 @@ Dies ist der Web Client zum Multiplayer Tic Tac Toe Spiel.
 
 # Setup
 
+### ganzes Projekt klonen
+
+``git clone https://github.com/ibwgr/MultiplayerTicTacToe.git``
+
+### in das webClient Verzeichnis wechseln
+
+``cd webClient``
+
 ### Projekt installieren mit:
 
   ``yarn install ``
