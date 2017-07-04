@@ -53,7 +53,8 @@ Diese ist unter der MIT Licence frei verfügbar (siehe ganz unten).
 
 #### Artefakte
 Grob zusammengefasst sind dies die wichtigsten Artefakte in unserem Android Projekt Sourcecode Verzeichnis:<br>
-<img src="https://github.com/ibwgr/MultiplayerTicTacToe/tree/master/androidClient/documentation/TicTacToe-Android-Diagramm.jpeg" width="800" height="600"/>
+![Diagramm Android Klassen/LayoutViews](documentation/TicTacToe-Android-Diagramm-800x646.png?raw=true "Diagramm Android Klassen/LayoutViews")
+
 
 #### Test
 Die Unit-Tests können via Commandline wie folgt gestartet werden:<br>
