@@ -1,13 +1,11 @@
 package ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -30,10 +28,8 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText editUserName;
     private TextView displayZeileStatus;
-    private TextView displayStatistics;
     private TextView displayPlayerXname, displayPlayerOname;
     private TextView displayPlayerXcountdown, displayPlayerOcountdown;
-
     private GameButton gameButton0;
     private GameButton gameButton1;
     private GameButton gameButton2;
@@ -43,19 +39,19 @@ public class MainActivity extends AppCompatActivity {
     private GameButton gameButton6;
     private GameButton gameButton7;
     private GameButton gameButton8;
-
-    //private String currentPlayer = "";
     private Button buttonOk;
-
+    private SocketController socketController = null;
     private TabHost mTabHost;
+    //
     public TabHost getTabHost() {
         return mTabHost;
     }
+
     /*
+    --------------------------------------------------------------------
     // Test Client http://lastminute.li/aaa/   (oder /ttt/)
     --------------------------------------------------------------------
     */
-    private SocketController socketController = null; //new SocketController(getApplicationContext(), this);
 
    // Kein disconnect bei onPause, wenn die App nur in den Hintergrund geht, man kann sie ja wieder hervorholen
 
@@ -63,12 +59,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         socketController.disconnect();
+        enableEingabefeld();
+        enableButtonOk();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         socketController.disconnect();
+        enableEingabefeld();
+        enableButtonOk();
     }
 
     @Override
@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
         //---------------------------------------------------------------------
         // TABS
+        //---------------------------------------------------------------------
         mTabHost = (TabHost)findViewById(R.id.tabHost);
         mTabHost.setup();
         //Lets add the first Tab
@@ -100,6 +101,8 @@ public class MainActivity extends AppCompatActivity {
         layoutMain.setOnTouchListener(new OnSwipeTouchListener(this));
 
         //---------------------------------------------------------------------
+        // SOCKETCONTROLLER
+        //---------------------------------------------------------------------
         socketController = new SocketController(getApplicationContext(), this, Util.getServiceEndpoint(this));
         socketController.connect();
         setUpInitalGame();
@@ -107,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
         // get the view elements
         editUserName = (EditText) findViewById(R.id.edit_username);
         displayZeileStatus = (TextView) findViewById(R.id.label_displayzeile);
-        displayStatistics = (TextView) findViewById(R.id.label_statistics);
         displayPlayerXname = (TextView) findViewById(R.id.player_x_name);
         displayPlayerOname = (TextView) findViewById(R.id.player_o_name);
         displayPlayerXcountdown= (TextView) findViewById(R.id.player_x_countdown);
@@ -160,48 +162,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-//
-//        // Temporaere Buttons, nur fuer Entwicklulng
-//        final Button buttonSimWin = (Button) findViewById(R.id.button_sim_win);
-//        buttonSimWin.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v){
-//                //{"winner":"hans","fields":[2,4,6],"username":"Emma","youWon":"no"}
-//                JSONObject obj = new JSONObject();
-//                try {
-//                    obj.put("winner", "hans");
-//                    obj.put("fields", "[2,4,6]");
-//                    obj.put("username", "Emma");
-//                    obj.put("youWon", "yes");
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//                socketController.onGameFinishedActionMethod(obj);
-//            }
-//        });
-//        // Temporaere Buttons, nur fuer Entwicklulng
-//        final Button buttonSimUnent = (Button) findViewById(R.id.button_sim_unent);
-//        buttonSimUnent.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v){
-//                //{"winner":"draw","fields":[2,4,6],"username":"Emma","youWon":"no"}
-//                JSONObject obj = new JSONObject();
-//                try {
-//                    obj.put("winner", "draw");
-//                    obj.put("fields", "[2,4,6]");
-//                    obj.put("username", "Emma");
-//                    obj.put("youWon", "yes");
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//                socketController.onGameFinishedActionMethod(obj);
-//            }
-//        });
-
-
-
-
         //////////////////////////////////////////////////////////////////////////////////////
         // socket listening
         // here we listen on message events from the server
@@ -216,7 +176,6 @@ public class MainActivity extends AppCompatActivity {
         socketController.getSocket().on("game_finished", socketController.onGameFinished);
         socketController.getSocket().on("disonnect", socketController.onDisconnectFromServer);  // disconnect from server received!
         socketController.getSocket().on("connect_failed", socketController.onConnectFailed);
-      //socketController.getSocket().on("error", socketController.onError);
         socketController.getSocket().on("stats_update", socketController.onStatsUpdate);
 
     } // end on-create lifecycle
@@ -248,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked();;
+                ((GameButton) v).clicked();
             }
         });
         //
@@ -257,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked();;
+                ((GameButton) v).clicked();
             }
         });
         //
@@ -266,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked();;
+                ((GameButton) v).clicked();
             }
         });
         //
@@ -275,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked();;
+                ((GameButton) v).clicked();
             }
         });
         //
@@ -284,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked();;
+                ((GameButton) v).clicked();
             }
         });
         //
@@ -293,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked();;
+                ((GameButton) v).clicked();
             }
         });
         //
@@ -302,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked();;
+                ((GameButton) v).clicked();
             }
         });
         //
@@ -311,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked();;
+                ((GameButton) v).clicked();
             }
         });
         //
@@ -320,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
         gameButton8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameButton) v).clicked();;
+                ((GameButton) v).clicked();
             }
         });
         //
@@ -333,14 +292,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+    //-------------------------------------------------------------------------
     // um das aufgepoppte keyboard verschwinden zu lassen
     public void hideKeyboard() {
        Util.hideSoftKeyboard(this);
     }
 
 
-
+    //-------------------------------------------------------------------------
     // DISPLAY Methoden
     public void displayStatus(String text) {
         displayZeileStatus.setText(text);
@@ -364,8 +323,6 @@ public class MainActivity extends AppCompatActivity {
         displayPlayerXname.setText(playerX);
     }
     public void displayStatistics(ArrayList<StatsItem> statsItems) {
-        //displayStatistics.setText(text);
-
         StatsAdapter statsAdapter = new StatsAdapter(this, statsItems);
         ListView listStats = (ListView) findViewById(R.id.list_stats);
         listStats.setAdapter(statsAdapter);
@@ -390,7 +347,7 @@ public class MainActivity extends AppCompatActivity {
         editUserName.setVisibility(View.VISIBLE);
     }
 
-
+    //-------------------------------------------------------------------------
     public void animateWinningFiedlds(int[] winningFields) {
         int wf1 = winningFields[0];
         int wf2 = winningFields[1];

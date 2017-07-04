@@ -24,16 +24,12 @@ Es muss nur der Service-Enpoint des Game-Servers konfiguriert werden.
 Entweder laeuft der Server oeffentlich auf einem zentralen Webserver (was er sowieso tut) oder er läuft lokal auf dem eigenen Entwicklungsrechner.
 
 #### a) zentraler Webserver
-   Anpassen Configfile:
-   
-   **/src/main/res/xml/tictactoe_config.xml**<br>
+   Anpassen Configfile: **/src/main/res/xml/tictactoe_config.xml**<br>
    
    ```<ServiceEndpoint>https://warm-shelf-33316.herokuapp.com/</ServiceEndpoint>```
 
 #### b) lokale Entwicklungsmaschine
-   Anpassen Configfile:
-   
-   **/src/main/res/xml/tictactoe_config.xml**<br>
+   Anpassen Configfile: **/src/main/res/xml/tictactoe_config.xml**<br>
    
    ```<ServiceEndpoint>"lokale-ip-adresse-des-servers:3100"</ServiceEndpoint>```<br>
    
@@ -42,7 +38,7 @@ Entweder laeuft der Server oeffentlich auf einem zentralen Webserver (was er sow
    Auf dem PC muss man sich die IP Adresse ermitteln (Windows-Terminal: ipconfig, Linux-Terminal: ifconfig)<br>
    und diese dann eintragen. Der Port ist fix mit :3100 anzugeben.<br>Zum Beispiel:<br>
    ```<ServiceEndpoint>http://192.168.1.39:3100</ServiceEndpoint>```
-<br><br><br>
+
 Wenn man es sich nicht lokal installieren moechte, ist die Android App auch im **[Google Play Store](https://play.google.com/store/apps/details?id=ch.ibw.semesterarbeit2017.multiplayertictactoe.multiplayertictactoe)** kostenlos verfuegbar.
 Diese ist bereits so konfiguriert, dass der zentrale Webserver als Endpoint verwendet wird (oeffentlich).
 
