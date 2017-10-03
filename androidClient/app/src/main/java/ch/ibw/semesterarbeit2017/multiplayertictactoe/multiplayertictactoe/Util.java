@@ -11,20 +11,23 @@ import java.io.IOException;
 
 /**
  * Created by rk on 28.06.17.
+ * Clean Code, 3.10.2017
  */
 
 public class Util {
 
     public static final String PROG = "____UTIL";
 
+
+
     //-------------------------------------------------------
-    public static String getServiceEndpoint(Activity activity) {
+    public static String getServiceEndpointOLD(Activity activity) {
         String serviceEndpoint = "";
         XmlPullParser xpp = activity.getResources().getXml(R.xml.tictactoe_config);
         try {
             while (xpp.getEventType()!=XmlPullParser.END_DOCUMENT) {
                 if (xpp.getEventType()==XmlPullParser.START_TAG) {
-                    Log.i(PROG, "****************** xpp.getName() : " +xpp.getName());
+                    //Log.i(PROG, "****************** xpp.getName() : " +xpp.getName());
                     if (xpp.getName().equals("ServiceEndpoint")) {
                         serviceEndpoint = xpp.nextText();
                         Log.i(PROG, "****************** serviceEndpoint : " +serviceEndpoint);
@@ -37,6 +40,16 @@ public class Util {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return  serviceEndpoint;
+    }
+
+    //-------------------------------------------------------
+    public static String getServiceEndpoint(Activity activity) {
+        String serviceEndpoint = XmlConfigHandler.readValueFromXmlElement("ServiceEndpoint", activity);
+        return  serviceEndpoint;
+    }
+    public static String getIrgendWasAnderes(Activity activity) {
+        String serviceEndpoint = XmlConfigHandler.readValueFromXmlElement("xxxxxxxxxxxxxxx", activity);
         return  serviceEndpoint;
     }
 
